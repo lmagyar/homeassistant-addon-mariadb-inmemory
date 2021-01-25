@@ -6,7 +6,6 @@
   "url": "https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory",
   "arch": ["armhf", "armv7", "aarch64", "amd64", "i386"],
   "startup": "system",
-  "boot": "auto",
   "init": false,
   "timeout": 20,
   "tmpfs": true,
