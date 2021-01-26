@@ -1,5 +1,40 @@
 # Home Assistant Add-on: MariaDB
 
+```
+vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv WARNING vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+```
+> This is a **fork** of the official add-on!
+>
+> ## Home Assistant Configuration
+>
+> MariaDB will be used by the `recorder` and `history` components within Home Assistant. For more information about setting this up, see the [recorder integration][mariadb-ha-recorder] documentation for Home Assistant.
+>
+> Example Home Assistant configuration:
+>
+> 1. Start the add-on, check it's log that it started successfully. Then check the Supervisor's log (not the add-on's log), and search for a line like this:
+> ```text
+01-01-01 12:00:00 INFO (MainThread) [supervisor.services.modules.mysql] Set 12345678_mariadb as service provider for MySQL
+> ```
+> Use the above `12345678` number in the `recorder` configuration below. Yes, the _ and - characters are different.
+> 2. You can use HeidiSQL, DBeaver, BeeKeeper-Studio to access the database and analyze it's content. Search for the entries you don't need, but fill up the database!
+> 3. It is important to exclude `call_service` entries from the database! These fill up the database really fast with all the parameters to the service calls, MQTT messages, etc.
+>
+> ```yaml
+recorder:
+  db_url: mysql://homeassistant:PASSWORD@12345678-mariadb/homeassistant?charset=utf8mb4
+  purge_keep_days: 7
+  exclude:
+    event_types:
+      - call_service
+  include:
+    entities:
+      - <the entity ids you really need>
+> ```
+
+```
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ WARNING ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+```
+
 ## Installation
 
 Follow these steps to get the add-on installed on your system:

@@ -1,14 +1,15 @@
 {
-  "name": "MariaDB",
+  "name": "In-memory MariaDB",
   "version": "2.2.1",
   "slug": "mariadb",
-  "description": "An SQL database server",
-  "url": "https://github.com/home-assistant/hassio-addons/tree/master/mariadb",
+  "description": "An in-memory SQL database server",
+  "url": "https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory",
   "arch": ["armhf", "armv7", "aarch64", "amd64", "i386"],
   "startup": "system",
   "boot": "auto",
   "init": false,
   "timeout": 20,
+  "tmpfs": "size=200m",
   "services": ["mysql:provide"],
   "ports": {
     "3306/tcp": null
@@ -28,5 +29,5 @@
     "logins": [{ "username": "str", "password": "str" }],
     "rights": [{ "username": "str", "database": "str" }]
   },
-  "image": "homeassistant/{arch}-addon-mariadb"
+  "image": "lmagyar/{arch}-addon-mariadb-inmemory"
 }
