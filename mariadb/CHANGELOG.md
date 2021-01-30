@@ -5,6 +5,9 @@ vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv WARNING vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 ```
 > This is a **fork** of the official add-on!
 >
+> ### 2.2.1.3
+> - Enable mount in apparmor.
+>
 > ### 2.2.1.2
 > - The size of the tmpfs is configurable. Though it required SYS_ADMIN privilege.
 >
