@@ -9,7 +9,7 @@ vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv WARNING vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 >
 > The size of the tmpfs is hardcoded in the HA/Docker configuration file, can't be set from the add-on's configuration. Currently it is **200MB**. If you want to change it, copy the `mariadb` subfolder from this repo to your installation's `addons` folder, edit `config.json` and install it from there.
 >
-> If you use the built-in SQLite with `db_url: 'sqlite:///:memory:'` recorder configuration and fed up with the uncountable `sqlite3.OperationalError: cannot commit - no transaction is active` errors in your HA log, give this add-on a try.
+> If you use the built-in SQLite with `db_url: 'sqlite:///:memory:'` recorder configuration and fed up with the uncountable `[homeassistant.components.recorder.util] Error executing query: (sqlite3.OperationalError) cannot commit - no transaction is active` errors in your HA log, give this add-on a try.
 >
 > **See the Documentation tab for the required configuration changes for the `recorder` integration!!!**
 >

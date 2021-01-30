@@ -1,4 +1,18 @@
 # Changelog
+
+```
+vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv WARNING vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+```
+> This is a **fork** of the official add-on!
+>
+> ### 2.2.1.1
+> - Moved from `inmemory` branch to `master` to get rid of error: `stderr: 'fatal: couldn't find remote ref refs/heads/inmemory'.` **Please Reinstall the add-on.**
+> - Tweaking InnoDB to use minimal disk space overhead.
+
+```
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ WARNING ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+```
+
 ## 2.2.1
 - Don't delete the mariadb.sys user, it's needed in MariaDB >= 10.4.13
 
