@@ -36,7 +36,6 @@ query_cache_type = 0
 # InnoDB Tweaks
 innodb_buffer_pool_instances = 1
 innodb_buffer_pool_size = 5M
-innodb_flush_method=O_DIRECT
 innodb_log_buffer_size = 256K
 innodb_log_file_size = 1M
 max_binlog_size = 1M

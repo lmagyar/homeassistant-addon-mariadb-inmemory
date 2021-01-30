@@ -6,6 +6,7 @@ MARIADB_DATA=/tmpfs/databases
 NEW_INSTALL=false
 
 # Change tmpfs size to configured value
+bashio::log.info "Change tmpfs size to ${TMPFS_SIZE}"
 TMPFS_SIZE=$(bashio::config "tmpfs.size")
 mount -o remount,size=${TMPFS_SIZE} tmpfs /tmpfs
 
