@@ -5,7 +5,7 @@ vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv WARNING vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 ```
 > This is a **fork** of the official add-on!
 >
-> ### 2.2.1.3
+> ### 2.2.1.4 - 2.2.1.3
 > - Enable mount in apparmor.
 >
 > ### 2.2.1.2
