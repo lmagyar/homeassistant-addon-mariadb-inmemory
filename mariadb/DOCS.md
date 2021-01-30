@@ -18,6 +18,7 @@ vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv WARNING vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 > Use the above `12345678` number in the `recorder` configuration below. Yes, the _ and - characters are different.
 > 2. You can use HeidiSQL, DBeaver, BeeKeeper-Studio to access the database and analyze it's content. Search for the entries you don't need, but fill up the database!
 > 3. It is important to exclude `call_service` entries from the database! These fill up the database really fast with all the parameters to the service calls, MQTT messages, etc.
+> 4. Later check the database size from HeidiSQL, DBeaver, BeeKeeper-Studio, or SSH into the host (google it, you need to access port 22222), `docker ps` and `docker exec -t -i 123456 /bin/bash` and see the container's file-system directly. Note: The database occupies more space on tmpfs then you see in the client.
 >
 > ```yaml
 recorder:
