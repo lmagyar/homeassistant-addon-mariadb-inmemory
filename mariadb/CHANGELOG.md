@@ -5,8 +5,11 @@ vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv WARNING vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 ```
 > This is a **fork** of the official add-on!
 >
+> ### 2.2.1.2
+> - The size of the tmpfs is configurable. Though it required SYS_ADMIN privilege.
+>
 > ### 2.2.1.1
-> - Moved from `inmemory` branch to `master` to get rid of error: `stderr: 'fatal: couldn't find remote ref refs/heads/inmemory'.` **Please Reinstall the add-on.**
+> - Moved from `inmemory` branch to `master` to get rid of error: `stderr: 'fatal: couldn't find remote ref refs/heads/inmemory'.` **Please uninstall the add-on, delete repository, add repository, install add-on.**
 > - Tweaking InnoDB to use minimal disk space overhead.
 
 ```
