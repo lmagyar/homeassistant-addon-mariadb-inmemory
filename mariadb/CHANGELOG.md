@@ -5,7 +5,7 @@ vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv WARNING vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 ```
 > This is a **fork** of the official add-on!
 >
-> ### 2.2.1.5
+> ### 2.2.1.6
 > - The size of the tmpfs is configurable. Though it requires SYS_ADMIN privilege and to enable mount in apparmor.
 > - Tweaking InnoDB to use minimal disk space overhead.
 > - Use tmpfs for data storage.
