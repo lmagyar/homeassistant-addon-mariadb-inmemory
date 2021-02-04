@@ -2,37 +2,9 @@
 
 ```
 vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv WARNING vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-```
-> This is a **fork** of the official add-on!
->
-> ## Home Assistant Configuration
->
-> MariaDB will be used by the `recorder` and `history` components within Home Assistant. For more information about setting this up, see the [recorder integration][mariadb-ha-recorder] documentation for Home Assistant.
->
-> Example Home Assistant configuration:
->
-> 1. Start the add-on, check it's log that it started successfully. Then check the Supervisor's log (not the add-on's log), and search for a line like this:
-> ```text
-01-01-01 12:00:00 INFO (MainThread) [supervisor.services.modules.mysql] Set 12345678_mariadb as service provider for MySQL
-> ```
-> Use the above `12345678` number in the `recorder` configuration below. Yes, the _ and - characters are different.
-> 2. You can use HeidiSQL, DBeaver, BeeKeeper-Studio to access the database and analyze it's content. Search for the entries you don't need, but fill up the database!
-> 3. It is important to exclude `call_service` entries from the database! These fill up the database really fast with all the parameters to the service calls, MQTT messages, etc.
-> 4. Later check the database size from HeidiSQL, DBeaver, BeeKeeper-Studio. Or SSH into the host (google it, you need to access port 22222), `docker ps` and `docker exec -it 123456 /bin/bash` and see the container's file-system directly, use `df` or `ls` to check file sizes and free space. **Note:** The database occupies more space on tmpfs than you see in the client. Rule of thumb: minimum tmpfs size [MB] = \<data stored daily [MB]\> * (\<purge_keep_days\> + 1) * 1.2 + 40[MB]
->
-> ```yaml
-recorder:
-  db_url: mysql://homeassistant:PASSWORD@12345678-mariadb/homeassistant?charset=utf8mb4
-  purge_keep_days: 7
-  exclude:
-    event_types:
-      - call_service
-  include:
-    entities:
-      - <the entity ids you really need>
-> ```
 
-```
+This is a FORK of the official add-on! See changes below.
+
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ WARNING ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ```
 
@@ -41,15 +13,21 @@ recorder:
 Follow these steps to get the add-on installed on your system:
 
 1. Navigate in your Home Assistant frontend to **Supervisor** -> **Add-on Store**.
-2. Find the "MariaDB" add-on and click it.
-3. Click on the "INSTALL" button.
+2. Click **Repositories** in the **...** menu at the top right corner, add ```https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory``` as repository.
+3. Find the "In-memory MariaDB" add-on and click it.
+4. Click on the "INSTALL" button.
 
 ## How to use
 
 1. Set the `logins` -> `password` field to something strong and unique.
 2. Start the add-on.
 3. Check the add-on log output to see the result.
-4. Add `recorder` component to your Home Assistant configuration.
+4. Check the Supervisor's log (not the add-on's log), and search for a line like this:
+```text
+01-01-01 12:00:00 INFO (MainThread) [supervisor.services.modules.mysql] Set 12345678_mariadb as service provider for MySQL
+```
+Use the above `12345678` number in the `recorder` configuration below. Yes, the _ and - characters are different.
+5. Add `recorder` component to your Home Assistant configuration.
 
 ## Add-on Configuration
 
@@ -59,6 +37,8 @@ describes each of the add-on configuration options.
 Example add-on configuration:
 
 ```yaml
+tmpfs:
+  size: 250m
 databases:
   - homeassistant
 logins:
@@ -68,6 +48,20 @@ rights:
   - username: homeassistant
     database: homeassistant
 ```
+
+### Option: `tmpfs` (required)
+
+This section defines the tmpfs filesystem.
+
+### Option: `tmpfs.size` (required)
+
+Specify an upper limit on the size of the in-memory filesystem. The size may have a k, m, or g suffix.
+
+During the first days regularly check the database size from eg. HeidiSQL, DBeaver, BeeKeeper-Studio. Or SSH into the host (google it, you need to access port 22222), `docker ps` and `docker exec -it 123456 /bin/bash` and see the container's file-system directly, use `df` or `ls` to check file sizes and free space.
+
+**Note:** The database occupies more space on tmpfs than you see in the client.
+
+**Rule of thumb:** <minimum tmpfs size [MB]> = \<data stored daily [MB]\> * (\<purge_keep_days\> + 1) * 1.2 + 40[MB]
 
 ### Option: `databases` (required)
 
@@ -105,8 +99,19 @@ Example Home Assistant configuration:
 
 ```yaml
 recorder:
-  db_url: mysql://homeassistant:password@core-mariadb/homeassistant?charset=utf8mb4
+  db_url: mysql://homeassistant:PASSWORD@12345678-mariadb/homeassistant?charset=utf8mb4
+  purge_keep_days: 7
+  exclude:
+    event_types:
+      - call_service
+  include:
+    entities:
+      - <the entity ids you really need>
 ```
+
+**Note:**
+1. It is important to exclude `call_service` entries from the database! These fill up the database really fast with all the parameters to the service calls, MQTT messages, etc.
+2. You can use eg. HeidiSQL, DBeaver, BeeKeeper-Studio to access the database and analyze it's content. Search for the entries you don't need, but fill up the database!
 
 ## Support
 

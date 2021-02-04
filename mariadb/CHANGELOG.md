@@ -1,18 +1,17 @@
 # Changelog
 
 ```
-vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv WARNING vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-```
-> This is a **fork** of the official add-on!
->
-> ### 2.2.1.6
-> - The size of the tmpfs is configurable. Though it requires SYS_ADMIN privilege and to enable mount in apparmor.
-> - Tweaking InnoDB to use minimal disk space overhead.
-> - Use tmpfs for data storage.
+vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv WARNING vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 
+This is a FORK of the official add-on! See changes below.
+
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ WARNING ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ```
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ WARNING ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-```
+
+## 2.2.1.6 (forked)
+- Use tmpfs for data storage.
+- Tweaking InnoDB to use minimal disk space overhead.
+- The size of the tmpfs filesystem is configurable.
 
 ## 2.2.1
 - Don't delete the mariadb.sys user, it's needed in MariaDB >= 10.4.13
