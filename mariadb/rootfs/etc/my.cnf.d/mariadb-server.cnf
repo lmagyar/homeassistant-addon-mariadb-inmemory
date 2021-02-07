@@ -39,4 +39,4 @@ innodb_buffer_pool_size = 5M
 innodb_log_buffer_size = 256K
 innodb_log_file_size = 1M
 max_binlog_size = 1M
-tx_isolation=READ-UNCOMMITTED
+transaction_isolation = READ-UNCOMMITTED
