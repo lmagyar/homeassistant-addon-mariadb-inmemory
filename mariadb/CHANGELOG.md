@@ -8,6 +8,9 @@ This is a FORK of the official add-on! See changes below.
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ WARNING ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 ```
 
+## 2.2.1.10 (forked)
+- Use new tmpfs add-on config format
+
 ## 2.2.1.9 (forked)
 - Use tmpfs for data storage
 - Tweak InnoDB to use minimal disk space overhead
