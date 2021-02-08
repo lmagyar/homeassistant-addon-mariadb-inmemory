@@ -38,5 +38,7 @@ innodb_buffer_pool_instances = 1
 innodb_buffer_pool_size = 5M
 innodb_log_buffer_size = 256K
 innodb_log_file_size = 1M
+innodb_doublewrite = 0
+innodb_change_buffering = none
 max_binlog_size = 1M
 transaction_isolation = READ-UNCOMMITTED
