@@ -1,6 +1,6 @@
 #include <tunables/global>
 
-profile mariadb flags=(attach_disconnected,mediate_deleted) {
+profile mariadb-beta flags=(attach_disconnected,mediate_deleted) {
   #include <abstractions/base>
   
   capability,
