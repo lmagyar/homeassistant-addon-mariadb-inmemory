@@ -115,9 +115,15 @@ recorder:
       - <the entity ids you really need>
 ```
 
-**Note:**
-1. It is important to exclude `call_service` entries from the database! These fill up the database really fast with all the parameters to the service calls, MQTT messages, etc.
-2. You can use eg. HeidiSQL, DBeaver, BeeKeeper-Studio to access the database and analyze it's content. Search for the entries you don't need, but fill up the database!
+> ---
+>
+> **Important!**
+>
+> ---
+>
+> - Exclude all `call_service` entries from the database! These fill up the database really fast with all the parameters to the service calls, MQTT messages, etc.
+>
+> - Use eg. HeidiSQL, DBeaver, BeeKeeper-Studio to access the database and analyze it's content. Search for the entries you don't need, but fill up the database!
 
 ## Support
 
