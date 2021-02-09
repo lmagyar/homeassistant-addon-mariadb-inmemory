@@ -8,7 +8,7 @@ NEW_INSTALL=false
 # Change tmpfs size to configured value
 TMPFS_SIZE=$(bashio::config "tmpfs.size")
 bashio::log.info "Change tmpfs size to ${TMPFS_SIZE}"
-mount -o remount,size=${TMPFS_SIZE} tmpfs /tmp
+###mount -o remount,size=${TMPFS_SIZE} tmpfs /tmp
 
 # Init mariadb
 if ! bashio::fs.directory_exists "${MARIADB_DATA}"; then
