@@ -38,7 +38,7 @@ Example add-on configuration:
 
 ```yaml
 tmpfs:
-  size: 250m
+  size: 200m
 databases:
   - homeassistant
 logins:
@@ -57,7 +57,7 @@ This section defines the tmpfs filesystem.
 
 Specify an upper limit on the size of the in-memory filesystem. The size may have a k, m, or g suffix.
 
-During the first days regularly check the database size from eg. HeidiSQL, DBeaver, BeeKeeper-Studio. Or SSH into the host (google it, you need to access port 22222), `docker ps` and `docker exec -it 123456 /bin/bash` and see the container's file-system directly, use `df` or `ls` to check file sizes and free space.
+During the first days regularly check the database size from eg. HeidiSQL, DBeaver, BeeKeeper-Studio. Or SSH into the system, `docker ps` and `docker exec -it 123456 /bin/bash` and see the container's file-system directly, use `df` or `ls` to check file sizes and free space.
 
 **Note:** The database occupies more space on tmpfs than you see in the client.
 
