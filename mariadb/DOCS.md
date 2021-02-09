@@ -57,11 +57,15 @@ This section defines the tmpfs filesystem.
 
 Specify an upper limit on the size of the in-memory filesystem. The size may have a k, m, or g suffix.
 
+<div style="background-color:rgba(255, 0, 0, 0.05)">
+
 During the first days regularly check the database size from eg. HeidiSQL, DBeaver, BeeKeeper-Studio. Or SSH into the system, `docker ps` and `docker exec -it 123456 /bin/bash` and see the container's file-system directly, use `df` or `ls` to check file sizes and free space.
 
 **Note:** The database occupies more space on tmpfs than you see in the client.
 
 **Rule of thumb:** <minimum tmpfs size [MB]> = \<data stored daily [MB]\> * (\<purge_keep_days\> + 1) * 1.2 + 40[MB]
+
+</div>
 
 ### Option: `databases` (required)
 
