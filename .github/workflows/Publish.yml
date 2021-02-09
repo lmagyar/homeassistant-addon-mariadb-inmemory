@@ -21,5 +21,4 @@ jobs:
         args: |
           --all \
           --target mariadb \
-          --docker-hub lmagyar \
-          --image {arch}-addon-mariadb-inmemory
+          --docker-hub ${{ secrets.DOCKERHUB_USERNAME }}
