@@ -4,11 +4,7 @@ profile mariadb-beta flags=(attach_disconnected,mediate_deleted) {
   #include <abstractions/base>
   
   # Capabilities
-  capability,
   file,
-
-  capability setgid,
-  capability setuid,
 
   # S6-Overlay
   /bin/** ix,
