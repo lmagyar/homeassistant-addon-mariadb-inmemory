@@ -1,6 +1,6 @@
 {
   "name": "In-memory MariaDB",
-  "version": "2.2.1.10-beta4",
+  "version": "2.2.1.10-beta5",
   "slug": "mariadb-beta",
   "description": "An in-memory SQL database server",
   "url": "https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory",
