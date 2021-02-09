@@ -1,7 +1,7 @@
 
 ## Installation
 
-In Home Assistant Supervisor menu, select Add-on Store tab, click Repositories in the ... menu at the top right corner, add ```https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory``` as repository.
+In Home Assistant Supervisor menu, select Add-on Store tab, click Repositories in the ... menu at the top right corner, add ```https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory-beta``` as repository.
 
 ## Documentation
 
