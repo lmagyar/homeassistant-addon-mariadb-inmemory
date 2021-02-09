@@ -18,9 +18,9 @@ You can use this add-on to install MariaDB, which is an open-source (GPLv2 licen
 
 If you are trying to minimize your SD-card's wear by using the built-in SQLite with `db_url: 'sqlite:///:memory:'` recorder configuration but fed up with the uncountable `[homeassistant.components.recorder.util] Error executing query: (sqlite3.OperationalError) cannot commit - no transaction is active` errors in your HA log, give this add-on a try.
 
-This version uses **tmpfs** to store MariaDB databases in-memory. InnoDB storage engine wastes a great amount of disk space for MVCC (Multi-version Concurrency Control), but can't be changed to other storage engine. Memory storage engine [can't handle TEXT columns][memory-storage-engine] and Aria storage engine [can't handle foreign keys][aria-storage-engine] in the recorder [database][schema], MyRocks storage engine (though it has compression) [is not available for 32-bit platforms][myrocks-storage-engine]. As a workaround, InnoDB transaction isolation level toned down to READ UNCOMMITTED.
+This version uses **tmpfs** to store MariaDB databases in-memory. InnoDB storage engine wastes a great amount of disk space, but can't be changed to other storage engine. Memory storage engine [can't handle TEXT columns][memory-storage-engine] and Aria storage engine [can't handle foreign keys][aria-storage-engine] in the recorder [database][schema], MyRocks storage engine (though it has compression) [is not available for 32-bit platforms][myrocks-storage-engine].
 
-It will also protect you from the data loss caused by HA core restarts when in-memory SQLite used. Though it won't protect you from power failures, add-on or host restarts.
+It will also protect you from the data loss caused by HA core restarts when in-memory SQLite used. Though it won't protect you from power failures, add-on or host restarts or updates.
 
 **See the Documentation tab for the required configuration changes for the recorder integration!!!**
 
