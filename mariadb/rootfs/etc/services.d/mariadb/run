@@ -2,13 +2,14 @@
 # ==============================================================================
 # Start MariaDB service if enabled
 # ==============================================================================
-MARIADB_DATA=/tmpfs/databases
+TMPFS_MNT=/tmpfs
+MARIADB_DATA=${TMPFS_MNT}/databases
 NEW_INSTALL=false
 
 # Change tmpfs size to configured value
 TMPFS_SIZE=$(bashio::config "tmpfs.size")
 bashio::log.info "Change tmpfs size to ${TMPFS_SIZE}"
-mount -o remount,size=${TMPFS_SIZE} tmpfs /tmpfs
+mount -o remount,size=${TMPFS_SIZE} tmpfs ${TMPFS_MNT}
 
 # Init mariadb
 if ! bashio::fs.directory_exists "${MARIADB_DATA}"; then
@@ -67,6 +68,12 @@ bashio::log.info "Ensure databases exists"
 for database in $(bashio::config "databases"); do
     bashio::log.info "Create database ${database}"
     mysql -e "CREATE DATABASE ${database};" 2> /dev/null || true
+
+    # Create default schema
+    if [[ "${database}" == "homeassistant" ]]; then
+        bashio::log.info "Create default schema in database ${database}"
+        mysql ${database} < ./schema.sql
+    fi
 done
 
 # Init logins

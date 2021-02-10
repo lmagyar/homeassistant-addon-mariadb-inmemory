@@ -1,6 +1,6 @@
 {
   "name": "In-memory MariaDB",
-  "version": "2.2.1.9",
+  "version": "2.2.1.10",
   "slug": "mariadb",
   "description": "An in-memory SQL database server",
   "url": "https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory",
@@ -9,7 +9,7 @@
   "boot": "auto",
   "init": false,
   "timeout": 20,
-  "tmpfs": "size=100m",
+  "tmpfs": true,
   "privileged": ["SYS_ADMIN"],
   "services": ["mysql:provide"],
   "ports": {

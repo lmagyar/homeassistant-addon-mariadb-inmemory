@@ -38,7 +38,7 @@ Example add-on configuration:
 
 ```yaml
 tmpfs:
-  size: 250m
+  size: 200m
 databases:
   - homeassistant
 logins:
@@ -57,15 +57,23 @@ This section defines the tmpfs filesystem.
 
 Specify an upper limit on the size of the in-memory filesystem. The size may have a k, m, or g suffix.
 
-During the first days regularly check the database size from eg. HeidiSQL, DBeaver, BeeKeeper-Studio. Or SSH into the host (google it, you need to access port 22222), `docker ps` and `docker exec -it 123456 /bin/bash` and see the container's file-system directly, use `df` or `ls` to check file sizes and free space.
-
-**Note:** The database occupies more space on tmpfs than you see in the client.
-
-**Rule of thumb:** <minimum tmpfs size [MB]> = \<data stored daily [MB]\> * (\<purge_keep_days\> + 1) * 1.2 + 40[MB]
+> ---
+>
+> **Important!**
+>
+> ---
+>
+> During the first days regularly check the database size from eg. HeidiSQL, DBeaver, BeeKeeper-Studio. Or SSH into the system, use `docker ps` and `docker exec -it 123456 /bin/bash` and see the container's file-system directly, use `df` or `ls` to check free space and file sizes.
+>
+> **Note:** The database occupies more space on tmpfs than you see in the client.
+>
+> **Rule of thumb:** <minimum tmpfs size [MB]> = \<data stored daily [MB]\> * (\<purge_keep_days\> + 1) * 1.2 + 40[MB]
 
 ### Option: `databases` (required)
 
 Database name, e.g., `homeassistant`. Multiple are allowed.
+
+**Note:** Use the default database name `homeassistant` to create modified, storage engine compatible database schema before recorder starts (and tries to create a schema that the storage engine can't handle).
 
 ### Option: `logins` (required)
 
@@ -109,9 +117,15 @@ recorder:
       - <the entity ids you really need>
 ```
 
-**Note:**
-1. It is important to exclude `call_service` entries from the database! These fill up the database really fast with all the parameters to the service calls, MQTT messages, etc.
-2. You can use eg. HeidiSQL, DBeaver, BeeKeeper-Studio to access the database and analyze it's content. Search for the entries you don't need, but fill up the database!
+> ---
+>
+> **Important!**
+>
+> ---
+>
+> - Exclude all `call_service` entries from the database! These fill up the database really fast with all the parameters to the service calls, MQTT messages, etc.
+>
+> - Use eg. HeidiSQL, DBeaver, BeeKeeper-Studio to access the database and analyze it's content. Search for the entries you don't need, but fill up the database!
 
 ## Support
 
