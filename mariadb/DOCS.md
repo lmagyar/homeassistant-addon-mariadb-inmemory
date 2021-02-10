@@ -20,7 +20,7 @@ Follow these steps to get the add-on installed on your system:
 1. Set the `logins` -> `password` field to something strong and unique.
 2. Start the add-on.
 3. Check the add-on log output to see the result.
-5. Add `recorder` component to your Home Assistant configuration.
+4. Add `recorder` component to your Home Assistant configuration.
 
 ## Add-on Configuration
 
