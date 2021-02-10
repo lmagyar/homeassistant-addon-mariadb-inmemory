@@ -1,12 +1,10 @@
 # Changelog
 
-```
-vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv WARNING vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+![Warning](warning_stripe.png)
 
-This is a FORK of the official add-on! See changes below.
+> This is a **fork** of the official add-on! See changes below.
 
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ WARNING ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-```
+![Warning]( warning_stripe.png)
 
 ## 2.2.1.10 (forked)
 - Use new tmpfs add-on config format

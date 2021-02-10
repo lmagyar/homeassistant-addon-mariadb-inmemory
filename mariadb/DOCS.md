@@ -1,12 +1,10 @@
 # Home Assistant Add-on: MariaDB
 
-```
-vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv WARNING vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+![Warning](warning_stripe_wide.png)
 
-This is a FORK of the official add-on! See changes below.
+> This is a **fork** of the official add-on! See changes below.
 
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ WARNING ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-```
+![Warning]( warning_stripe_wide.png)
 
 ## Installation
 
@@ -67,7 +65,7 @@ Specify an upper limit on the size of the in-memory filesystem. The size may hav
 >
 > **Note:** The database occupies more space on tmpfs than you see in the client.
 >
-> **Rule of thumb:** <minimum tmpfs size [MB]> = \<data stored daily [MB]\> * (\<purge_keep_days\> + 1) * 1.2 + 40[MB]
+> **Rule of thumb:** <minimum tmpfs size [MB]> = \<data stored daily [MB]\> * (\<purge_keep_days\> + 1) * 1.1 + 10[MB]
 
 ### Option: `databases` (required)
 

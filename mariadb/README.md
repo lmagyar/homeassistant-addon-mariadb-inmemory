@@ -1,12 +1,10 @@
 # Home Assistant Add-on: In-memory MariaDB
 
-```
-vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv WARNING vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+![Warning](warning_stripe_wide.png)
 
-This is a FORK of the official add-on! See changes below.
+> This is a **fork** of the official add-on! See changes below.
 
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ WARNING ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-```
+![Warning]( warning_stripe_wide.png)
 
 In-memory MariaDB database for Home Assistant.
 
@@ -23,8 +21,8 @@ It will also protect you from the data loss caused by HA core restarts when in-m
 This version uses **tmpfs** to store MariaDB databases in-memory. The default ~~InnoDB~~ storage engine is replaced with **Aria** storage engine.
 
 Background:
-- InnoDB storage engine wastes a great amount of disk space, but the only storage engine that is compatible with recorder. Memory storage engine [can't handle TEXT columns][memory-storage-engine] and Aria storage engine [can't handle foreign keys][aria-storage-engine] in the recorder [database][schema], MyRocks storage engine (though it has compression) [is not available for 32-bit platforms][myrocks-storage-engine].
-- The official [database schema][schema] is modified and created before the recorder tries to create it. The `entity_id` and `state` column's length reduced from 255 to 128 char (they were too long for Aria keys), and 2 foreign keys are removed (Aria can't handle them).
+- InnoDB storage engine wastes a great amount of disk space, but the only storage engine that is compatible with recorder. Memory storage engine [can't handle TEXT columns][memory-storage-engine] and Aria storage engine [can't handle foreign keys][aria-storage-engine] in the recorder [database][schema], MyRocks storage engine (though it has compression and flash-friendly) [is not available for 32-bit platforms][myrocks-storage-engine].
+- As a workaround a modified version of the official [database schema][schema] is created before the recorder tries to create it. The `entity_id` and `state` column's length is reduced from 255 to 128 char in the `states` table (they were too long for Aria keys), and 2 foreign keys are removed (Aria can't handle them, but the indexes are remained).
 
 **See the Documentation tab for the required configuration changes for the recorder integration!!!**
 
