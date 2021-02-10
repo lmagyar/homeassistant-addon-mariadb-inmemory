@@ -55,4 +55,4 @@ CREATE TABLE `states` (
 
 -- schema_version 11 commit https://github.com/home-assistant/core/commit/12af87bc6e85f98623afc2231c55bb30aeb38938
 INSERT IGNORE INTO `schema_changes` (`change_id`, `schema_version`, `changed`) VALUES
-	(1, 11, '2021-01-04 09:51:00');
+  (1, 11, '2021-01-04 09:51:00');
