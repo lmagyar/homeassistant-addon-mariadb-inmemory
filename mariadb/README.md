@@ -24,7 +24,7 @@ This version uses **tmpfs** to store MariaDB databases in-memory. The default ~~
 
 Background:
 - InnoDB storage engine wastes a great amount of disk space, but the only storage engine that is compatible with recorder. Memory storage engine [can't handle TEXT columns][memory-storage-engine] and Aria storage engine [can't handle foreign keys][aria-storage-engine] in the recorder [database][schema], MyRocks storage engine (though it has compression) [is not available for 32-bit platforms][myrocks-storage-engine].
-- The official [database schema][schema] is modified and created before the recorder tries to create it. The 'entity_id' and 'state' column's length reduced from 255 to 128 char (they were too long for Aria keys), and 2 foreign keys are removed (Aria can't handle them).
+- The official [database schema][schema] is modified and created before the recorder tries to create it. The `entity_id` and `state` column's length reduced from 255 to 128 char (they were too long for Aria keys), and 2 foreign keys are removed (Aria can't handle them).
 
 **See the Documentation tab for the required configuration changes for the recorder integration!!!**
 
