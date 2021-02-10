@@ -22,7 +22,7 @@ This version uses **tmpfs** to store MariaDB databases in-memory. The default ~~
 
 Background:
 - InnoDB storage engine wastes a great amount of disk space, but the only storage engine that is compatible with recorder. Memory storage engine [can't handle TEXT columns][memory-storage-engine] and Aria storage engine [can't handle foreign keys][aria-storage-engine] in the recorder [database][schema], MyRocks storage engine (though it has compression and flash-friendly) [is not available for 32-bit platforms][myrocks-storage-engine].
-- As a workaround a modified version of the official [database schema][schema] is created before the recorder tries to create it. The `entity_id` and `state` column's length is reduced from 255 to 128 char in the `states` table (they were too long for Aria keys), and 2 foreign keys are removed (Aria can't handle them, but the indexes are remained).
+- As a workaround a [modified][modified_schema] version of the [official][schema] database schema is created before the recorder tries to create it. The `entity_id` and `state` column's length is reduced from 255 to 128 char in the `states` table (they were too long for Aria keys), the 2 foreign keys are removed (Aria can't handle them, but the indexes are remained), the TEXT columns are compressed.
 
 **See the Documentation tab for the required configuration changes for the recorder integration!!!**
 
@@ -36,4 +36,5 @@ Background:
 [aria-storage-engine]: https://mariadb.com/resources/blog/storage-engine-choice-aria/
 [myrocks-storage-engine]: https://mariadb.com/kb/en/about-myrocks-for-mariadb/#requirements-and-limitations
 [schema]: https://www.home-assistant.io/docs/backend/database/#schema
+[modified_schema]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/blob/master/mariadb/rootfs/etc/services.d/mariadb/schema.sql
 [warning_stripe]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/raw/master/mariadb/warning_stripe_wide.png
