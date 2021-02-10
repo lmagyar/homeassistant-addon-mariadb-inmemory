@@ -15,7 +15,7 @@ CREATE TABLE `events` (
   KEY `ix_events_event_type_time_fired` (`event_type`,`time_fired`),
   KEY `ix_events_context_user_id` (`context_user_id`),
   KEY `ix_events_context_parent_id` (`context_parent_id`)
-) AUTO_INCREMENT=31034 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=1 TRANSACTIONAL=0;
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0;
 
 CREATE TABLE `recorder_runs` (
   `run_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -26,14 +26,14 @@ CREATE TABLE `recorder_runs` (
   PRIMARY KEY (`run_id`),
   KEY `ix_recorder_runs_start_end` (`start`,`end`),
   CONSTRAINT `CONSTRAINT_1` CHECK (`closed_incorrect` in (0,1))
-) AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=1 TRANSACTIONAL=0;
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0;
 
 CREATE TABLE `schema_changes` (
   `change_id` int(11) NOT NULL AUTO_INCREMENT,
   `schema_version` int(11) DEFAULT NULL,
   `changed` datetime DEFAULT NULL,
   PRIMARY KEY (`change_id`)
-) AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=1 TRANSACTIONAL=0;
+) AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0;
 
 CREATE TABLE `states` (
   `state_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -51,7 +51,7 @@ CREATE TABLE `states` (
   KEY `ix_states_old_state_id` (`old_state_id`),
   KEY `ix_states_event_id` (`event_id`),
   KEY `ix_states_last_updated` (`last_updated`)
-) AUTO_INCREMENT=29760 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=1 TRANSACTIONAL=0;
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0;
 
 -- schema_version 11 commit https://github.com/home-assistant/core/commit/12af87bc6e85f98623afc2231c55bb30aeb38938
 INSERT IGNORE INTO `schema_changes` (`change_id`, `schema_version`, `changed`) VALUES
