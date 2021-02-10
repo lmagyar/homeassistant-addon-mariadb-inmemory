@@ -70,7 +70,7 @@ for database in $(bashio::config "databases"); do
     mysql -e "CREATE DATABASE ${database};" 2> /dev/null || true
 
     # Create default schema
-    if ${database} = "homeassistant" then
+    if ${database} = "homeassistant"; then
         bashio::log.info "Create default schema in database ${database}"
         mysql ${database} < ./schema.sql
     fi
