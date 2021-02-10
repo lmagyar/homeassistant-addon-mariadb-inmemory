@@ -1,10 +1,10 @@
 # Changelog
 
-![Warning](warning_stripe.png)
+![Warning][warning_stripe]
 
 > This is a **fork** of the official add-on! See changes below.
 
-![Warning]( warning_stripe.png)
+![Warning][warning_stripe]
 
 ## 2.2.1.10 (forked)
 - Use new tmpfs add-on config format
@@ -62,3 +62,5 @@
 ## 1.0.0
 
 - Update MariaDB to 10.3.13
+
+[warning_stripe]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/raw/master/mariadb/warning_stripe.png

@@ -1,10 +1,10 @@
 # Home Assistant Add-on: MariaDB
 
-![Warning](warning_stripe_wide.png)
+![Warning][warning_stripe]
 
 > This is a **fork** of the official add-on! See changes below.
 
-![Warning]( warning_stripe_wide.png)
+![Warning][warning_stripe]
 
 ## Installation
 
@@ -148,3 +148,4 @@ In case you've found a bug, please [open an issue on our GitHub][issue].
 [issue]: https://github.com/home-assistant/hassio-addons/issues
 [reddit]: https://reddit.com/r/homeassistant
 [repository]: https://github.com/hassio-addons/repository
+[warning_stripe]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/raw/master/mariadb/warning_stripe_wide.png

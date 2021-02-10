@@ -1,10 +1,10 @@
 # Home Assistant Add-on: In-memory MariaDB
 
-![Warning](warning_stripe_wide.png)
+![Warning][warning_stripe]
 
 > This is a **fork** of the official add-on! See changes below.
 
-![Warning]( warning_stripe_wide.png)
+![Warning][warning_stripe]
 
 In-memory MariaDB database for Home Assistant.
 
@@ -36,3 +36,4 @@ Background:
 [aria-storage-engine]: https://mariadb.com/resources/blog/storage-engine-choice-aria/
 [myrocks-storage-engine]: https://mariadb.com/kb/en/about-myrocks-for-mariadb/#requirements-and-limitations
 [schema]: https://www.home-assistant.io/docs/backend/database/#schema
+[warning_stripe]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/raw/master/mariadb/warning_stripe_wide.png
