@@ -27,18 +27,15 @@ table_open_cache = 64
 thread_cache_size = 8
 thread_stack = 192K
 tmp_table_size = 16M
+max_binlog_size = 1M
 
 # Disable query cache
 query_cache_limit = 1M
 query_cache_size = 0M
 query_cache_type = 0
 
-# InnoDB Tweaks
-innodb_buffer_pool_instances = 1
-innodb_buffer_pool_size = 5M
-innodb_log_buffer_size = 256K
-innodb_log_file_size = 1M
-innodb_doublewrite = 0
-innodb_change_buffering = none
-max_binlog_size = 1M
-transaction_isolation = READ-UNCOMMITTED
+# Aria Tweaks
+default_storage_engine = Aria
+aria_log_file_size = 1M
+aria_page_checksum = OFF
+aria_pagecache_buffer_size = 16M
