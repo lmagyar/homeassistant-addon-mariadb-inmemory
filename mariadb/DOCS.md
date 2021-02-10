@@ -20,11 +20,6 @@ Follow these steps to get the add-on installed on your system:
 1. Set the `logins` -> `password` field to something strong and unique.
 2. Start the add-on.
 3. Check the add-on log output to see the result.
-4. Check the Supervisor's log (not the add-on's log), and search for a line like this:
-```text
-01-01-01 12:00:00 INFO (MainThread) [supervisor.services.modules.mysql] Set 12345678_mariadb as service provider for MySQL
-```
-Use the above `12345678` number in the `recorder` configuration below. Yes, the _ and - characters are different.
 5. Add `recorder` component to your Home Assistant configuration.
 
 ## Add-on Configuration
@@ -114,6 +109,8 @@ recorder:
     entities:
       - <the entity ids you really need>
 ```
+
+**Note:** *Replace 12345678-mariadb with the Hostname displayed on the add-on's Info tab!*
 
 > ---
 >
