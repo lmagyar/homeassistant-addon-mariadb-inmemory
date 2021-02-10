@@ -66,7 +66,13 @@ Specify an upper limit on the size of the in-memory filesystem. The size may hav
 
 Database name, e.g., `homeassistant`. Multiple are allowed.
 
-**Note:** Use the default database name `homeassistant` to create modified, storage engine compatible database schema before recorder starts (and tries to create a schema that the storage engine can't handle).
+> ---
+>
+> **Important!**
+>
+> ---
+>
+> Use the default database name `homeassistant` to automatically create modified, storage engine compatible database schema when the add-on starts (ie. before recorder tries to connect and tries to create a schema that the storage engine can't handle).
 
 ### Option: `logins` (required)
 
