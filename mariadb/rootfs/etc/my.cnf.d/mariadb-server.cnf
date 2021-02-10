@@ -37,6 +37,6 @@ query_cache_type = 0
 # Aria Tweaks
 default_storage_engine = Aria
 ignore_builtin_innodb = ON
-aria_log_file_size = 1M
+aria_log_file_size = 8M
 aria_page_checksum = OFF
 aria_pagecache_buffer_size = 16M
