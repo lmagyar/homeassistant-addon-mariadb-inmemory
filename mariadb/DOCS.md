@@ -56,11 +56,18 @@ Specify an upper limit on the size of the in-memory filesystem. The size may hav
 >
 > ---
 >
-> During the first days regularly check the database size from eg. HeidiSQL, DBeaver, BeeKeeper-Studio. Or SSH into the system, use `docker ps` and `docker exec -it 123456 /bin/bash` and see the container's file-system directly, use `df` or `ls` to check free space and file sizes.
+> During the first days regularly check the database size from eg. HeidiSQL, DBeaver, BeeKeeper-Studio. Or hardcore users can SSH into the system, use `docker ps` and `docker exec -it 123456 /bin/bash` and see the container's file-system directly, use `df` or `ls` to check free space and file sizes.
 >
 > **Note:** The database occupies more space on tmpfs than you see in the client.
 >
 > **Rule of thumb:** <minimum tmpfs size [MB]> = \<data stored daily [MB]\> * (\<purge_keep_days\> + 1) * 1.1 + 10[MB]
+>
+> If you delete data from the database manually, use `OPTIMIZE TABLE states, events` to decrease database file sizes also. Or you can call the `recorder.purge` service from Developer Tools / Services menu with `repack: true` service data:
+> ```yaml
+keep_days: your_number_here
+repack: true
+> ```
+> **Note:** Regular auto purge does not repack the database files, but under normal operation you don't need to decrease file sizes, new data will fill the temporarily unused space.
 
 ### Option: `databases` (required)
 
@@ -126,7 +133,7 @@ recorder:
 >
 > - Exclude all `call_service` entries from the database! These fill up the database really fast with all the parameters to the service calls, MQTT messages, etc.
 >
-> - Use eg. HeidiSQL, DBeaver, BeeKeeper-Studio to access the database and analyze it's content. Search for the entries you don't need, but fill up the database!
+> - See History or use eg. HeidiSQL, DBeaver, BeeKeeper-Studio to access the database and analyze it's content. Search for the entries you don't need, but fill up the database!
 
 ## Support
 
