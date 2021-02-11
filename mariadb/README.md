@@ -27,10 +27,10 @@ This version uses **tmpfs** to store MariaDB databases in-memory. The default ~~
 
 **Workaround:** A modified, storage engine compatible [database schema][modified_schema] is created when the add-on starts (ie. before recorder tries to connect and tries to create a schema that the storage engine can't handle)
 :
-  - the foreign keys on `states.event_id` and `states.old_state_id` are removed (Aria can't handle them), but the indexes are remained,
-  - the `states.entity_id` and `states.state` column's length is reduced from 255 to 128 char (they were too long for Aria keys),
-  - the `events.event_type` column's length is increased from 32 to 64 char (it was too small for some events, causing SQL errors in recorder),
-  - the `events.event_data` and `states.attributes` TEXT columns got compressed.
+  - foreign keys on `states.event_id` and `states.old_state_id` are removed (Aria can't handle them), but the indexes are remained,
+  - `states.entity_id` and `states.state` column's length is reduced from 255 to 128 char (they were too long for Aria keys),
+  - `events.event_type` column's length is increased from 32 to 64 char (it was too small for some events, causing SQL errors in recorder),
+  - `events.event_data` and `states.attributes` TEXT columns got compressed.
 
 **See the Documentation tab for the required configuration changes for the recorder integration!!!**
 
