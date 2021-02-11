@@ -1,7 +1,7 @@
 
 CREATE TABLE `events` (
   `event_id` int(11) NOT NULL AUTO_INCREMENT,
-  `event_type` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `event_type` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `event_data` text COMPRESSED COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `origin` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `time_fired` datetime DEFAULT NULL,

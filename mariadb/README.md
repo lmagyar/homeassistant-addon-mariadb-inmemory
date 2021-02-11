@@ -20,9 +20,17 @@ It will also protect you from the data loss caused by HA core restarts when in-m
 
 This version uses **tmpfs** to store MariaDB databases in-memory. The default ~~InnoDB~~ storage engine is replaced with **Aria** storage engine.
 
-Background:
-- InnoDB storage engine wastes a great amount of disk space, but the only storage engine that is compatible with recorder. Memory storage engine [can't handle TEXT columns][memory-storage-engine] and Aria storage engine [can't handle foreign keys][aria-storage-engine] in the recorder [database][schema], MyRocks storage engine (though it has compression and flash-friendly) [is not available for 32-bit platforms][myrocks-storage-engine].
-- As a workaround a [modified][modified_schema] version of the [official][schema] database schema is created before the recorder tries to create it. The `entity_id` and `state` column's length is reduced from 255 to 128 char in the `states` table (they were too long for Aria keys), the 2 foreign keys are removed (Aria can't handle them, but the indexes are remained), the TEXT columns are compressed.
+**Problem:** InnoDB storage engine wastes a great amount of disk space, but the only storage engine that is compatible with recorder.
+- Memory storage engine [can't handle TEXT columns][memory-storage-engine] and
+- Aria storage engine [can't handle foreign keys][aria-storage-engine] in the recorder [database schema][schema],
+- MyRocks storage engine (though it has compression and flash-friendly) [is not available for 32-bit platforms][myrocks-storage-engine].
+
+**Workaround:** A modified, storage engine compatible [database schema][modified_schema] is created when the add-on starts (ie. before recorder tries to connect and tries to create a schema that the storage engine can't handle)
+:
+  - the foreign keys on `states.event_id` and `states.old_state_id` are removed (Aria can't handle them), but the indexes are remained,
+  - the `states.entity_id` and `states.state` column's length is reduced from 255 to 128 char (they were too long for Aria keys),
+  - the `events.event_type` column's length is increased from 32 to 64 char (it was too small for some events, causing SQL errors in recorder),
+  - the `events.event_data` and `states.attributes` TEXT columns got compressed.
 
 **See the Documentation tab for the required configuration changes for the recorder integration!!!**
 
