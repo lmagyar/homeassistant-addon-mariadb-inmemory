@@ -85,7 +85,7 @@ FROM `events`;
 >
 > ---
 >
-> If you delete data from the database manually, use `OPTIMIZE TABLE states, events` to decrease database file sizes also. Or you can call the `recorder.purge` service from Developer Tools / Services menu with `repack: true` service data:
+> If you delete data from the database manually, use `OPTIMIZE TABLE states, events;` to decrease database file sizes also. Or you can call the `recorder.purge` service from Developer Tools / Services menu with `repack: true` service data:
 > ```yaml
 keep_days: your_number_here
 repack: true
