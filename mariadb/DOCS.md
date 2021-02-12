@@ -67,13 +67,13 @@ Specify an upper limit on the size of the in-memory filesystem. The size may hav
 SELECT round(sum(data_length + index_length) / 1024 / 1024, 2)
 INTO @database_size_in_MB
 FROM information_schema.tables WHERE table_schema = database();
-
-SELECT min(time_fired), max(time_fired), timediff(max(time_fired), min(time_fired)),
+>
+>SELECT min(time_fired), max(time_fired), timediff(max(time_fired), min(time_fired)),
   round(timestampdiff(minute, min(time_fired), max(time_fired)) / 1440, 2)
 INTO @first_entry_in_UTC, @last_entry_in_UTC, @timespan, @timespan_in_days
 FROM `events`;
-
-SELECT @first_entry_in_UTC AS first_entry_in_UTC, @last_entry_in_UTC AS last_entry_in_UTC,
+>
+>SELECT @first_entry_in_UTC AS first_entry_in_UTC, @last_entry_in_UTC AS last_entry_in_UTC,
   @timespan AS timespan, @timespan_in_days AS timespan_in_days,
   @database_size_in_MB AS database_size_in_MB, round(@database_size_in_MB / @timespan_in_days, 2) AS growth_per_day_in_MB,
   round((@database_size_in_MB / @timespan_in_days) * 8 * 1.1 + 10, 0) AS suggested_tmpfs_size_for_1_week_data_in_MB;
