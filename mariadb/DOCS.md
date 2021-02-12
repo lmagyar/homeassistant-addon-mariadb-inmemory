@@ -168,7 +168,7 @@ You have several options to get them answered:
 - The Home Assistant [Community Forum][forum].
 - Join the [Reddit subreddit][reddit] in [/r/homeassistant][reddit]
 
-In case you've found a bug, please [open an issue on our GitHub][issue].
+In case you've found a bug, please open an issue on our GitHub: [issue with the official add-on][issue] or [issue with the forked, in-memory add-on][issue-forked]
 
 [createuser]: https://mariadb.com/kb/en/library/create-user
 [username]: https://mariadb.com/kb/en/library/create-user/#user-name-component
@@ -179,6 +179,7 @@ In case you've found a bug, please [open an issue on our GitHub][issue].
 [forum]: https://community.home-assistant.io
 [i386-shield]: https://img.shields.io/badge/i386-yes-green.svg
 [issue]: https://github.com/home-assistant/hassio-addons/issues
+[issue-forked]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/issues
 [reddit]: https://reddit.com/r/homeassistant
 [repository]: https://github.com/hassio-addons/repository
 [warning_stripe]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/raw/master/mariadb/warning_stripe_wide.png
