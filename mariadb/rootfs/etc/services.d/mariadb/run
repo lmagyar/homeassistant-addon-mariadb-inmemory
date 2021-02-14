@@ -2,7 +2,7 @@
 # ==============================================================================
 # Start MariaDB service if enabled
 # ==============================================================================
-TMPFS_MNT=/tmpfs
+TMPFS_MNT=/tmp
 MARIADB_DATA=${TMPFS_MNT}/databases
 NEW_INSTALL=false
 

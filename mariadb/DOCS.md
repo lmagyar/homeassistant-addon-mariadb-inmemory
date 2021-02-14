@@ -56,7 +56,7 @@ Specify an upper limit on the size of the in-memory filesystem. The size may hav
 >
 > ---
 >
-> During the first days regularly check the database size from eg. HeidiSQL, DBeaver, BeeKeeper-Studio. Or hardcore users can SSH into the system, use `docker ps` and `docker exec -it 123456 /bin/bash` and see the container's file-system directly, use `df` or `ls` to check free space and file sizes.
+> During the first days regularly check the database size from eg. HeidiSQL, DBeaver, BeeKeeper-Studio. Or hardcore users can SSH into the system, use `docker ps` and `docker exec -it 123456 /bin/bash` and see the container's file-system directly, use `df` or `ls` to check free space and file sizes (database is located at `/tmp/databases/`.
 >
 > **Note:** The database occupies more space on tmpfs than you see in the client.
 >

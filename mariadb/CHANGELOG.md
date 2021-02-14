@@ -6,8 +6,11 @@
 
 ![Warning][warning_stripe]
 
+## 2.2.1.11 (forked)
+- Use new tmpfs location in Supervisor 2021.02.9, [PR#2565](https://github.com/home-assistant/supervisor/pull/2565)
+
 ## 2.2.1.10 (forked)
-- Use new tmpfs add-on config format
+- Use new tmpfs add-on config format in Supervisor 2021.02.0, [PR#2499](https://github.com/home-assistant/supervisor/pull/2499)
 - Use Aria storage engine
 
 ## 2.2.1.9 (forked)

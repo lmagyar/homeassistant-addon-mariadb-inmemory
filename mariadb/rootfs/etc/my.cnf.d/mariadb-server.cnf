@@ -3,8 +3,8 @@ port=3306
 log_error=mariadb.err
 
 # Persistent storage location
-datadir=/tmpfs/databases
-tmpdir=/tmpfs/databases
+datadir=/tmp/databases
+tmpdir=/tmp/databases
 
 # Use a proper collation set
 character-set-server = utf8mb4
