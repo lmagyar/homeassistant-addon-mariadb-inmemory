@@ -48,7 +48,7 @@ This section defines the tmpfs filesystem.
 
 ### Option: `tmpfs.size` (required)
 
-Specify an upper limit on the size of the in-memory filesystem. The size may have a k, m, or g suffix.
+Specify an **upper limit** on the size of the in-memory filesystem. The size may have a **k**, **m**, or **g** suffix.
 
 > ---
 >
