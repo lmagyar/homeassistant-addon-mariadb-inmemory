@@ -1,4 +1,4 @@
-# Home Assistant Add-on: MariaDB
+# Home Assistant Add-on: In-memory MariaDB
 
 ![Warning][warning_stripe]
 
