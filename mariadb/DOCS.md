@@ -62,7 +62,9 @@ Specify an **upper limit** on the size of the in-memory filesystem. The size may
 >
 > **Rule of thumb:** <minimum tmpfs size [MB]> = \<data stored daily [MB]\> * (\<purge_keep_days\> + 1) * 1.1 + 10[MB]
 >
-> <details><summary>Use the query below to calculate database size requirements - Click to expand!</summary>
+> Use the query below to calculate database size requirements - Click to expand!
+>
+> <details>
 >
 > ```sql
 SELECT round(sum(data_length + index_length) / 1024 / 1024, 2)
@@ -79,6 +81,7 @@ FROM `events`;
   @database_size_in_MB AS database_size_in_MB, round(@database_size_in_MB / @timespan_in_days, 2) AS growth_per_day_in_MB,
   round((@database_size_in_MB / @timespan_in_days) * 8 * 1.1 + 10, 0) AS suggested_tmpfs_size_for_1_week_data_in_MB;
 > ```
+>
 > </details>
 >
 > ---
