@@ -139,7 +139,7 @@ Example Home Assistant configuration:
 
 ```yaml
 recorder:
-  db_url: mysql://homeassistant:PASSWORD@12345678-mariadb/homeassistant?charset=utf8mb4
+  db_url: mysql://homeassistant:PASSWORD@45207088-mariadb/homeassistant?charset=utf8mb4
   purge_keep_days: 7
   exclude:
     event_types:
@@ -149,7 +149,7 @@ recorder:
       - <the entity ids you really need>
 ```
 
-**Note:** *Replace 12345678-mariadb with the Hostname displayed on the add-on's Info tab!*
+**Note:** The `45207088-mariadb` is the Hostname displayed on the add-on's Info tab.
 
 > ---
 >
