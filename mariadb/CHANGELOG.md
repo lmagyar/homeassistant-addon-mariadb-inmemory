@@ -6,6 +6,22 @@
 
 ![Warning][warning_stripe]
 
+:::info Test header
+Test content
+:::
+
+:::note Test header
+Test content
+:::
+
+:::tip Test header
+Test content
+:::
+
+:::warning Test header
+Test content
+:::
+
 ## 2.2.1.11 (forked)
 - Use new tmpfs location in Supervisor 2021.02.9, [PR#2565](https://github.com/home-assistant/supervisor/pull/2565)
 
