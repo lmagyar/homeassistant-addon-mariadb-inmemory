@@ -25,8 +25,7 @@ This version uses **tmpfs** to store MariaDB databases in-memory. The default ~~
 - Aria storage engine [can't handle foreign keys][aria-storage-engine] in the recorder [database schema][schema],
 - MyRocks storage engine (though it has compression and flash-friendly) [is not available for 32-bit platforms][myrocks-storage-engine].
 
-**Workaround:** A modified, storage engine compatible [database schema][modified_schema] is created when the add-on starts (ie. before recorder tries to connect and tries to create a schema that the storage engine can't handle)
-:
+**Workaround:** A modified, storage engine compatible [database schema][modified_schema] is created when the add-on starts (ie. before recorder tries to connect and tries to create a schema that the storage engine can't handle):
   - foreign keys on `states.event_id` and `states.old_state_id` are removed (Aria can't handle them), but the indexes are remained,
   - `states.entity_id` and `states.state` column's length is reduced from 255 to 128 char (they were too long for Aria keys),
   - `events.event_type` column's length is increased from 32 to 64 char (it was too small for some events, causing SQL errors in recorder),
