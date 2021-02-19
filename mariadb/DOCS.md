@@ -62,6 +62,8 @@ Specify an **upper limit** on the size of the in-memory filesystem. The size may
 >
 > **Rule of thumb:** <minimum tmpfs size [MB]> = \<data stored daily [MB]\> * (\<purge_keep_days\> + 1) * 1.1 + 10[MB]
 >
+> **Note:** If you delete data from the database manually, use `OPTIMIZE TABLE states, events;` to decrease database file sizes also.
+>
 > Use the query below to calculate database size requirements - Click to expand!
 >
 > <details>
@@ -83,19 +85,6 @@ FROM `events`;
 > ```
 >
 > </details>
->
-> ---
->
-> **Important!**
->
-> ---
->
-> If you delete data from the database manually, use `OPTIMIZE TABLE states, events;` to decrease database file sizes also. Or you can call the `recorder.purge` service from Developer Tools / Services menu with `repack: true` service data:
-> ```yaml
-keep_days: your_number_here
-repack: true
-> ```
-> **Note:** Regular auto purge does not repack the database files, but under normal operation you don't need to decrease file sizes, new data will fill the temporarily unused space.
 
 ### Option: `databases` (required)
 
@@ -142,13 +131,24 @@ Example Home Assistant configuration:
 ```yaml
 recorder:
   db_url: mysql://homeassistant:PASSWORD@45207088-mariadb/homeassistant?charset=utf8mb4
-  purge_keep_days: 7
+  auto_purge: false
   exclude:
     event_types:
       - call_service
   include:
     entities:
       - <the entity ids you really need>
+
+automation:
+  - alias: Auto purge with repack
+    trigger:
+      platform: time
+      at: "04:12:00"
+    action:
+      service: recorder.purge
+      data:
+        keep_days: 7
+        repack: true
 ```
 
 **Note:** The `45207088-mariadb` is the Hostname displayed on the add-on's Info tab.
@@ -159,6 +159,7 @@ recorder:
 >
 > ---
 >
+> - Don't use `auto_purge`, regular auto purge does not repack the database files, they slowly grow because of fragmentation (new data will not fill perfectly the temporarily unused space of deleted/purged data). Instead call `recorder.purge` service with automation with `repack: true` service data.
 > - Exclude all `call_service` entries from the database! These fill up the database really fast with all the parameters to the service calls, MQTT messages, etc.
 >
 > - See History or use eg. HeidiSQL, DBeaver, BeeKeeper-Studio to access the database and analyze it's content. Search for the entries you don't need, but fill up the database!
