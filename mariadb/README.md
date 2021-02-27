@@ -2,7 +2,7 @@
 
 ![Warning][warning_stripe]
 
-> This is a **fork** of the official add-on! See changes below.
+> This is a **fork** of the [official add-on][official_addon]! See changes below.
 
 ![Warning][warning_stripe]
 
@@ -45,3 +45,4 @@ This version uses **tmpfs** to store MariaDB databases in-memory. The default ~~
 [schema]: https://www.home-assistant.io/docs/backend/database/#schema
 [modified_schema]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/blob/master/mariadb/rootfs/etc/services.d/mariadb/schema.sql
 [warning_stripe]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/raw/master/mariadb/warning_stripe_wide.png
+[official_addon]: https://github.com/home-assistant/addons/tree/master/mariadb

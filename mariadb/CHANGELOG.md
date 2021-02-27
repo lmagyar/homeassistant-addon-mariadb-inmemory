@@ -2,7 +2,7 @@
 
 ![Warning][warning_stripe]
 
-> This is a **fork** of the official add-on! See changes below.
+> This is a **fork** of the [official add-on][official_addon]! See changes below.
 
 ![Warning][warning_stripe]
 
@@ -67,3 +67,4 @@
 - Update MariaDB to 10.3.13
 
 [warning_stripe]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/raw/master/mariadb/warning_stripe.png
+[official_addon]: https://github.com/home-assistant/addons/tree/master/mariadb
