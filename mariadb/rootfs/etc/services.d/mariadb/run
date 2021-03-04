@@ -68,12 +68,6 @@ bashio::log.info "Ensure databases exists"
 for database in $(bashio::config "databases"); do
     bashio::log.info "Create database ${database}"
     mysql -e "CREATE DATABASE ${database};" 2> /dev/null || true
-
-    # Create default schema
-    if [[ "${database}" == "homeassistant" ]]; then
-        bashio::log.info "Create default schema in database ${database}"
-        mysql ${database} < ./schema.sql
-    fi
 done
 
 # Init logins
