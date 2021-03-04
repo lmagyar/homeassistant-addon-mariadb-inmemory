@@ -1,15 +1,16 @@
 # Changelog
 
-```
-vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv WARNING vvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+![Warning][warning_stripe]
 
-This is a FORK of the official add-on! See changes below.
+> This is a **fork** of the [official add-on][official_addon]! See changes below.
 
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ WARNING ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-```
+![Warning][warning_stripe]
+
+## 2.2.1.11 (forked)
+- Use new tmpfs location in Supervisor 2021.02.9, [PR#2565](https://github.com/home-assistant/supervisor/pull/2565)
 
 ## 2.2.1.10 (forked)
-- Use new tmpfs add-on config format
+- Use new tmpfs add-on config format in Supervisor 2021.02.0, [PR#2499](https://github.com/home-assistant/supervisor/pull/2499)
 - Use Aria storage engine
 
 ## 2.2.1.9 (forked)
@@ -64,3 +65,6 @@ This is a FORK of the official add-on! See changes below.
 ## 1.0.0
 
 - Update MariaDB to 10.3.13
+
+[warning_stripe]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/raw/master/mariadb/warning_stripe.png
+[official_addon]: https://github.com/home-assistant/addons/tree/master/mariadb

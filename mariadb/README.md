@@ -1,12 +1,10 @@
 # Home Assistant Add-on: In-memory MariaDB
 
-```
-vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv WARNING vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+![Warning][warning_stripe]
 
-This is a FORK of the official add-on! See changes below.
+> This is a **fork** of the [official add-on][official_addon]! See changes below.
 
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ WARNING ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-```
+![Warning][warning_stripe]
 
 In-memory MariaDB database for Home Assistant.
 
@@ -22,9 +20,16 @@ It will also protect you from the data loss caused by HA core restarts when in-m
 
 This version uses **tmpfs** to store MariaDB databases in-memory. The default ~~InnoDB~~ storage engine is replaced with **Aria** storage engine.
 
-Background:
-- InnoDB storage engine wastes a great amount of disk space, but the only storage engine that is compatible with recorder. Memory storage engine [can't handle TEXT columns][memory-storage-engine] and Aria storage engine [can't handle foreign keys][aria-storage-engine] in the recorder [database][schema], MyRocks storage engine (though it has compression) [is not available for 32-bit platforms][myrocks-storage-engine].
-- The official [database schema][schema] is modified and created before the recorder tries to create it. The 'entity_id' and 'state' column's length reduced from 255 to 128 char (they were too long for Aria keys), and 2 foreign keys are removed (Aria can't handle them).
+**Problem:** InnoDB storage engine wastes a great amount of disk space, but the only storage engine that is compatible with recorder.
+- Memory storage engine [can't handle TEXT columns][memory-storage-engine] and
+- Aria storage engine [can't handle foreign keys][aria-storage-engine] in the recorder [database schema][schema],
+- MyRocks storage engine (though it has compression and flash-friendly) [is not available for 32-bit platforms][myrocks-storage-engine].
+
+**Workaround:** A modified, storage engine compatible [database schema][modified_schema] is created when the add-on starts (ie. before recorder tries to connect and tries to create a schema that the storage engine can't handle):
+  - foreign keys on `states.event_id` and `states.old_state_id` are removed (Aria can't handle them), but the indexes are remained,
+  - `states.entity_id` and `states.state` column's length is reduced from 255 to 128 char (they were too long for Aria keys),
+  - `events.event_type` column's length is increased from 32 to 64 char (it was too small for some events, causing SQL errors in recorder),
+  - `events.event_data` and `states.attributes` TEXT columns got compressed.
 
 **See the Documentation tab for the required configuration changes for the recorder integration!!!**
 
@@ -38,3 +43,6 @@ Background:
 [aria-storage-engine]: https://mariadb.com/resources/blog/storage-engine-choice-aria/
 [myrocks-storage-engine]: https://mariadb.com/kb/en/about-myrocks-for-mariadb/#requirements-and-limitations
 [schema]: https://www.home-assistant.io/docs/backend/database/#schema
+[modified_schema]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/blob/master/mariadb/rootfs/etc/services.d/mariadb/schema.sql
+[warning_stripe]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/raw/master/mariadb/warning_stripe_wide.png
+[official_addon]: https://github.com/home-assistant/addons/tree/master/mariadb

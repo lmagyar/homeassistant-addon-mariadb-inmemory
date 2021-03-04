@@ -1,19 +1,17 @@
-# Home Assistant Add-on: MariaDB
+# Home Assistant Add-on: In-memory MariaDB
 
-```
-vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv WARNING vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+![Warning][warning_stripe]
 
-This is a FORK of the official add-on! See changes below.
+> This is a **fork** of the [official add-on][official_addon]! See changes below.
 
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ WARNING ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-```
+![Warning][warning_stripe]
 
 ## Installation
 
 Follow these steps to get the add-on installed on your system:
 
 1. Navigate in your Home Assistant frontend to **Supervisor** -> **Add-on Store**.
-2. Click **Repositories** in the **...** menu at the top right corner, add ```https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory``` as repository.
+2. Click **Repositories** in the **...** menu at the top right corner, add `https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory` as repository.
 3. Find the "In-memory MariaDB" add-on and click it.
 4. Click on the "INSTALL" button.
 
@@ -22,12 +20,7 @@ Follow these steps to get the add-on installed on your system:
 1. Set the `logins` -> `password` field to something strong and unique.
 2. Start the add-on.
 3. Check the add-on log output to see the result.
-4. Check the Supervisor's log (not the add-on's log), and search for a line like this:
-```text
-01-01-01 12:00:00 INFO (MainThread) [supervisor.services.modules.mysql] Set 12345678_mariadb as service provider for MySQL
-```
-Use the above `12345678` number in the `recorder` configuration below. Yes, the _ and - characters are different.
-5. Add `recorder` component to your Home Assistant configuration.
+4. Add `recorder` component to your Home Assistant configuration.
 
 ## Add-on Configuration
 
@@ -55,7 +48,7 @@ This section defines the tmpfs filesystem.
 
 ### Option: `tmpfs.size` (required)
 
-Specify an upper limit on the size of the in-memory filesystem. The size may have a k, m, or g suffix.
+Specify an **upper limit** on the size of the in-memory filesystem. The size may have a **k**, **m**, or **g** suffix.
 
 > ---
 >
@@ -63,17 +56,47 @@ Specify an upper limit on the size of the in-memory filesystem. The size may hav
 >
 > ---
 >
-> During the first days regularly check the database size from eg. HeidiSQL, DBeaver, BeeKeeper-Studio. Or SSH into the system, use `docker ps` and `docker exec -it 123456 /bin/bash` and see the container's file-system directly, use `df` or `ls` to check free space and file sizes.
+> During the first days regularly check the database size from eg. HeidiSQL, DBeaver, BeeKeeper-Studio. Or hardcore users can SSH into the system, use `docker ps` and `docker exec -it 123456 /bin/bash` and see the container's file-system directly, use `df` or `ls` to check free space and file sizes (database is located at `/tmp/databases`.
 >
 > **Note:** The database occupies more space on tmpfs than you see in the client.
 >
-> **Rule of thumb:** <minimum tmpfs size [MB]> = \<data stored daily [MB]\> * (\<purge_keep_days\> + 1) * 1.2 + 40[MB]
+> **Rule of thumb:** <minimum tmpfs size [MB]> = \<data stored daily [MB]\> * (\<purge_keep_days\> + 1) * 1.1 + 10[MB]
+>
+> **Note:** If you delete data from the database manually, use `OPTIMIZE TABLE states, events;` to decrease database file sizes also.
+>
+> Use the query below to calculate database size requirements - Click to expand!
+>
+> <details>
+>
+> ```sql
+SELECT round(sum(data_length + index_length) / 1024 / 1024, 2)
+INTO @database_size_in_MB
+FROM information_schema.tables WHERE table_schema = database();
+>
+>SELECT min(time_fired), max(time_fired), timediff(max(time_fired), min(time_fired)),
+  round(timestampdiff(minute, min(time_fired), max(time_fired)) / 1440, 2)
+INTO @first_entry_in_UTC, @last_entry_in_UTC, @timespan, @timespan_in_days
+FROM `events`;
+>
+>SELECT @first_entry_in_UTC AS first_entry_in_UTC, @last_entry_in_UTC AS last_entry_in_UTC,
+  @timespan AS timespan, @timespan_in_days AS timespan_in_days,
+  @database_size_in_MB AS database_size_in_MB, round(@database_size_in_MB / @timespan_in_days, 2) AS growth_per_day_in_MB,
+  round((@database_size_in_MB / @timespan_in_days) * 8 * 1.1 + 10, 0) AS suggested_tmpfs_size_for_1_week_data_in_MB;
+> ```
+>
+> </details>
 
 ### Option: `databases` (required)
 
 Database name, e.g., `homeassistant`. Multiple are allowed.
 
-**Note:** Use the default database name `homeassistant` to create modified, storage engine compatible database schema before recorder starts (and tries to create a schema that the storage engine can't handle).
+> ---
+>
+> **Important!**
+>
+> ---
+>
+> Use the default database name `homeassistant` to automatically create modified, storage engine compatible database schema when the add-on starts (ie. before recorder tries to connect and tries to create a schema that the storage engine can't handle).
 
 ### Option: `logins` (required)
 
@@ -107,15 +130,28 @@ Example Home Assistant configuration:
 
 ```yaml
 recorder:
-  db_url: mysql://homeassistant:PASSWORD@12345678-mariadb/homeassistant?charset=utf8mb4
-  purge_keep_days: 7
+  db_url: mysql://homeassistant:PASSWORD@45207088-mariadb/homeassistant?charset=utf8mb4
+  auto_purge: false
   exclude:
     event_types:
       - call_service
   include:
     entities:
       - <the entity ids you really need>
+
+automation:
+  - alias: Auto purge with repack
+    trigger:
+      platform: time
+      at: "04:12:00"
+    action:
+      service: recorder.purge
+      data:
+        keep_days: 7
+        repack: true
 ```
+
+**Note:** The `45207088-mariadb` is the Hostname displayed on the add-on's Info tab.
 
 > ---
 >
@@ -123,9 +159,10 @@ recorder:
 >
 > ---
 >
+> - Don't use `auto_purge`, regular auto purge does not repack the database files, they slowly grow because of fragmentation (new data will not fill perfectly the temporarily unused space of deleted/purged data). Instead call `recorder.purge` service with automation with `repack: true` service data.
 > - Exclude all `call_service` entries from the database! These fill up the database really fast with all the parameters to the service calls, MQTT messages, etc.
 >
-> - Use eg. HeidiSQL, DBeaver, BeeKeeper-Studio to access the database and analyze it's content. Search for the entries you don't need, but fill up the database!
+> - See History or use eg. HeidiSQL, DBeaver, BeeKeeper-Studio to access the database and analyze it's content. Search for the entries you don't need, but fill up the database!
 
 ## Support
 
@@ -137,7 +174,7 @@ You have several options to get them answered:
 - The Home Assistant [Community Forum][forum].
 - Join the [Reddit subreddit][reddit] in [/r/homeassistant][reddit]
 
-In case you've found a bug, please [open an issue on our GitHub][issue].
+In case you've found a bug, please open an issue on our GitHub: [issue with the official add-on][issue] or [issue with the forked, in-memory add-on][issue-forked]
 
 [createuser]: https://mariadb.com/kb/en/library/create-user
 [username]: https://mariadb.com/kb/en/library/create-user/#user-name-component
@@ -148,5 +185,8 @@ In case you've found a bug, please [open an issue on our GitHub][issue].
 [forum]: https://community.home-assistant.io
 [i386-shield]: https://img.shields.io/badge/i386-yes-green.svg
 [issue]: https://github.com/home-assistant/hassio-addons/issues
+[issue-forked]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/issues
 [reddit]: https://reddit.com/r/homeassistant
 [repository]: https://github.com/hassio-addons/repository
+[warning_stripe]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/raw/master/mariadb/warning_stripe_wide.png
+[official_addon]: https://github.com/home-assistant/addons/tree/master/mariadb
