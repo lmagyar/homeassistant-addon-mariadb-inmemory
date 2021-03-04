@@ -6,10 +6,15 @@
 
 ![Warning][warning_stripe]
 
-## 2.2.1.12 (forked)
+## 2.2.2.12 (forked)
 
 - Upgrade Alpine Linux to 3.13, MariaDB to 10.5.8
 - Use default recorder schema
+- Merge changes from official add-on
+
+## 2.2.2
+
+- Update options schema for passwords
 
 ## 2.2.1.11 (forked)
 

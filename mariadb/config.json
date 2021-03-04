@@ -1,12 +1,11 @@
 {
   "name": "In-memory MariaDB",
-  "version": "2.2.1.12-beta01",
+  "version": "2.2.2.12-beta01",
   "slug": "mariadb-beta",
   "description": "An in-memory SQL database server",
   "url": "https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory",
   "arch": ["armhf", "armv7", "aarch64", "amd64", "i386"],
   "startup": "system",
-  "boot": "auto",
   "init": false,
   "timeout": 20,
   "tmpfs": true,
@@ -31,7 +30,7 @@
   "schema": {
     "tmpfs": { "size": "match(^\\d+[kmg]?$)" },
     "databases": ["str"],
-    "logins": [{ "username": "str", "password": "str" }],
+    "logins": [{ "username": "str", "password": "password" }],
     "rights": [{ "username": "str", "database": "str" }]
   },
   "image": "lmagyar/{arch}-addon-mariadb-inmemory"
