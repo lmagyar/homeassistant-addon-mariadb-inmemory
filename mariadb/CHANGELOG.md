@@ -6,19 +6,33 @@
 
 ![Warning][warning_stripe]
 
+## 2.2.2.12 (forked)
+
+- Upgrade Alpine Linux to 3.13, MariaDB to 10.5.8
+- Use default recorder schema
+- Merge changes from official add-on
+
+## 2.2.2
+
+- Update options schema for passwords
+
 ## 2.2.1.11 (forked)
+
 - Use new tmpfs location in Supervisor 2021.02.9, [PR#2565](https://github.com/home-assistant/supervisor/pull/2565)
 
 ## 2.2.1.10 (forked)
+
 - Use new tmpfs add-on config format in Supervisor 2021.02.0, [PR#2499](https://github.com/home-assistant/supervisor/pull/2499)
 - Use Aria storage engine
 
 ## 2.2.1.9 (forked)
+
 - Use tmpfs for data storage
 - Tweak InnoDB to use minimal disk space overhead
 - Make the size of the tmpfs filesystem configurable
 
 ## 2.2.1
+
 - Don't delete the mariadb.sys user, it's needed in MariaDB >= 10.4.13
 
 ## 2.2.0
