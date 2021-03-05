@@ -6,6 +6,10 @@
 
 ![Warning][warning_stripe]
 
+## 2.2.2.13 (forked)
+
+- Use default recorder schema, but without crash safety overhead (TRANSACTIONAL=0)
+
 ## 2.2.2.12 (forked)
 
 - Upgrade Alpine Linux to 3.13, MariaDB to 10.5.8
