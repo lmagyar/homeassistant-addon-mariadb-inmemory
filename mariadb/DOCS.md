@@ -96,7 +96,7 @@ Database name, e.g., `homeassistant`. Multiple are allowed.
 >
 > ---
 >
-> Use the default database name `homeassistant` to automatically create modified database schema when the add-on starts (default recorder schema, but without crash safety overhead (TRANSACTIONAL=0)).
+> Use the default database name `homeassistant` to automatically create modified database schema when the add-on starts (default recorder schema, but without crash safety overhead).
 
 ### Option: `logins` (required)
 
