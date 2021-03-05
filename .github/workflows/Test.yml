@@ -15,7 +15,6 @@ jobs:
       with:
         args: |
           --test \
-          --no-latest \
           --all \
           --target mariadb \
           --docker-hub ${{ secrets.DOCKERHUB_USERNAME }}
