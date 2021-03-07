@@ -58,9 +58,9 @@ Specify an **upper limit** on the size of the in-memory filesystem. The size may
 >
 > During the first days regularly check the database size from eg. HeidiSQL, DBeaver, BeeKeeper-Studio. Or hardcore users can SSH into the system, use `docker ps` and `docker exec -it 123456 /bin/bash` and see the container's file-system directly, use `df` or `ls` to check free space and file sizes (database is located at `/tmp/databases`.
 >
-> **Note:** The database occupies more space on tmpfs than you see in the client.
+> **Note:** The database occupies more space on tmpfs than you see in the client. And it needs even more temporary space to `repack` tables after `purge` deleted rows.
 >
-> **Rule of thumb:** <minimum tmpfs size [MB]> = \<data stored daily [MB]\> * (\<purge_keep_days\> + 1) * 1.1 + 10[MB]
+> **Rule of thumb:** <minimum tmpfs size [MB]> = \<data stored daily [MB]\> * (\<purge_keep_days\> + 1) * 1.6 + 10[MB]
 >
 > **Note:** If you delete data from the database manually, use `OPTIMIZE TABLE states, events;` to decrease database file sizes also.
 >
@@ -81,7 +81,7 @@ FROM `events`;
 >SELECT @first_entry_in_UTC AS first_entry_in_UTC, @last_entry_in_UTC AS last_entry_in_UTC,
   @timespan AS timespan, @timespan_in_days AS timespan_in_days,
   @database_size_in_MB AS database_size_in_MB, round(@database_size_in_MB / @timespan_in_days, 2) AS growth_per_day_in_MB,
-  round((@database_size_in_MB / @timespan_in_days) * 8 * 1.1 + 10, 0) AS suggested_tmpfs_size_for_1_week_data_in_MB;
+  round((@database_size_in_MB / @timespan_in_days) * 8 * 1.6 + 10, 0) AS suggested_tmpfs_size_for_1_week_data_in_MB;
 > ```
 >
 > </details>
