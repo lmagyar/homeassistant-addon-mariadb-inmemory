@@ -1,8 +1,8 @@
 
 CREATE TABLE `events` (
   `event_id` int(11) NOT NULL AUTO_INCREMENT,
-  `event_type` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `event_data` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `event_type` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `event_data` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `origin` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `time_fired` datetime DEFAULT NULL,
   `created` datetime DEFAULT NULL,
@@ -40,7 +40,7 @@ CREATE TABLE `states` (
   `domain` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `entity_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `state` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `attributes` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `attributes` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `event_id` int(11) DEFAULT NULL,
   `last_changed` datetime DEFAULT NULL,
   `last_updated` datetime DEFAULT NULL,
@@ -53,6 +53,6 @@ CREATE TABLE `states` (
   KEY `ix_states_last_updated` (`last_updated`)
 ) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0;
 
--- schema_version 11 commit https://github.com/home-assistant/core/commit/12af87bc6e85f98623afc2231c55bb30aeb38938
+-- schema_version 12 commit https://github.com/home-assistant/core/commit/7c8851264fbaa3574e58095a47b39f73720cab7f
 INSERT IGNORE INTO `schema_changes` (`change_id`, `schema_version`, `changed`) VALUES
-  (1, 11, '2021-01-04 09:51:00');
+  (1, 12, '2021-03-10 18:12:00');
