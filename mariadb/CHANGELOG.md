@@ -6,9 +6,14 @@
 
 ![Warning][warning_stripe]
 
-## 2.2.2.14 (forked)
+## 2.3.0.14 (forked)
 
 - Use new recorder schema in core 2021.03.x, [PR#47026](https://github.com/home-assistant/core/pull/47026) [PR#47748](https://github.com/home-assistant/core/pull/47748)
+- Merge changes from official add-on
+
+## 2.3.0
+
+- Option to grant user specific privileges for a database
 
 ## 2.2.2.13 (forked)
 
