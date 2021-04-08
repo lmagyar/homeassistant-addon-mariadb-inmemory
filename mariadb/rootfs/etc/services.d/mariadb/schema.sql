@@ -4,8 +4,8 @@ CREATE TABLE `events` (
   `event_type` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `event_data` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `origin` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `time_fired` datetime DEFAULT NULL,
-  `created` datetime DEFAULT NULL,
+  `time_fired` datetime(6) DEFAULT NULL,
+  `created` datetime(6) DEFAULT NULL,
   `context_id` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `context_user_id` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `context_parent_id` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -42,9 +42,9 @@ CREATE TABLE `states` (
   `state` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `attributes` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `event_id` int(11) DEFAULT NULL,
-  `last_changed` datetime DEFAULT NULL,
-  `last_updated` datetime DEFAULT NULL,
-  `created` datetime DEFAULT NULL,
+  `last_changed` datetime(6) DEFAULT NULL,
+  `last_updated` datetime(6) DEFAULT NULL,
+  `created` datetime(6) DEFAULT NULL,
   `old_state_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`state_id`),
   KEY `ix_states_entity_id_last_updated` (`entity_id`,`last_updated`),
@@ -53,6 +53,6 @@ CREATE TABLE `states` (
   KEY `ix_states_last_updated` (`last_updated`)
 ) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0;
 
--- schema_version 12 commit https://github.com/home-assistant/core/commit/7c8851264fbaa3574e58095a47b39f73720cab7f
+-- schema_version 14 commit https://github.com/home-assistant/core/commit/c7e4857d2c0a8bfc7fdf98c44592391fc27cfcf0
 INSERT IGNORE INTO `schema_changes` (`change_id`, `schema_version`, `changed`) VALUES
-  (1, 12, '2021-03-10 18:12:00');
+  (1, 14, '2021-04-08 17:08:00');
