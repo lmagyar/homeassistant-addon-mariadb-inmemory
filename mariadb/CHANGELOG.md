@@ -8,8 +8,8 @@
 
 ## 2.3.0.14 (forked)
 
-- Use new recorder schema from core 2021.04.x, [PR#48749](https://github.com/home-assistant/core/pull/48749) [PR#47748](https://github.com/home-assistant/core/pull/47748)
-- Use new recorder schema from core 2021.04.0, [PR#47026](https://github.com/home-assistant/core/pull/47026)
+- Use new recorder schema from core 2021.04.x, [PR#47748](https://github.com/home-assistant/core/pull/47748)
+- Use new recorder schema from core 2021.04.0, [PR#47026](https://github.com/home-assistant/core/pull/47026) [PR#48749](https://github.com/home-assistant/core/pull/48749)
 - Merge changes from official add-on
 
 ## 2.3.0
