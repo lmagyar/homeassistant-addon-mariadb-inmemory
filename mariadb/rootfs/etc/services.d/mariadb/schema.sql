@@ -52,6 +52,20 @@ CREATE TABLE `states` (
   KEY `ix_states_last_updated` (`last_updated`)
 ) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0;
 
+CREATE TABLE `statistics` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `created` datetime(6) DEFAULT NULL,
+  `source` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `statistic_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `start` datetime(6) DEFAULT NULL,
+  `mean` float DEFAULT NULL,
+  `min` float DEFAULT NULL,
+  `max` float DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `ix_statistics_start` (`start`),
+  KEY `ix_statistics_statistic_id_start` (`statistic_id`,`start`)
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0;
+
 -- schema_version 14 commit https://github.com/home-assistant/core/commit/c7e4857d2c0a8bfc7fdf98c44592391fc27cfcf0
 INSERT IGNORE INTO `schema_changes` (`change_id`, `schema_version`, `changed`) VALUES
   (1, 14, '2021-04-08 17:08:00');
