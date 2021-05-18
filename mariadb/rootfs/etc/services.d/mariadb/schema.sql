@@ -24,8 +24,7 @@ CREATE TABLE `recorder_runs` (
   `closed_incorrect` tinyint(1) DEFAULT NULL,
   `created` datetime DEFAULT NULL,
   PRIMARY KEY (`run_id`),
-  KEY `ix_recorder_runs_start_end` (`start`,`end`),
-  CONSTRAINT `CONSTRAINT_1` CHECK (`closed_incorrect` in (0,1))
+  KEY `ix_recorder_runs_start_end` (`start`,`end`)
 ) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0;
 
 CREATE TABLE `schema_changes` (
