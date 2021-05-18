@@ -6,6 +6,10 @@
 
 ![Warning][warning_stripe]
 
+## 2.3.0.15 (forked)
+
+- Use new recorder schema for statistics from core 2021.xx.x, [PR#49852](https://github.com/home-assistant/core/pull/49852)
+
 ## 2.3.0.14 (forked)
 
 - Use new recorder schema from core 2021.05.0, [PR#47748](https://github.com/home-assistant/core/pull/47748)

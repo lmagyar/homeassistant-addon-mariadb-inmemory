@@ -66,6 +66,6 @@ CREATE TABLE `statistics` (
   KEY `ix_statistics_statistic_id_start` (`statistic_id`,`start`)
 ) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0;
 
--- schema_version 14 commit https://github.com/home-assistant/core/commit/c7e4857d2c0a8bfc7fdf98c44592391fc27cfcf0
+-- schema_version 15 commit https://github.com/home-assistant/core/commit/xxx
 INSERT IGNORE INTO `schema_changes` (`change_id`, `schema_version`, `changed`) VALUES
-  (1, 14, '2021-04-08 17:08:00');
+  (1, 15, '2021-xx-xx xx:xx:00');
