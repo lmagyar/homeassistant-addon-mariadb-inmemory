@@ -61,11 +61,14 @@ CREATE TABLE `statistics` (
   `mean` float DEFAULT NULL,
   `min` float DEFAULT NULL,
   `max` float DEFAULT NULL,
+  `last_reset` datetime(6) DEFAULT NULL,
+  `state` float DEFAULT NULL,
+  `sum` float DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `ix_statistics_start` (`start`),
   KEY `ix_statistics_statistic_id_start` (`statistic_id`,`start`)
 ) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0;
 
--- schema_version 15 commit https://github.com/home-assistant/core/commit/xxx
+-- schema_version 15 commit https://github.com/home-assistant/core/commit/e16a8063a57c6c1575ea8f52ccb4d368602c7e63
 INSERT IGNORE INTO `schema_changes` (`change_id`, `schema_version`, `changed`) VALUES
-  (1, 15, '2021-xx-xx xx:xx:00');
+  (1, 15, '2021-05-20 11:05:00');
