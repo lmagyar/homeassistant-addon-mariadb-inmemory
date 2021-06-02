@@ -8,7 +8,7 @@
 
 ## 2.3.0.15 (forked)
 
-- Use new recorder schema for statistics from core 2021.xx.x, [PR#49852](https://github.com/home-assistant/core/pull/49852)
+- Use new recorder schema for statistics from core 2021.06.1, [PR#49852](https://github.com/home-assistant/core/pull/49852) [PR#50090](https://github.com/home-assistant/core/pull/50090)
 
 ## 2.3.0.14 (forked)
 
