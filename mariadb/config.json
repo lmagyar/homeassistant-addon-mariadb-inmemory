@@ -1,6 +1,6 @@
 {
   "name": "In-memory MariaDB",
-  "version": "2.3.0.15",
+  "version": "2.4.0.16",
   "slug": "mariadb",
   "description": "An in-memory SQL database server",
   "url": "https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory",
@@ -10,6 +10,8 @@
   "timeout": 20,
   "tmpfs": true,
   "privileged": ["SYS_ADMIN"],
+  "snapshot_pre": "/bin/s6-svc -wU -u /run/s6/services/mariadb-lock/",
+  "snapshot_post": "/bin/s6-svc -wd -d /run/s6/services/mariadb-lock/",
   "services": ["mysql:provide"],
   "ports": {
     "3306/tcp": null

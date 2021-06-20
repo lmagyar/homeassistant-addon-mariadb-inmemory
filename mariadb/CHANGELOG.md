@@ -6,6 +6,14 @@
 
 ![Warning][warning_stripe]
 
+## 2.4.0.16 (forked)
+
+- Merge changes from official add-on
+
+## 2.4.0
+
+- Add lock capabilities during snapshot
+
 ## 2.3.0.15 (forked)
 
 - Use new recorder schema for statistics from core 2021.06.0, [PR#49852](https://github.com/home-assistant/core/pull/49852) [PR#50090](https://github.com/home-assistant/core/pull/50090)
