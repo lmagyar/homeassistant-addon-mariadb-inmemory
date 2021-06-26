@@ -164,9 +164,9 @@ automation:
         repack: true
 ```
 
-**Note:** The `45207088-mariadb` is the Hostname displayed on the add-on's Info tab.
-
 **Note:** Change the `PASSWORD` string in the `db_url` field to the password you entered in the add-on configuration.
+
+**Note:** The `45207088-mariadb` is the Hostname displayed on the add-on's Info tab.
 
 > ---
 >
