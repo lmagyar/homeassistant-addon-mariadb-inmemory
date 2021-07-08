@@ -6,6 +6,10 @@
 
 ![Warning][warning_stripe]
 
+## 2.4.0.17 (forked)
+
+- Use new recorder schema for statistics from core 2021.07.0
+
 ## 2.4.0.16 (forked)
 
 - Merge changes from official add-on
@@ -16,12 +20,12 @@
 
 ## 2.3.0.15 (forked)
 
-- Use new recorder schema for statistics from core 2021.06.0, [PR#49852](https://github.com/home-assistant/core/pull/49852) [PR#50090](https://github.com/home-assistant/core/pull/50090)
+- Use new recorder schema for statistics from core 2021.06.0
 
 ## 2.3.0.14 (forked)
 
-- Use new recorder schema from core 2021.05.0, [PR#47748](https://github.com/home-assistant/core/pull/47748)
-- Use new recorder schema from core 2021.04.0, [PR#47026](https://github.com/home-assistant/core/pull/47026) [PR#48749](https://github.com/home-assistant/core/pull/48749)
+- Use new recorder schema from core 2021.05.0
+- Use new recorder schema from core 2021.04.0
 - Merge changes from official add-on
 
 ## 2.3.0
@@ -44,12 +48,11 @@
 
 ## 2.2.1.11 (forked)
 
-- Use new tmpfs location in Supervisor 2021.02.9, [PR#2565](https://github.com/home-assistant/supervisor/pull/2565)
+- Use new tmpfs location in Supervisor 2021.02.9
 
 ## 2.2.1.10 (forked)
 
-- Use new tmpfs add-on config format in Supervisor 2021.02.0, [PR#2499](https://github.com/home-assistant/supervisor/pull/2499)
-- Use Aria storage engine
+- Use new tmpfs add-on config format in Supervisor 2021.02.0
 
 ## 2.2.1.9 (forked)
 

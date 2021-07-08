@@ -55,8 +55,7 @@ CREATE TABLE `states` (
 CREATE TABLE `statistics` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created` datetime(6) DEFAULT NULL,
-  `source` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `statistic_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `metadata_id` int(11) DEFAULT NULL,
   `start` datetime(6) DEFAULT NULL,
   `mean` float DEFAULT NULL,
   `min` float DEFAULT NULL,
@@ -65,10 +64,22 @@ CREATE TABLE `statistics` (
   `state` float DEFAULT NULL,
   `sum` float DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `ix_statistics_statistic_id_start` (`statistic_id`,`start`),
+  KEY `ix_statistics_statistic_id_start` (`metadata_id`,`start`),
+  KEY `ix_statistics_metadata_id` (`metadata_id`),
   KEY `ix_statistics_start` (`start`)
 ) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0;
 
--- schema_version 16 commit https://github.com/home-assistant/core/commit/520304a69dc0836d7fed5695342aa0bb9a71fcb4
+CREATE TABLE `statistics_meta` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `statistic_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `source` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `unit_of_measurement` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `has_mean` tinyint(1) DEFAULT NULL,
+  `has_sum` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `ix_statistics_meta_statistic_id` (`statistic_id`)
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0;
+
+-- schema_version 18 (core 2021.07.0)
 INSERT IGNORE INTO `schema_changes` (`change_id`, `schema_version`, `changed`) VALUES
-  (1, 16, '2021-05-20 15:12:00');
+  (1, 18, '2021-07-07 12:23:00');
