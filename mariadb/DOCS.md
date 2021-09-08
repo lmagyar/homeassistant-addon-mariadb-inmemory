@@ -16,7 +16,7 @@
 > 
 > But before updating the add-on, you can connect to it on port 3306 with eg. HeidiSQL, DBeaver, BeeKeeper-Studio and dump the content of the tables and reload them after restart. How to do it:
 > - \> ha core stop
-> - from the DB UI: save DB content (no table drop, no table create, only the content, a lof ot insert lines in the generated SQL file)
+> - from the DB UI: save DB content __except__ `schema_changes` table (no table drop, no table create, only the content, a lof ot insert lines in the generated SQL file)
 > - \> ha ad update 45207088_mariadb
 > - from the DB UI: load DB content
 > - \> ha core start
