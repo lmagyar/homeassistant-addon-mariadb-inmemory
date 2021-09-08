@@ -4,6 +4,23 @@
 
 > This is a **fork** of the [official add-on][official_addon]! See changes below.
 
+> Updates are released:
+> - when the official add-on changes (changes are merged), or 
+> - when the DB schema changes in HA (`TRANSACTIONAL=0` has to be added to each table to NOT use to much memory).
+> 
+> So you usually don't need to update (and lose in-memory data):
+> - the new functions from the official add-on usually are not used in an in-memory DB,
+> - the DB schema changes in HA usually are not critical, HA will update the schema without any issue (adding/modifying columns, etc.)
+> 
+> __The only time you should update this add-on__ is when a new table added to the DB, when the in-memory version should add the `TRANSACTIONAL=0` parameter to the table to save memory.
+> 
+> But before updating the add-on, you can connect to it on port 3306 with eg. HeidiSQL, DBeaver, BeeKeeper-Studio and dump the content of the tables and reload them after restart. How to do it:
+> - \> ha core stop
+> - from the DB UI: save DB content (no table drop, no table create, only the content, a lof ot insert lines in the generated SQL file)
+> - \> ha ad update 45207088_mariadb
+> - from the DB UI: load DB content
+> - \> ha core start
+
 ![Warning][warning_stripe]
 
 ## Installation
