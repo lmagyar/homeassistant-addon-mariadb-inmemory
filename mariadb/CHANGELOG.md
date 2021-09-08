@@ -6,6 +6,10 @@
 
 ![Warning][warning_stripe]
 
+## 2.4.0.18 (forked)
+
+- Use new recorder schema for statistics from core 2021.09.0 (new table added, update of the add-on is recommended)
+
 ## 2.4.0.17 (forked)
 
 - Use new recorder schema for statistics from core 2021.07.0

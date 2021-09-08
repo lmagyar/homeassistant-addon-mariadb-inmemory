@@ -57,12 +57,12 @@ CREATE TABLE `statistics` (
   `created` datetime(6) DEFAULT NULL,
   `metadata_id` int(11) DEFAULT NULL,
   `start` datetime(6) DEFAULT NULL,
-  `mean` float DEFAULT NULL,
-  `min` float DEFAULT NULL,
-  `max` float DEFAULT NULL,
+  `mean` double DEFAULT NULL,
+  `min` double DEFAULT NULL,
+  `max` double DEFAULT NULL,
   `last_reset` datetime(6) DEFAULT NULL,
-  `state` float DEFAULT NULL,
-  `sum` float DEFAULT NULL,
+  `state` double DEFAULT NULL,
+  `sum` double DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `ix_statistics_statistic_id_start` (`metadata_id`,`start`),
   KEY `ix_statistics_metadata_id` (`metadata_id`),
@@ -80,6 +80,15 @@ CREATE TABLE `statistics_meta` (
   KEY `ix_statistics_meta_statistic_id` (`statistic_id`)
 ) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0;
 
--- schema_version 18 (core 2021.07.0)
+CREATE TABLE `statistics_runs` (
+  `run_id` int(11) NOT NULL AUTO_INCREMENT,
+  `start` datetime DEFAULT NULL,
+  PRIMARY KEY (`run_id`)
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0;
+
+INSERT IGNORE INTO `statistics_runs` (`run_id`, `start`) VALUES
+  (1, DATE_FORMAT(DATE_SUB(UTC_TIMESTAMP(), INTERVAL 1 HOUR), '%Y-%m-%d %H:00:00'));
+
+-- schema_version 20 (core 2021.09.0)
 INSERT IGNORE INTO `schema_changes` (`change_id`, `schema_version`, `changed`) VALUES
-  (1, 18, '2021-07-07 12:23:00');
+  (1, 20, '2021-08-24 09:18:00');
