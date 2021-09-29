@@ -8,7 +8,9 @@
 
 ## 2.4.0.18 (forked)
 
-- Use new recorder schema for statistics from core 2021.09.0 (new table added, update of the add-on is recommended)
+**Note: New table added to the DB, update of the add-on is recommended!**
+
+- Use new recorder schema for statistics from core 2021.09.0
 
 ## 2.4.0.17 (forked)
 

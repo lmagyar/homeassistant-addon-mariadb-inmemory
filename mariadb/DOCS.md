@@ -12,7 +12,7 @@
 > - the new functions from the official add-on usually are not used in an in-memory DB,
 > - the DB schema changes in HA usually are not critical, HA will update the schema without any issue (adding/modifying columns, etc.)
 > 
-> __The only time you should update this add-on__ is when a new table added to the DB, when the in-memory version should add the `TRANSACTIONAL=0` parameter to the table to save memory.
+> __The only time you should update this add-on__ is when a new table added to the DB, when the in-memory version should add the `TRANSACTIONAL=0` parameter to the table to save memory. See the __Changelog__ under the __Info tab__ for this information.
 > 
 > But before updating the add-on, you can connect to it on port 3306 with eg. HeidiSQL, DBeaver, BeeKeeper-Studio and dump the content of the tables and reload them after restart. How to do it:
 > - \> ha core stop
