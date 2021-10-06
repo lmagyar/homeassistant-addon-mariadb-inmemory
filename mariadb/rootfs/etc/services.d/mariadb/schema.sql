@@ -86,9 +86,26 @@ CREATE TABLE `statistics_runs` (
   PRIMARY KEY (`run_id`)
 ) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0;
 
+CREATE TABLE `statistics_short_term` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `created` datetime(6) DEFAULT NULL,
+  `start` datetime(6) DEFAULT NULL,
+  `mean` double DEFAULT NULL,
+  `min` double DEFAULT NULL,
+  `max` double DEFAULT NULL,
+  `last_reset` datetime(6) DEFAULT NULL,
+  `state` double DEFAULT NULL,
+  `sum` double DEFAULT NULL,
+  `metadata_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `ix_statistics_short_term_statistic_id_start` (`metadata_id`,`start`),
+  KEY `ix_statistics_short_term_start` (`start`),
+  KEY `ix_statistics_short_term_metadata_id` (`metadata_id`)
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0;
+
 INSERT IGNORE INTO `statistics_runs` (`run_id`, `start`) VALUES
   (1, DATE_FORMAT(DATE_SUB(UTC_TIMESTAMP(), INTERVAL 1 HOUR), '%Y-%m-%d %H:00:00'));
 
--- schema_version 20 (core 2021.09.0)
+-- schema_version 22 (core 2021.10.0)
 INSERT IGNORE INTO `schema_changes` (`change_id`, `schema_version`, `changed`) VALUES
-  (1, 20, '2021-08-24 09:18:00');
+  (1, 22, '2021-10-06 14:36:00');
