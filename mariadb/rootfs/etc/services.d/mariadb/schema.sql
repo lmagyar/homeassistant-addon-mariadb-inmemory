@@ -10,9 +10,9 @@ CREATE TABLE `events` (
   `context_user_id` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `context_parent_id` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`event_id`),
+  KEY `ix_events_context_id` (`context_id`),
   KEY `ix_events_event_type_time_fired` (`event_type`,`time_fired`),
   KEY `ix_events_time_fired` (`time_fired`),
-  KEY `ix_events_context_id` (`context_id`),
   KEY `ix_events_context_user_id` (`context_user_id`),
   KEY `ix_events_context_parent_id` (`context_parent_id`)
 ) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0;
@@ -46,16 +46,15 @@ CREATE TABLE `states` (
   `created` datetime(6) DEFAULT NULL,
   `old_state_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`state_id`),
-  KEY `ix_states_entity_id_last_updated` (`entity_id`,`last_updated`),
   KEY `ix_states_event_id` (`event_id`),
-  KEY `ix_states_last_updated` (`last_updated`),
-  KEY `ix_states_old_state_id` (`old_state_id`)
+  KEY `ix_states_entity_id_last_updated` (`entity_id`,`last_updated`),
+  KEY `ix_states_old_state_id` (`old_state_id`),
+  KEY `ix_states_last_updated` (`last_updated`)
 ) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0;
 
 CREATE TABLE `statistics` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created` datetime(6) DEFAULT NULL,
-  `metadata_id` int(11) DEFAULT NULL,
   `start` datetime(6) DEFAULT NULL,
   `mean` double DEFAULT NULL,
   `min` double DEFAULT NULL,
@@ -63,10 +62,11 @@ CREATE TABLE `statistics` (
   `last_reset` datetime(6) DEFAULT NULL,
   `state` double DEFAULT NULL,
   `sum` double DEFAULT NULL,
+  `metadata_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `ix_statistics_statistic_id_start` (`metadata_id`,`start`),
-  KEY `ix_statistics_metadata_id` (`metadata_id`),
-  KEY `ix_statistics_start` (`start`)
+  KEY `ix_statistics_start` (`start`),
+  KEY `ix_statistics_metadata_id` (`metadata_id`)
 ) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0;
 
 CREATE TABLE `statistics_meta` (
