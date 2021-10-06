@@ -103,9 +103,6 @@ CREATE TABLE `statistics_short_term` (
   KEY `ix_statistics_short_term_metadata_id` (`metadata_id`)
 ) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0;
 
-INSERT IGNORE INTO `statistics_runs` (`run_id`, `start`) VALUES
-  (1, DATE_FORMAT(DATE_SUB(UTC_TIMESTAMP(), INTERVAL 1 HOUR), '%Y-%m-%d %H:00:00'));
-
 -- schema_version 22 (core 2021.10.0)
 INSERT IGNORE INTO `schema_changes` (`change_id`, `schema_version`, `changed`) VALUES
   (1, 22, '2021-10-06 14:36:00');
