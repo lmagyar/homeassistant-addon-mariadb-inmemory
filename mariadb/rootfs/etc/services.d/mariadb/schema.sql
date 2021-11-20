@@ -76,6 +76,7 @@ CREATE TABLE `statistics_meta` (
   `unit_of_measurement` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `has_mean` tinyint(1) DEFAULT NULL,
   `has_sum` tinyint(1) DEFAULT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `ix_statistics_meta_statistic_id` (`statistic_id`)
 ) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0;
@@ -103,6 +104,6 @@ CREATE TABLE `statistics_short_term` (
   KEY `ix_statistics_short_term_metadata_id` (`metadata_id`)
 ) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0;
 
--- schema_version 22 (core 2021.10.0)
+-- schema_version 23 (core 2021.11.0)
 INSERT IGNORE INTO `schema_changes` (`change_id`, `schema_version`, `changed`) VALUES
-  (1, 22, '2021-10-06 14:36:00');
+  (1, 23, '2021-11-03 16:23:00');

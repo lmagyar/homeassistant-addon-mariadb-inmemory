@@ -6,9 +6,11 @@
 
 ![Warning][warning_stripe]
 
-## 2.4.0.19 (forked)
+## 2.4.0.20 (forked)
 
-**Note: New table added to the DB, update of the add-on is recommended!**
+- Use new recorder schema for statistics from core 2021.11.0
+
+## 2.4.0.19 (forked)
 
 - Merge unreleased changes from official add-on [#3](https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/issues/3)
 - Use new recorder schema for statistics from core 2021.10.0
