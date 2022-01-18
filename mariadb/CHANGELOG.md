@@ -1,11 +1,5 @@
 # Changelog
 
-![Warning][warning_stripe]
-
-> This is a **fork** of the [official add-on][official_addon]! See changes below.
-
-![Warning][warning_stripe]
-
 ## 2.4.0.20 (forked)
 
 - Use new recorder schema for statistics from core 2021.11.0
@@ -121,6 +115,3 @@
 ## 1.0.0
 
 - Update MariaDB to 10.3.13
-
-[warning_stripe]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/raw/master/mariadb/warning_stripe.png
-[official_addon]: https://github.com/home-assistant/addons/tree/master/mariadb
