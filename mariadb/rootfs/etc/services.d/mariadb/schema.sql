@@ -64,7 +64,7 @@ CREATE TABLE `statistics` (
   `sum` double DEFAULT NULL,
   `metadata_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `ix_statistics_statistic_id_start` (`metadata_id`,`start`),
+  UNIQUE KEY `ix_statistics_statistic_id_start` (`metadata_id`,`start`),
   KEY `ix_statistics_start` (`start`),
   KEY `ix_statistics_metadata_id` (`metadata_id`)
 ) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0;
@@ -99,11 +99,11 @@ CREATE TABLE `statistics_short_term` (
   `sum` double DEFAULT NULL,
   `metadata_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `ix_statistics_short_term_statistic_id_start` (`metadata_id`,`start`),
+  UNIQUE KEY `ix_statistics_short_term_statistic_id_start` (`metadata_id`,`start`),
   KEY `ix_statistics_short_term_start` (`start`),
   KEY `ix_statistics_short_term_metadata_id` (`metadata_id`)
 ) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0;
 
--- schema_version 23 (core 2021.11.0)
+-- schema_version 24 (core 2022.02.0)
 INSERT IGNORE INTO `schema_changes` (`change_id`, `schema_version`, `changed`) VALUES
-  (1, 23, '2021-11-03 16:23:00');
+  (1, 24, '2022-02-02 18:44:00');

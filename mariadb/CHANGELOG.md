@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.4.0.21 (forked)
+
+- Use new recorder schema from core 2022.02.0
+
 ## 2.4.0.20 (forked)
 
 - Use new recorder schema for statistics from core 2021.11.0
