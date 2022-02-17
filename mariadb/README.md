@@ -8,7 +8,19 @@
 
 In-memory MariaDB database for Home Assistant.
 
-![Supports aarch64 Architecture][aarch64-shield] ![Supports amd64 Architecture][amd64-shield] ![Supports armhf Architecture][armhf-shield] ![Supports armv7 Architecture][armv7-shield] ![Supports i386 Architecture][i386-shield]
+[![GitHub Release][releases-shield]][releases]
+![Project Stage][project-stage-shield]
+[![License][license-shield]][licence]
+
+![Supports aarch64 Architecture][aarch64-shield]
+![Supports amd64 Architecture][amd64-shield]
+![Supports armhf Architecture][armhf-shield]
+![Supports armv7 Architecture][armv7-shield]
+![Supports i386 Architecture][i386-shield]
+
+[![Github Actions][github-actions-shield]][github-actions]
+![Project Maintenance][maintenance-shield]
+[![GitHub Activity][commits-shield]][commits]
 
 ## About
 
@@ -27,6 +39,16 @@ This version uses **tmpfs** to store MariaDB databases in-memory. The default ~~
 [armhf-shield]: https://img.shields.io/badge/armhf-yes-green.svg
 [armv7-shield]: https://img.shields.io/badge/armv7-yes-green.svg
 [i386-shield]: https://img.shields.io/badge/i386-yes-green.svg
+[commits-shield]: https://img.shields.io/github/commit-activity/y/lmagyar/homeassistant-addon-mariadb-inmemory.svg
+[commits]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/commits/master
+[github-actions-shield]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/workflows/Publish/badge.svg
+[github-actions]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/actions
+[license-shield]: https://img.shields.io/github/license/lmagyar/homeassistant-addon-mariadb-inmemory.svg
+[licence]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/blob/master/LICENSE
+[maintenance-shield]: https://img.shields.io/maintenance/yes/2022.svg
+[project-stage-shield]: https://img.shields.io/badge/project%20stage-custom-orange.svg
+[releases-shield]: https://img.shields.io/github/tag/lmagyar/homeassistant-addon-mariadb-inmemory.svg
+[releases]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/tags
 [mariadb]: https://mariadb.com
 [warning_stripe]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/raw/master/mariadb/warning_stripe_wide.png
 [official_addon]: https://github.com/home-assistant/addons/tree/master/mariadb
