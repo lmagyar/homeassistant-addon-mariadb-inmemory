@@ -45,11 +45,21 @@ CREATE TABLE `states` (
   `last_updated` datetime(6) DEFAULT NULL,
   `created` datetime(6) DEFAULT NULL,
   `old_state_id` int(11) DEFAULT NULL,
+  `attributes_id` int(20) DEFAULT NULL,
   PRIMARY KEY (`state_id`),
   KEY `ix_states_event_id` (`event_id`),
   KEY `ix_states_entity_id_last_updated` (`entity_id`,`last_updated`),
   KEY `ix_states_old_state_id` (`old_state_id`),
-  KEY `ix_states_last_updated` (`last_updated`)
+  KEY `ix_states_last_updated` (`last_updated`),
+  KEY `ix_states_attributes_id` (`attributes_id`)
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0;
+
+CREATE TABLE `state_attributes` (
+  `attributes_id` int(11) NOT NULL AUTO_INCREMENT,
+  `hash` bigint(20) DEFAULT NULL,
+  `shared_attrs` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`attributes_id`),
+  KEY `ix_state_attributes_hash` (`hash`)
 ) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0;
 
 CREATE TABLE `statistics` (
@@ -104,6 +114,6 @@ CREATE TABLE `statistics_short_term` (
   KEY `ix_statistics_short_term_metadata_id` (`metadata_id`)
 ) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0;
 
--- schema_version 24 (core 2022.02.0)
+-- schema_version 25 (core 2022.4.0)
 INSERT IGNORE INTO `schema_changes` (`change_id`, `schema_version`, `changed`) VALUES
-  (1, 24, '2022-02-02 18:44:00');
+  (1, 25, '2022-04-06 13:22:00');

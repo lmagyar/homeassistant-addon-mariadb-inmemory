@@ -1,8 +1,14 @@
 # Changelog
 
+**Note: New table added to the DB, update of the add-on is recommended!**
+
+## 2.4.0.22 (forked)
+
+- Use new recorder schema from core 2022.4.0
+
 ## 2.4.0.21 (forked)
 
-- Use new recorder schema from core 2022.02.0
+- Use new recorder schema from core 2022.2.0
 
 ## 2.4.0.20 (forked)
 
@@ -15,11 +21,11 @@
 
 ## 2.4.0.18 (forked)
 
-- Use new recorder schema for statistics from core 2021.09.0
+- Use new recorder schema for statistics from core 2021.9.0
 
 ## 2.4.0.17 (forked)
 
-- Use new recorder schema for statistics from core 2021.07.0
+- Use new recorder schema for statistics from core 2021.7.0
 
 ## 2.4.0.16 (forked)
 
@@ -31,12 +37,12 @@
 
 ## 2.3.0.15 (forked)
 
-- Use new recorder schema for statistics from core 2021.06.0
+- Use new recorder schema for statistics from core 2021.6.0
 
 ## 2.3.0.14 (forked)
 
-- Use new recorder schema from core 2021.05.0
-- Use new recorder schema from core 2021.04.0
+- Use new recorder schema from core 2021.5.0
+- Use new recorder schema from core 2021.4.0
 - Merge changes from official add-on
 
 ## 2.3.0
@@ -59,11 +65,11 @@
 
 ## 2.2.1.11 (forked)
 
-- Use new tmpfs location in Supervisor 2021.02.9
+- Use new tmpfs location in Supervisor 2021.2.9
 
 ## 2.2.1.10 (forked)
 
-- Use new tmpfs add-on config format in Supervisor 2021.02.0
+- Use new tmpfs add-on config format in Supervisor 2021.2.0
 
 ## 2.2.1.9 (forked)
 
