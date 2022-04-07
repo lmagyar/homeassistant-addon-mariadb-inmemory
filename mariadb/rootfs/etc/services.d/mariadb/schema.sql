@@ -42,7 +42,7 @@ CREATE TABLE `states` (
   `last_changed` datetime(6) DEFAULT NULL,
   `last_updated` datetime(6) DEFAULT NULL,
   `old_state_id` int(11) DEFAULT NULL,
-  `attributes_id` int(20) DEFAULT NULL,
+  `attributes_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`state_id`),
   KEY `ix_states_event_id` (`event_id`),
   KEY `ix_states_entity_id_last_updated` (`entity_id`,`last_updated`),
