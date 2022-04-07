@@ -5,7 +5,6 @@ CREATE TABLE `events` (
   `event_data` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `origin` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `time_fired` datetime(6) DEFAULT NULL,
-  `created` datetime(6) DEFAULT NULL,
   `context_id` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `context_user_id` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `context_parent_id` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -36,14 +35,12 @@ CREATE TABLE `schema_changes` (
 
 CREATE TABLE `states` (
   `state_id` int(11) NOT NULL AUTO_INCREMENT,
-  `domain` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `entity_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `state` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `attributes` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `event_id` int(11) DEFAULT NULL,
   `last_changed` datetime(6) DEFAULT NULL,
   `last_updated` datetime(6) DEFAULT NULL,
-  `created` datetime(6) DEFAULT NULL,
   `old_state_id` int(11) DEFAULT NULL,
   `attributes_id` int(20) DEFAULT NULL,
   PRIMARY KEY (`state_id`),
