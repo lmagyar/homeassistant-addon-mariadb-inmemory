@@ -91,7 +91,8 @@ CREATE TABLE `statistics_meta` (
 CREATE TABLE `statistics_runs` (
   `run_id` int(11) NOT NULL AUTO_INCREMENT,
   `start` datetime DEFAULT NULL,
-  PRIMARY KEY (`run_id`)
+  PRIMARY KEY (`run_id`),
+  KEY `ix_statistics_runs_start` (`start`)
 ) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0;
 
 CREATE TABLE `statistics_short_term` (
@@ -111,6 +112,6 @@ CREATE TABLE `statistics_short_term` (
   KEY `ix_statistics_short_term_metadata_id` (`metadata_id`)
 ) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0;
 
--- schema_version 25 (core 2022.4.0)
+-- schema_version 26 (core 2022.5.0)
 INSERT IGNORE INTO `schema_changes` (`change_id`, `schema_version`, `changed`) VALUES
-  (1, 25, '2022-04-06 13:22:00');
+  (1, 25, '2022-05-04 17:12:00');
