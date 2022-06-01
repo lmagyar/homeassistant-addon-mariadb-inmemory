@@ -4,16 +4,25 @@ CREATE TABLE `events` (
   `event_type` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `event_data` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `origin` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `origin_idx` smallint(6) DEFAULT NULL,
   `time_fired` datetime(6) DEFAULT NULL,
   `context_id` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `context_user_id` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `context_parent_id` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `data_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`event_id`),
-  KEY `ix_events_context_id` (`context_id`),
   KEY `ix_events_event_type_time_fired` (`event_type`,`time_fired`),
   KEY `ix_events_time_fired` (`time_fired`),
-  KEY `ix_events_context_user_id` (`context_user_id`),
-  KEY `ix_events_context_parent_id` (`context_parent_id`)
+  KEY `ix_events_data_id` (`data_id`),
+  KEY `ix_events_context_id` (`context_id`)
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0 ROW_FORMAT=DYNAMIC;
+
+CREATE TABLE `event_data` (
+  `data_id` int(11) NOT NULL AUTO_INCREMENT,
+  `hash` bigint(20) DEFAULT NULL,
+  `shared_data` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`data_id`),
+  KEY `ix_event_data_hash` (`hash`)
 ) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0 ROW_FORMAT=DYNAMIC;
 
 CREATE TABLE `recorder_runs` (
@@ -43,7 +52,12 @@ CREATE TABLE `states` (
   `last_updated` datetime(6) DEFAULT NULL,
   `old_state_id` int(11) DEFAULT NULL,
   `attributes_id` int(11) DEFAULT NULL,
+  `context_id` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `context_user_id` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `context_parent_id` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `origin_idx` smallint(6) DEFAULT NULL,
   PRIMARY KEY (`state_id`),
+  KEY `ix_states_context_id` (`context_id`),
   KEY `ix_states_event_id` (`event_id`),
   KEY `ix_states_entity_id_last_updated` (`entity_id`,`last_updated`),
   KEY `ix_states_old_state_id` (`old_state_id`),
@@ -72,8 +86,8 @@ CREATE TABLE `statistics` (
   `metadata_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `ix_statistics_statistic_id_start` (`metadata_id`,`start`),
-  KEY `ix_statistics_start` (`start`),
-  KEY `ix_statistics_metadata_id` (`metadata_id`)
+  KEY `ix_statistics_metadata_id` (`metadata_id`),
+  KEY `ix_statistics_start` (`start`)
 ) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0 ROW_FORMAT=DYNAMIC;
 
 CREATE TABLE `statistics_meta` (
@@ -85,7 +99,7 @@ CREATE TABLE `statistics_meta` (
   `has_sum` tinyint(1) DEFAULT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `ix_statistics_meta_statistic_id` (`statistic_id`)
+  UNIQUE KEY `ix_statistics_meta_statistic_id` (`statistic_id`)
 ) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0 ROW_FORMAT=DYNAMIC;
 
 CREATE TABLE `statistics_runs` (
@@ -108,10 +122,10 @@ CREATE TABLE `statistics_short_term` (
   `metadata_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `ix_statistics_short_term_statistic_id_start` (`metadata_id`,`start`),
-  KEY `ix_statistics_short_term_start` (`start`),
-  KEY `ix_statistics_short_term_metadata_id` (`metadata_id`)
+  KEY `ix_statistics_short_term_metadata_id` (`metadata_id`),
+  KEY `ix_statistics_short_term_start` (`start`)
 ) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0 ROW_FORMAT=DYNAMIC;
 
--- schema_version 26 (core 2022.5.0)
+-- schema_version 29 (core 2022.6.0)
 INSERT IGNORE INTO `schema_changes` (`change_id`, `schema_version`, `changed`) VALUES
-  (1, 25, '2022-05-04 17:12:00');
+  (1, 29, '2022-06-01 13:25:00');
