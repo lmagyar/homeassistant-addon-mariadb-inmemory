@@ -14,7 +14,7 @@ CREATE TABLE `events` (
   KEY `ix_events_time_fired` (`time_fired`),
   KEY `ix_events_context_user_id` (`context_user_id`),
   KEY `ix_events_context_parent_id` (`context_parent_id`)
-) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0;
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0 ROW_FORMAT=DYNAMIC;
 
 CREATE TABLE `recorder_runs` (
   `run_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -24,14 +24,14 @@ CREATE TABLE `recorder_runs` (
   `created` datetime DEFAULT NULL,
   PRIMARY KEY (`run_id`),
   KEY `ix_recorder_runs_start_end` (`start`,`end`)
-) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0;
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0 ROW_FORMAT=DYNAMIC;
 
 CREATE TABLE `schema_changes` (
   `change_id` int(11) NOT NULL AUTO_INCREMENT,
   `schema_version` int(11) DEFAULT NULL,
   `changed` datetime DEFAULT NULL,
   PRIMARY KEY (`change_id`)
-) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0;
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0 ROW_FORMAT=DYNAMIC;
 
 CREATE TABLE `states` (
   `state_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -49,7 +49,7 @@ CREATE TABLE `states` (
   KEY `ix_states_old_state_id` (`old_state_id`),
   KEY `ix_states_last_updated` (`last_updated`),
   KEY `ix_states_attributes_id` (`attributes_id`)
-) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0;
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0 ROW_FORMAT=DYNAMIC;
 
 CREATE TABLE `state_attributes` (
   `attributes_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -57,7 +57,7 @@ CREATE TABLE `state_attributes` (
   `shared_attrs` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`attributes_id`),
   KEY `ix_state_attributes_hash` (`hash`)
-) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0;
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0 ROW_FORMAT=DYNAMIC;
 
 CREATE TABLE `statistics` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -74,7 +74,7 @@ CREATE TABLE `statistics` (
   UNIQUE KEY `ix_statistics_statistic_id_start` (`metadata_id`,`start`),
   KEY `ix_statistics_start` (`start`),
   KEY `ix_statistics_metadata_id` (`metadata_id`)
-) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0;
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0 ROW_FORMAT=DYNAMIC;
 
 CREATE TABLE `statistics_meta` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -86,14 +86,14 @@ CREATE TABLE `statistics_meta` (
   `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `ix_statistics_meta_statistic_id` (`statistic_id`)
-) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0;
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0 ROW_FORMAT=DYNAMIC;
 
 CREATE TABLE `statistics_runs` (
   `run_id` int(11) NOT NULL AUTO_INCREMENT,
   `start` datetime DEFAULT NULL,
   PRIMARY KEY (`run_id`),
   KEY `ix_statistics_runs_start` (`start`)
-) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0;
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0 ROW_FORMAT=DYNAMIC;
 
 CREATE TABLE `statistics_short_term` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -110,7 +110,7 @@ CREATE TABLE `statistics_short_term` (
   UNIQUE KEY `ix_statistics_short_term_statistic_id_start` (`metadata_id`,`start`),
   KEY `ix_statistics_short_term_start` (`start`),
   KEY `ix_statistics_short_term_metadata_id` (`metadata_id`)
-) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0;
+) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 TRANSACTIONAL=0 ROW_FORMAT=DYNAMIC;
 
 -- schema_version 26 (core 2022.5.0)
 INSERT IGNORE INTO `schema_changes` (`change_id`, `schema_version`, `changed`) VALUES
