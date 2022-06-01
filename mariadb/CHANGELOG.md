@@ -1,6 +1,10 @@
 # Changelog
 
-**Note: New table added to the DB, update of the add-on is recommended!**
+**Note: Automatic update of the database schema (built into HA core 2022.6.0 migration algorithm) fails due to a hard-wired `ENGINE=InnoDB` statement, update of the add-on is mandatory!**
+
+## 2.4.0.23 (forked)
+
+- Use new recorder schema from core 2022.5.0 and 2022.6.0
 
 ## 2.4.0.22 (forked)
 
