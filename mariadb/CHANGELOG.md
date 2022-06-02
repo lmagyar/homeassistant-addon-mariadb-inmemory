@@ -1,6 +1,6 @@
 # Changelog
 
-**Note: Automatic update of the database schema (built into HA core 2022.6.0 migration algorithm) fails due to a hard-wired `ENGINE=InnoDB` statement, update of the add-on is mandatory!**
+**Note: Update of the add-on is mandatory if you are running HA core 2022.6.0 due to a bug in the database migration algorithm in HA core 2022.6.0! Update to HA core 2022.6.1 and later will work. - The database migration algorithm in HA core 2022.6.0 fails due to a hard-wired `ENGINE=InnoDB` statement, see: [#72883](https://github.com/home-assistant/core/issues/72883)!**
 
 ## 2.4.0.23 (forked)
 
