@@ -9,9 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout the repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: Test build
-      uses: home-assistant/builder@master
+      uses: home-assistant/builder@2022.03.1
       with:
         args: |
           --test \

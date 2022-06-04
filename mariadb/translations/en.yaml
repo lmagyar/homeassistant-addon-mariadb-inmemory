@@ -1,0 +1,16 @@
+---
+configuration:
+  tmpfs:
+    name: tmpfs
+    description: Inmemory tmpfs file system size to store the database.
+  databases:
+    name: Databases
+    description: Database names.
+  logins:
+    name: Logins
+    description: This section defines a create user definition in MariaDB.
+  rights:
+    name: Rights
+    description: This section grant privileges to users in MariaDB.
+network:
+  3306/tcp: The port to access the database engine.

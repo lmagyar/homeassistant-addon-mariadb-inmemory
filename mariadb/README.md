@@ -1,4 +1,4 @@
-# Home Assistant Add-on: In-memory MariaDB
+# Home Assistant Custom Add-on: In-memory MariaDB
 
 ![Warning][warning_stripe]
 
@@ -8,7 +8,21 @@
 
 In-memory MariaDB database for Home Assistant.
 
-![Supports aarch64 Architecture][aarch64-shield] ![Supports amd64 Architecture][amd64-shield] ![Supports armhf Architecture][armhf-shield] ![Supports armv7 Architecture][armv7-shield] ![Supports i386 Architecture][i386-shield]
+[![GitHub Release][releases-shield]][releases]
+[![Last Updated][updated-shield]][updated]
+![Reported Installations][installations-shield]
+![Project Stage][project-stage-shield]
+[![License][license-shield]][licence]
+
+![Supports aarch64 Architecture][aarch64-shield]
+![Supports amd64 Architecture][amd64-shield]
+![Supports armhf Architecture][armhf-shield]
+![Supports armv7 Architecture][armv7-shield]
+![Supports i386 Architecture][i386-shield]
+
+[![Github Actions][github-actions-shield]][github-actions]
+![Project Maintenance][maintenance-shield]
+[![GitHub Activity][commits-shield]][commits]
 
 ## About
 
@@ -16,7 +30,7 @@ You can use this add-on to install MariaDB, which is an open-source (GPLv2 licen
 
 If you are trying to minimize your SD-card's wear by using the built-in SQLite with `db_url: 'sqlite:///:memory:'` recorder configuration but fed up with the uncountable `[homeassistant.components.recorder.util] Error executing query: (sqlite3.OperationalError) cannot commit - no transaction is active` errors in your HA log, give this add-on a try.
 
-It will also protect you from the data loss caused by HA core restarts when in-memory SQLite used. Though it won't protect you from power failures, add-on or host restarts or updates.
+It will also protect you from the data loss caused by HA core restarts when in-memory SQLite is used. Though it won't protect you from power failures, add-on or host restarts or updates.
 
 This version uses **tmpfs** to store MariaDB databases in-memory. The default ~~InnoDB~~ storage engine is replaced with **Aria** storage engine (because InnoDB storage engine wastes a great amount of disk space, and Memory storage engine can't handle TEXT columns).
 
@@ -27,6 +41,19 @@ This version uses **tmpfs** to store MariaDB databases in-memory. The default ~~
 [armhf-shield]: https://img.shields.io/badge/armhf-yes-green.svg
 [armv7-shield]: https://img.shields.io/badge/armv7-yes-green.svg
 [i386-shield]: https://img.shields.io/badge/i386-yes-green.svg
+[commits-shield]: https://img.shields.io/github/commit-activity/y/lmagyar/homeassistant-addon-mariadb-inmemory.svg
+[commits]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/commits/master
+[github-actions-shield]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/workflows/Publish/badge.svg
+[github-actions]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/actions
+[installations-shield]: https://img.shields.io/badge/dynamic/json?label=reported%20installations&query=$[%2745207088_mariadb%27].total&url=https%3A%2F%2Fanalytics.home-assistant.io%2Faddons.json
+[license-shield]: https://img.shields.io/github/license/lmagyar/homeassistant-addon-mariadb-inmemory.svg
+[licence]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/blob/master/LICENSE
+[maintenance-shield]: https://img.shields.io/maintenance/yes/2022.svg
+[project-stage-shield]: https://img.shields.io/badge/project%20stage-custom-orange.svg
+[releases-shield]: https://img.shields.io/github/tag/lmagyar/homeassistant-addon-mariadb-inmemory.svg?label=release
+[releases]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/tags
+[updated-shield]: https://img.shields.io/github/last-commit/lmagyar/homeassistant-addon-mariadb-inmemory/master?label=updated
+[updated]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/commits/master
 [mariadb]: https://mariadb.com
 [warning_stripe]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/raw/master/mariadb/warning_stripe_wide.png
 [official_addon]: https://github.com/home-assistant/addons/tree/master/mariadb

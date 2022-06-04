@@ -1,14 +1,61 @@
 # Changelog
 
-![Warning][warning_stripe]
+**Note: Update of the add-on is mandatory if you are running HA core 2022.6.0 due to a bug in the database migration algorithm in HA core 2022.6.0! Update to HA core 2022.6.1 and later will work. - The database migration algorithm in HA core 2022.6.0 fails due to a hard-wired `ENGINE=InnoDB` statement, see: [#72883](https://github.com/home-assistant/core/issues/72883)!**
 
-> This is a **fork** of the [official add-on][official_addon]! See changes below.
+## 2.4.0.23 (forked)
 
-![Warning][warning_stripe]
+- Use new recorder schema from core 2022.5.0 and 2022.6.0
+
+## 2.4.0.22 (forked)
+
+- Use new recorder schema from core 2022.4.0
+
+## 2.4.0.21 (forked)
+
+- Use new recorder schema from core 2022.2.0
+
+## 2.4.0.20 (forked)
+
+- Use new recorder schema for statistics from core 2021.11.0
+
+## 2.4.0.19 (forked)
+
+- Merge unreleased changes from official add-on [#3](https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/issues/3)
+- Use new recorder schema for statistics from core 2021.10.0
+
+## 2.4.0.18 (forked)
+
+- Use new recorder schema for statistics from core 2021.9.0
+
+## 2.4.0.17 (forked)
+
+- Use new recorder schema for statistics from core 2021.7.0
+
+## 2.4.0.16 (forked)
+
+- Merge changes from official add-on
+
+## 2.4.0
+
+- Add lock capabilities during snapshot
+
+## 2.3.0.15 (forked)
+
+- Use new recorder schema for statistics from core 2021.6.0
+
+## 2.3.0.14 (forked)
+
+- Use new recorder schema from core 2021.5.0
+- Use new recorder schema from core 2021.4.0
+- Merge changes from official add-on
+
+## 2.3.0
+
+- Option to grant user specific privileges for a database
 
 ## 2.2.2.13 (forked)
 
-- Use default recorder schema, but without crash safety overhead (TRANSACTIONAL=0)
+- Use modified recorder schema (without crash safety overhead, TRANSACTIONAL=0)
 
 ## 2.2.2.12 (forked)
 
@@ -22,12 +69,11 @@
 
 ## 2.2.1.11 (forked)
 
-- Use new tmpfs location in Supervisor 2021.02.9, [PR#2565](https://github.com/home-assistant/supervisor/pull/2565)
+- Use new tmpfs location in Supervisor 2021.2.9
 
 ## 2.2.1.10 (forked)
 
-- Use new tmpfs add-on config format in Supervisor 2021.02.0, [PR#2499](https://github.com/home-assistant/supervisor/pull/2499)
-- Use Aria storage engine
+- Use new tmpfs add-on config format in Supervisor 2021.2.0
 
 ## 2.2.1.9 (forked)
 
@@ -83,6 +129,3 @@
 ## 1.0.0
 
 - Update MariaDB to 10.3.13
-
-[warning_stripe]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/raw/master/mariadb/warning_stripe.png
-[official_addon]: https://github.com/home-assistant/addons/tree/master/mariadb
