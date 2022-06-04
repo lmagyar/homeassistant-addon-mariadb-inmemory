@@ -14,11 +14,14 @@ collation-server = utf8mb4_unicode_ci
 skip-name-resolve
 
 # Tune for low-end devices (Like a Raspberry Pi)
-key_buffer_size = 64K
+#key_buffer_size = 64K
+key_buffer_size = 16M
 max_connections = 64
-myisam_recover_options = OFF
-myisam_sort_buffer_size = 1M
-myisam_max_sort_file_size = 4M
+#myisam_recover_options = OFF
+#myisam_sort_buffer_size = 1M
+#myisam_max_sort_file_size = 4M
+myisam_recover_options = FORCE
+myisam_sort_buffer_size = 8M
 net_buffer_length = 16K
 read_buffer_size = 256K
 read_rnd_buffer_size = 512K
@@ -28,7 +31,7 @@ table_open_cache = 64
 thread_cache_size = 8
 thread_stack = 192K
 tmp_table_size = 16M
-max_binlog_size = 1M
+#max_binlog_size = 1M
 
 # Disable query cache
 query_cache_limit = 1M
@@ -37,13 +40,17 @@ query_cache_type = 0
 
 # InnoDB Tweaks
 innodb_buffer_pool_instances = 1
-innodb_buffer_pool_size = 5M
-innodb_log_buffer_size = 256K
-innodb_log_file_size = 1M
-innodb_doublewrite = 0
-innodb_change_buffering = none
-max_binlog_size = 1M
-transaction_isolation = READ-UNCOMMITTED
+#innodb_buffer_pool_size = 5M
+#innodb_log_buffer_size = 256K
+#innodb_log_file_size = 4M
+#innodb_doublewrite = 0
+#innodb_change_buffering = none
+#max_binlog_size = 1M
+#transaction_isolation = READ-UNCOMMITTED
+innodb_buffer_pool_size = 128M
+innodb_log_buffer_size = 8M
+innodb_log_file_size = 48M
+max_binlog_size = 96M
 
 default_storage_engine = InnoDB
 ignore_builtin_innodb = OFF
