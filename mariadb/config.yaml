@@ -1,8 +1,8 @@
 ---
 name: In-memory MariaDB
-version: 2.4.0.23
+version: 2.4.0.23-beta01
 homeassistant: 2022.6.0
-slug: mariadb
+slug: mariadb-beta
 description: An in-memory SQL database server
 url: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory
 arch:
