@@ -1,6 +1,6 @@
 ---
 name: "[BETA] In-memory MariaDB"
-version: 2.4.0.23-beta03
+version: 2.4.0.23-beta04
 homeassistant: 2022.6.0
 slug: mariadb-beta
 description: "[BETA] An in-memory SQL database server"
@@ -24,8 +24,6 @@ services:
 ports:
   3306/tcp:
 options:
-  tmpfs:
-    size: 200m
   databases:
     - homeassistant
   logins:
