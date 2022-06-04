@@ -1,6 +1,6 @@
 ---
 name: "[BETA] In-memory MariaDB"
-version: 2.4.0.23-beta01
+version: 2.4.0.23-beta02
 homeassistant: 2022.6.0
 slug: mariadb-beta
 description: "[BETA] An in-memory SQL database server"
