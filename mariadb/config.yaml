@@ -24,6 +24,8 @@ services:
 ports:
   3306/tcp:
 options:
+  tmpfs:
+    size: 200m
   databases:
     - homeassistant
   logins:
@@ -33,6 +35,8 @@ options:
     - username: homeassistant
       database: homeassistant
 schema:
+  tmpfs:
+    size: match(^\d+[kmg]?$)
   databases:
     - str
   logins:

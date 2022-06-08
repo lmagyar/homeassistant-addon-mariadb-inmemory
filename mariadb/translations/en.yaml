@@ -1,5 +1,8 @@
 ---
 configuration:
+  tmpfs:
+    name: tmpfs
+    description: Inmemory tmpfs file system size to store the database.
   databases:
     name: Databases
     description: Database names.
