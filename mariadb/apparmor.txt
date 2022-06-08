@@ -4,33 +4,27 @@ profile mariadb-beta flags=(attach_disconnected,mediate_deleted) {
   #include <abstractions/base>
   
   # Capabilities
-  capability,
   file,
-
-  capability setgid,
-  capability setuid,
+  signal (send) set=(kill,term,int,hup,cont),
 
   # S6-Overlay
+  /init ix,
   /bin/** ix,
   /usr/bin/** ix,
-  /usr/lib/bashio/** ix,
-  /etc/s6/** ix,
-  /run/s6/** ix,
+  /run/{s6,s6-rc*,service}/** ix,
+  /package/** ix,
+  /command/** ix,
   /etc/services.d/** rwix,
   /etc/cont-init.d/** rwix,
   /etc/cont-finish.d/** rwix,
-  /var/run/** rw,
+  /run/{,**} rwk,
+  /dev/tty rw,
 
-  # suppress ptrace denials when using 'docker ps' or using 'ps' inside a container
-  ptrace (trace,read) peer=docker-default,
+  # Bashio
+  /usr/lib/bashio/** ix,
+  /tmp/** rwk,
 
-  # docker daemon confinement requires explict allow rule for signal
-  signal (receive) set=(kill,term) peer=/usr/bin/docker,
-
-  # Access to hardware devices
-  # /dev/ttyUSB0 rw,
-  
-  # Access to Options.json and other files within your addon
+  # Access to options.json and other files within your addon
   /data/** rw,
 
   mount,
