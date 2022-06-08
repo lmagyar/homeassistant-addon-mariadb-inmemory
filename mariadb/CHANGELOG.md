@@ -5,6 +5,9 @@
 ## 2.4.0.23 (forked)
 
 - Use new recorder schema from core 2022.5.0 and 2022.6.0
+- Use dynamic row format
+- Bump alpine base image from 3.13 to 3.15
+- Bump MariaDB from 10.5.16 to 10.6.8
 
 ## 2.4.0.22 (forked)
 
