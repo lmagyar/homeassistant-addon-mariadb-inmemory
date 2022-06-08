@@ -1,9 +1,9 @@
 ---
-name: "[BETA] In-memory MariaDB"
-version: 2.4.0.24-beta04
+name: In-memory MariaDB
+version: 2.4.0.24
 homeassistant: 2022.6.0
-slug: mariadb-beta
-description: "[BETA] An in-memory SQL database server"
+slug: mariadb
+description: An in-memory SQL database server
 url: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory
 arch:
   - armhf
