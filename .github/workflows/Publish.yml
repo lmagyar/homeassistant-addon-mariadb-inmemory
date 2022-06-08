@@ -19,6 +19,7 @@ jobs:
       uses: home-assistant/builder@2022.03.1
       with:
         args: |
+          --no-latest \
           --all \
           --target mariadb \
           --docker-hub ${{ secrets.DOCKERHUB_USERNAME }}
