@@ -17,8 +17,8 @@ timeout: 20
 tmpfs: true
 privileged:
   - SYS_ADMIN
-backup_pre: /bin/s6-svc -wU -u /run/s6/services/mariadb-lock/
-backup_post: /bin/s6-svc -wd -d /run/s6/services/mariadb-lock/
+backup_pre: /command/s6-svc -wU -u /run/service/mariadb-lock/
+backup_post: /command/s6-svc -wd -d /run/service/mariadb-lock/
 services:
   - mysql:provide
 ports:
