@@ -5,6 +5,7 @@ homeassistant: 2022.6.0
 slug: mariadb
 description: An in-memory SQL database server
 url: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory
+codenotary: lmagyar1973@gmail.com
 arch:
   - armhf
   - armv7
