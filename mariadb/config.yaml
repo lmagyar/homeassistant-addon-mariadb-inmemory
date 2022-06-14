@@ -12,12 +12,13 @@ arch:
   - aarch64
   - amd64
   - i386
-init: false
 tmpfs: true
 privileged:
   - SYS_ADMIN
 backup_post: /command/s6-svc -wd -d /run/service/mariadb-lock/
 backup_pre: /command/s6-svc -wU -u /run/service/mariadb-lock/
+image: lmagyar/{arch}-addon-mariadb-inmemory
+init: false
 options:
   tmpfs:
     size: 200m
@@ -46,7 +47,6 @@ schema:
            CREATE VIEW|DELETE|DELETE HISTORY|DROP|EVENT|GRANT OPTION|INDEX|\
            INSERT|LOCK TABLES|SELECT|SHOW VIEW|TRIGGER|UPDATE)?"
       username: str
-image: lmagyar/{arch}-addon-mariadb-inmemory
 services:
   - mysql:provide
 startup: system
