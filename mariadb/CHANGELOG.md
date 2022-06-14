@@ -2,6 +2,15 @@
 
 **Note: Update of the add-on is mandatory if you are running HA core 2022.6.0 due to a bug in the database migration algorithm in HA core 2022.6.0! Update to HA core 2022.6.1 and later will work. - The database migration algorithm in HA core 2022.6.0 fails due to a hard-wired `ENGINE=InnoDB` statement, see: [#72883](https://github.com/home-assistant/core/issues/72883)!**
 
+## 2.5.0.0
+
+- Merge upstream changes
+
+## 2.5.0
+
+- Upgrade Alpine Linux to 3.15
+- Sign add-on with Codenotary Community Attestation Service (CAS)
+
 ## 2.4.0.24 (forked)
 
 - Fix issue [Backup of the add-on is impossible #11](https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/issues/11)
