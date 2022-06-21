@@ -15,13 +15,16 @@ arch:
 tmpfs: true
 privileged:
   - SYS_ADMIN
-backup_post: /command/s6-svc -wd -d /run/service/mariadb-lock/
-backup_pre: /command/s6-svc -wU -u /run/service/mariadb-lock/
+map:
+  - share:rw
+backup_pre: /run/service/mariadb/export.sh
 image: lmagyar/{arch}-addon-mariadb-inmemory
 init: false
 options:
   tmpfs:
     size: 200m
+  retention:
+    enabled: null
   databases:
     - homeassistant
   logins:
@@ -35,6 +38,8 @@ ports:
 schema:
   tmpfs:
     size: match(^\d+[kmg]?$)
+  retention:
+    enabled: bool?
   databases:
     - str
   logins:

@@ -5,6 +5,7 @@
 ## 2.5.0.0 (forked)
 
 - Merge upstream changes
+- Export homeassistant database on add-on backup and stop, import homeassistant database on add-on start
 
 ## 2.5.0
 

@@ -49,6 +49,8 @@ Example add-on configuration:
 ```yaml
 tmpfs:
   size: 200m
+retention:
+  enabled: true
 databases:
   - homeassistant
 logins:
@@ -108,6 +110,28 @@ FROM `events`;
 > ```
 >
 > </details>
+
+### Option: `retention` (required)
+
+This section defines the data retention parameters.
+
+### Option: `retention.enabled` (optional)
+
+Even this is an in-memory database, this option enables the possibility to export the `homeassistant` database's content before an update or restart and import the content when the add-on starts again.
+
+**Note:**
+- only the `homeassistant` database's content is exported and imported
+- the database dump is located in the /data folder, so it is part of the normal backup process
+- the database dump is **gzip-ed** before written to the storage to minimize SD-card wear
+- after a power failure, when the add-on is restarted, it will import the last known exported database content
+
+If enabled the add-on will
+- export the database content before each backup and when stopped (restarted)
+- import the database content when started (restarted)
+
+If disabled the add-on will delete any previously saved database content when started (restarted).
+
+If the optional value is not configured, the add-on will not create and will not delete any database content dump file.
 
 ### Option: `databases` (required)
 

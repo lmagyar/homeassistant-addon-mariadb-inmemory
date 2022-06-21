@@ -76,6 +76,9 @@ for database in $(bashio::config "databases"); do
     fi
 done
 
+# Import database content
+./import.sh
+
 # Init logins
 bashio::log.info "Ensure users exists and are updated"
 for login in $(bashio::config "logins|keys"); do
@@ -136,6 +139,7 @@ fi
 
 # Register stop
 function stop_mariadb() {
+    ./export.sh
     bashio::services.delete "mysql"
     mysqladmin shutdown
     # Successful exit, avoid wait exit status to propagate
