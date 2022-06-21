@@ -8,7 +8,7 @@
 
 ## 2.5.0
 
-- Upgrade Alpine Linux to 3.15
+- ~Upgrade Alpine Linux to 3.15~ already implemented
 - Sign add-on with Codenotary Community Attestation Service (CAS)
 
 ## 2.4.0.24 (forked)
