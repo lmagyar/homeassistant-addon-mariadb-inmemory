@@ -5,6 +5,7 @@
 ## 2.5.0.0 (forked)
 
 - Merge upstream changes
+- Upgrade Alpine Linux to 3.16
 - Export homeassistant database on add-on backup and stop, import homeassistant database on add-on start
 
 ## 2.5.0
