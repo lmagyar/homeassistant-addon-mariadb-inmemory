@@ -55,5 +55,5 @@ This version uses **tmpfs** to store MariaDB databases in-memory. The default ~~
 [updated-shield]: https://img.shields.io/github/last-commit/lmagyar/homeassistant-addon-mariadb-inmemory/master?label=updated
 [updated]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/commits/master
 [mariadb]: https://mariadb.com
-[warning_stripe]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/raw/master/mariadb/warning_stripe_wide.png
+[warning_stripe]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/raw/master/images/warning_stripe_wide.png
 [official_addon]: https://github.com/home-assistant/addons/tree/master/mariadb
