@@ -4,22 +4,15 @@
 
 > This is a **fork** of the [official add-on][official_addon]! See changes below.
 
-> Updates are released:
-> - when the official add-on changes (changes are merged), or 
-> - when the DB schema changes in HA (`TRANSACTIONAL=0` has to be added to each table to NOT use to much memory).
+> Even this is an in-memory database, it can export the `homeassistant` database's content during backup, update or restart and can import the content when the add-on starts again. The database dump is **gzip-ed** before written to the storage to minimize SD-card wear.
 > 
-> So you usually don't need to update (and lose in-memory data):
-> - the new functions from the official add-on usually are not used in an in-memory DB,
-> - the DB schema changes in HA usually are not critical, HA will update the schema without any issue (adding/modifying columns, etc.)
-> 
-> __The only time you should update this add-on__ is when a new table added to the DB, when the in-memory version should add the `TRANSACTIONAL=0` parameter to the table to save memory. See the __Changelog__ under the __Info tab__ for this information.
-> 
-> But before updating the add-on, you can connect to it on port 3306 with eg. HeidiSQL, DBeaver, BeeKeeper-Studio and dump the content of the tables and reload them after restart. How to do it:
+> If you update or restart the add-on, please stop HA core to avoid error messages that the database is not available (during plain backup, stopping HA core is not necessary). How to do it:
 > - \> ha core stop
-> - from the DB UI: save DB content __except__ `schema_changes` table (no table drop, no table create, only the content, a lof ot insert lines in the generated SQL file)
+> - \> ha bk new --addons 45207088_mariadb
 > - \> ha ad update 45207088_mariadb
-> - from the DB UI: load DB content
 > - \> ha core start
+> 
+> Updates are released not only when the official or forked add-on's functionality changes but when the DB schema changes in HA, because `TRANSACTIONAL=0` has to be added to each new table to **not** use too much memory.
 
 ![Warning][warning_stripe]
 
@@ -115,9 +108,9 @@ FROM `events`;
 
 This section defines the data retention parameters.
 
-### Option: `retention.enabled` (optional)
+### Option: `retention.enabled` (required)
 
-Even this is an in-memory database, this option enables the possibility to export the `homeassistant` database's content before an update or restart and import the content when the add-on starts again.
+Even this is an in-memory database, this option enables to export the `homeassistant` database's content during backup, update or restart and to import the content when the add-on starts again.
 
 **Note:**
 - only the `homeassistant` database's content is exported and imported
@@ -125,13 +118,11 @@ Even this is an in-memory database, this option enables the possibility to expor
 - the database dump is **gzip-ed** before written to the storage to minimize SD-card wear
 - after a power failure, when the add-on is restarted, it will import the last known exported database content
 
-If enabled the add-on will
+If enabled (default) the add-on will
 - export the database content before each backup and when stopped (restarted)
 - import the database content when started (restarted)
 
 If disabled the add-on will delete any previously saved database content when started (restarted).
-
-If the optional value is not configured, the add-on will not create and will not delete any database content dump file.
 
 ### Option: `databases` (required)
 

@@ -1,17 +1,14 @@
 # Changelog
 
-**Note: Update of the add-on is mandatory if you are running HA core 2022.6.0 due to a bug in the database migration algorithm in HA core 2022.6.0! Update to HA core 2022.6.1 and later will work. - The database migration algorithm in HA core 2022.6.0 fails due to a hard-wired `ENGINE=InnoDB` statement, see: [#72883](https://github.com/home-assistant/core/issues/72883)!**
-
 ## 2.5.0.0 (forked)
 
 - Merge upstream changes
-- Upgrade Alpine Linux to 3.16
-- Export homeassistant database on add-on backup and stop, import homeassistant database on add-on start
+- Sign add-on with Codenotary Community Attestation Service (CAS)
+- **New function**: Export homeassistant database on add-on backup and stop, import homeassistant database on add-on start (See documentation on how to automatically export and reimport the database content on restart or update)
 
 ## 2.5.0
 
-- ~Upgrade Alpine Linux to 3.15~ already implemented
-- Sign add-on with Codenotary Community Attestation Service (CAS)
+- Update alpine to 3.16 and s6 to v3
 
 ## 2.4.0.24 (forked)
 

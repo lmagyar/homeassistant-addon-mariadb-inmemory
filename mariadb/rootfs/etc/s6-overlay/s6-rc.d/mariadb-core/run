@@ -1,0 +1,26 @@
+#!/command/with-contenv bashio
+# ==============================================================================
+# Start MariaDB service
+# ==============================================================================
+MARIADB_DATA=$(</etc/MARIADB_DATA)
+
+# Start mariadb
+bashio::log.info "Starting MariaDB..."
+mysqld --datadir="${MARIADB_DATA}" --user=root < /dev/null &
+MARIADB_PID=$!
+
+# Wait until DB is running
+while test -d /proc/"${MARIADB_PID}"/ && ! mysql -e "" 2> /dev/null; do
+    sleep 1
+done
+if ! test -d /proc/"${MARIADB_PID}"/; then
+    bashio::log.fatal "MariaDB failed to start"
+    bashio::exit.nok
+fi
+
+bashio::log.info "MariaDB started"
+
+# Notify s6 about successful service start
+echo "" >&3
+
+wait "${MARIADB_PID}"

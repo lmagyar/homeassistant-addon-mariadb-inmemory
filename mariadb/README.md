@@ -28,9 +28,9 @@ In-memory MariaDB database for Home Assistant.
 
 You can use this add-on to install MariaDB, which is an open-source (GPLv2 licensed) database.  MariaDB can be used as the database backend for Home Assistant. For more information, please see [MariaDB][mariadb]
 
-If you are trying to minimize your SD-card's wear by using the built-in SQLite with `db_url: 'sqlite:///:memory:'` recorder configuration but fed up with the uncountable `[homeassistant.components.recorder.util] Error executing query: (sqlite3.OperationalError) cannot commit - no transaction is active` errors in your HA log, give this add-on a try.
+If you are trying to minimize your SD-card's wear, give this add-on a try. Even this is an in-memory database, it can export the database content during backup, update or restart and can import the content when the add-on starts again.
 
-It will also protect you from the data loss caused by HA core restarts when in-memory SQLite is used. Though it won't protect you from power failures, add-on or host restarts or updates.
+Though it won't protect you from power failures. After a power failure, when the add-on is restarted, it will import the last known exported database content.
 
 This version uses **tmpfs** to store MariaDB databases in-memory. The default ~~InnoDB~~ storage engine is replaced with **Aria** storage engine (because InnoDB storage engine wastes a great amount of disk space, and Memory storage engine can't handle TEXT columns).
 

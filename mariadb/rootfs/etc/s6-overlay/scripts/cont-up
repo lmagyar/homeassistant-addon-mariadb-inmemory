@@ -1,0 +1,14 @@
+#!/command/with-contenv bashio
+# ==============================================================================
+# Prepare the MariaDB add-on for running
+# ==============================================================================
+TMPFS_MNT=/tmp
+ADDON_EVENTS=${TMPFS_MNT}/events
+MARIADB_DATA=${TMPFS_MNT}/databases
+MARIADB_DUMP=/data/homeassistant-database-dump.sql.gz
+
+# Save variables
+echo ${TMPFS_MNT} > /etc/TMPFS_MNT
+echo ${ADDON_EVENTS} > /etc/ADDON_EVENTS
+echo ${MARIADB_DATA} > /etc/MARIADB_DATA
+echo ${MARIADB_DUMP} > /etc/MARIADB_DUMP

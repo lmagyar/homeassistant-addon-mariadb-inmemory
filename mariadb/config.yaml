@@ -1,6 +1,6 @@
 ---
-version: 2.5.0.0-rc01
-homeassistant: 2022.6.0
+version: 2.5.0.0
+homeassistant: 2022.6.1
 slug: mariadb
 name: In-memory MariaDB
 description: An in-memory SQL database server
@@ -17,14 +17,14 @@ privileged:
   - SYS_ADMIN
 map:
   - share:rw
-backup_pre: /run/service/mariadb/export.sh
+backup_pre: call-export-homeassistant-database
 image: lmagyar/{arch}-addon-mariadb-inmemory
 init: false
 options:
   tmpfs:
     size: 200m
   retention:
-    enabled: null
+    enabled: true
   databases:
     - homeassistant
   logins:
@@ -39,7 +39,7 @@ schema:
   tmpfs:
     size: match(^\d+[kmg]?$)
   retention:
-    enabled: bool?
+    enabled: bool
   databases:
     - str
   logins:
@@ -55,5 +55,5 @@ schema:
 services:
   - mysql:provide
 startup: system
-timeout: 20
+timeout: 60
 
