@@ -1,10 +1,14 @@
 # Changelog
 
-## 2.5.0.0 (forked)
+## 2.5.1.0 (forked)
 
 - Merge upstream changes
 - Sign add-on with Codenotary Community Attestation Service (CAS)
 - **New function**: Export homeassistant database on add-on backup and stop, import homeassistant database on add-on start (See documentation on how to automatically export and reimport the database content on restart or update)
+
+## 2.5.1
+
+- Remove deprecated `innodb-buffer-pool-instances`
 
 ## 2.5.0
 
