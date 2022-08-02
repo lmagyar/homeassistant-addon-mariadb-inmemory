@@ -3,16 +3,16 @@
 ![Warning][warning_stripe]
 
 > This is a **fork** of the [official add-on][official_addon]! See changes below.
-
+> 
+> Updates are released when the official add-on changes (changes are merged).
+>
 > Even this is an in-memory database, it can export the `homeassistant` database's content during backup, update or restart and can import the content when the add-on starts again. The database dump is **gzip-ed** before written to the storage to minimize SD-card wear.
-> 
-> If you update or restart the add-on, please stop HA core to avoid error messages that the database is not available (during plain backup, stopping HA core is not necessary). How to do it:
+ 
+> **Note:** If you update or restart the add-on, please stop HA core to avoid error messages that the database is not available (during plain backup, stopping HA core is not necessary). How to do it:
 > - \> ha core stop
-> - \> ha bk new --addons 45207088_mariadb
-> - \> ha ad update 45207088_mariadb
+> - \> ha backup new --addons 45207088_mariadb
+> - \> ha addons update 45207088_mariadb
 > - \> ha core start
-> 
-> Updates are released not only when the official or forked add-on's functionality changes but when the DB schema changes in HA, because `TRANSACTIONAL=0` has to be added to each new table to **not** use too much memory.
 
 ![Warning][warning_stripe]
 
@@ -134,7 +134,7 @@ Database name, e.g., `homeassistant`. Multiple are allowed.
 >
 > ---
 >
-> Use the default database name `homeassistant` to automatically create modified database schema when the add-on starts (default recorder schema, but without crash safety overhead).
+> Use the default database name `homeassistant` to automatically backup database content and alter schema to remove crash safety overhead.
 
 ### Option: `logins` (required)
 

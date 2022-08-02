@@ -5,10 +5,12 @@
 TMPFS_MNT=/tmp
 ADDON_EVENTS=${TMPFS_MNT}/events
 MARIADB_DATA=${TMPFS_MNT}/databases
-MARIADB_DUMP=/data/homeassistant-database-dump.sql.gz
+MARIADB_DUMP=/data/homeassistant-database-dump-TYPE.sql.gz
+EXPORT_IMPORT_DATABASE_CONTENT=false
 
 # Save variables
 echo ${TMPFS_MNT} > /etc/TMPFS_MNT
 echo ${ADDON_EVENTS} > /etc/ADDON_EVENTS
 echo ${MARIADB_DATA} > /etc/MARIADB_DATA
 echo ${MARIADB_DUMP} > /etc/MARIADB_DUMP
+echo ${EXPORT_IMPORT_DATABASE_CONTENT} > /etc/EXPORT_IMPORT_DATABASE_CONTENT

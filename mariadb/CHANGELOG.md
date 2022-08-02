@@ -2,9 +2,10 @@
 
 ## 2.5.1.0 (forked)
 
-- Merge upstream changes
+- **New function**: Export homeassistant database on add-on backup and stop, import homeassistant database on add-on start (see documentation for details)
+- Automatically apply schema modifications to the schema created by the recorder, no more add-on updates because of schema changes
 - Sign add-on with Codenotary Community Attestation Service (CAS)
-- **New function**: Export homeassistant database on add-on backup and stop, import homeassistant database on add-on start (See documentation on how to automatically export and reimport the database content on restart or update)
+- Merge upstream changes
 
 ## 2.5.1
 

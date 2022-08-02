@@ -26,7 +26,7 @@ In-memory MariaDB database for Home Assistant.
 
 ## About
 
-You can use this add-on to install MariaDB, which is an open-source (GPLv2 licensed) database.  MariaDB can be used as the database backend for Home Assistant. For more information, please see [MariaDB][mariadb]
+You can use this add-on to install MariaDB, which is an open-source (GPLv2 licensed) database. MariaDB can be used as the database backend for Home Assistant. For more information, please see [MariaDB][mariadb]
 
 If you are trying to minimize your SD-card's wear, give this add-on a try. Even this is an in-memory database, it can export the database content during backup, update or restart and can import the content when the add-on starts again.
 

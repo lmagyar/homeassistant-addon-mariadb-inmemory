@@ -1,8 +1,6 @@
 #!/command/with-contenv bashio
 # ==============================================================================
-# Call export homeassistant database
+# Start crond service
 # ==============================================================================
-ADDON_EVENTS=$(</etc/ADDON_EVENTS)
 
-s6-ftrig-notify ${ADDON_EVENTS} "e"
-s6-ftrig-wait -t 180000 ${ADDON_EVENTS} "E" > /dev/null
+exec crond -f
