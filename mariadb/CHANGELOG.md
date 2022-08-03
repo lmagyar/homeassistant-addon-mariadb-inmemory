@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.5.1.0 (forked)
+## 2.5.1.1 (forked)
 
 - **New function**: Export homeassistant database on add-on backup and stop, import homeassistant database on add-on start (see documentation for details)
 - Automatically apply schema modifications to the schema created by the recorder, no more add-on updates because of schema changes
