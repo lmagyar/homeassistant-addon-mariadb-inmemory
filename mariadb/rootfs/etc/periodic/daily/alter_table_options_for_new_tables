@@ -1,0 +1,9 @@
+#!/command/with-contenv bashio
+# ==============================================================================
+# Alter homeassistant database schema
+# ==============================================================================
+
+for table in $(mysql homeassistant -Nse 'SELECT `table_name` FROM `information_schema`.`tables` WHERE `table_schema`="homeassistant" AND NOT INSTR(`create_options`, "transactional=0");' 2> /dev/null); do
+    bashio::log.info "New table \`${table}\` detected, altering table options"
+    mysql homeassistant -e "ALTER TABLE \`${table}\` TRANSACTIONAL=0 ROW_FORMAT=DYNAMIC;" 2> /dev/null
+done

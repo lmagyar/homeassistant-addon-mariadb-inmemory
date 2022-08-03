@@ -1,0 +1,29 @@
+#!/command/with-contenv bashio
+# ==============================================================================
+# Export homeassistant database
+# ==============================================================================
+MARIADB_DATA=$(</etc/MARIADB_DATA)
+MARIADB_DUMP=$(</etc/MARIADB_DUMP)
+EXPORT_IMPORT_DATABASE_CONTENT=$(</etc/EXPORT_IMPORT_DATABASE_CONTENT)
+
+# do not use bashio functions, during shutdown they won't return true!
+if [[ "${EXPORT_IMPORT_DATABASE_CONTENT}" = "true" ]]; then
+    exec 4> >(mysql)
+    echo "FLUSH TABLES WITH READ LOCK;" >&4
+    bashio::log.info "MariaDB tables locked"
+
+    bashio::log.info "Exporting database structure and content"
+    mysqldump homeassistant --no-data \
+            --skip-lock-tables --skip-add-drop-table \
+        | gzip -9 > ${MARIADB_DUMP/TYPE/schema}
+    mysqldump homeassistant schema_changes recorder_runs \
+            --skip-lock-tables --skip-add-drop-table --no-create-info --skip-add-locks --complete-insert --insert-ignore \
+        | gzip -9 > ${MARIADB_DUMP/TYPE/recorder}
+    mysqldump homeassistant --ignore-table=homeassistant.schema_changes --ignore-table=homeassistant.recorder_runs \
+            --skip-lock-tables --skip-add-drop-table --no-create-info --skip-add-locks --complete-insert --insert-ignore \
+        | gzip -9 > ${MARIADB_DUMP/TYPE/data}
+
+    echo "UNLOCK TABLES;" >&4
+    bashio::log.info "MariaDB tables unlocked"
+    exec 4>&-
+fi

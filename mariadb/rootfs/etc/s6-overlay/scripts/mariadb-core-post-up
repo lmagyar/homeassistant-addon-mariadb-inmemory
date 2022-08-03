@@ -1,38 +1,10 @@
-#!/usr/bin/with-contenv bashio
+#!/command/with-contenv bashio
 # ==============================================================================
-# Start MariaDB service if enabled
+# Post-start initialization of  MariaDB service
 # ==============================================================================
-TMPFS_MNT=/tmp
-MARIADB_DATA=${TMPFS_MNT}/databases
-NEW_INSTALL=false
-
-# Change tmpfs size to configured value
-TMPFS_SIZE=$(bashio::config "tmpfs.size")
-bashio::log.info "Change tmpfs size to ${TMPFS_SIZE}"
-mount -o remount,size=${TMPFS_SIZE} tmpfs ${TMPFS_MNT}
-
-# Init mariadb
-if ! bashio::fs.directory_exists "${MARIADB_DATA}"; then
-    bashio::log.info "Create a new mariadb initial system"
-    mysql_install_db --user=root --datadir="${MARIADB_DATA}" --skip-name-resolve --skip-test-db > /dev/null
-    NEW_INSTALL=true
-else
-    bashio::log.info "Using existing mariadb initial system"
-fi
-
-# Redirect log output
-rm -f "${MARIADB_DATA}/mariadb.err"
-ln -s /proc/1/fd/1 "${MARIADB_DATA}/mariadb.err"
-
-# Start mariadb
-bashio::log.info "Starting MariaDB"
-mysqld_safe --datadir="${MARIADB_DATA}" --user=root < /dev/null &
-MARIADB_PID=$!
-
-# Wait until DB is running
-while ! mysql -e "" 2> /dev/null; do
-    sleep 1
-done
+MARIADB_DATA=$(</etc/MARIADB_DATA)
+MARIADB_DUMP=$(</etc/MARIADB_DUMP)
+EXPORT_IMPORT_DATABASE_CONTENT=$(</etc/EXPORT_IMPORT_DATABASE_CONTENT)
 
 bashio::log.info "Check data integrity and fix corruptions"
 mysqlcheck --no-defaults --databases mysql --fix-db-names --fix-table-names || true
@@ -44,37 +16,53 @@ bashio::log.info "Ensuring internal database upgrades are performed"
 mysql_upgrade --silent
 
 # Set default secure values after initial setup
-if bashio::var.true "${NEW_INSTALL}"; then
-    # Secure the installation.
-    mysql <<-EOSQL
-        SET @@SESSION.SQL_LOG_BIN=0;
-        DELETE FROM
-            mysql.user
-        WHERE
-            user NOT IN ('mysql.sys', 'mariadb.sys', 'mysqlxsys', 'root', 'mysql', 'proxies_priv')
-                OR host NOT IN ('localhost');
-        DELETE FROM
-            mysql.proxies_priv
-        WHERE
-            user NOT IN ('mysql.sys', 'mariadb.sys', 'mysqlxsys', 'root', 'mysql', 'proxies_priv')
-                OR host NOT IN ('localhost');
-        DROP DATABASE IF EXISTS test;
-        FLUSH PRIVILEGES;
+bashio::log.info "Secure the installation"
+mysql <<-EOSQL
+    SET @@SESSION.SQL_LOG_BIN=0;
+    DELETE FROM
+        mysql.user
+    WHERE
+        user NOT IN ('mysql.sys', 'mariadb.sys', 'mysqlxsys', 'root', 'mysql', 'proxies_priv')
+            OR host NOT IN ('localhost');
+    DELETE FROM
+        mysql.proxies_priv
+    WHERE
+        user NOT IN ('mysql.sys', 'mariadb.sys', 'mysqlxsys', 'root', 'mysql', 'proxies_priv')
+            OR host NOT IN ('localhost');
+    DROP DATABASE IF EXISTS test;
+    FLUSH PRIVILEGES;
 EOSQL
-fi
 
 # Init databases
 bashio::log.info "Ensure databases exists"
 for database in $(bashio::config "databases"); do
     bashio::log.info "Create database ${database}"
     mysql -e "CREATE DATABASE ${database};" 2> /dev/null || true
-
-    # Create default schema
-    if [[ "${database}" == "homeassistant" ]]; then
-        bashio::log.info "Create default schema in database ${database}"
-        mysql ${database} < ./schema.sql
-    fi
 done
+
+# Import database structure
+if bashio::config.exists "retention.enabled" && bashio::fs.directory_exists "${MARIADB_DATA}/homeassistant"; then
+    if bashio::config.true "retention.enabled"; then
+        EXPORT_IMPORT_DATABASE_CONTENT=true
+        if ! bashio::fs.file_exists "${MARIADB_DUMP/TYPE/schema}"; then
+            bashio::log.warning "Importing last known database content skipped, no dump file found"
+        else
+            bashio::log.info "Last known database content time stamp is $(stat ${MARIADB_DUMP/TYPE/schema} -c %y)"
+            bashio::log.info "Importing database structure"
+            gzip -d ${MARIADB_DUMP/TYPE/schema} -c \
+                | mysql homeassistant
+            gzip -d ${MARIADB_DUMP/TYPE/recorder} -c \
+                | mysql homeassistant
+        fi
+    else
+        if bashio::fs.file_exists "${MARIADB_DUMP/TYPE/schema}"; then
+            rm -f ${MARIADB_DUMP/TYPE/schema}
+            rm -f ${MARIADB_DUMP/TYPE/recorder}
+            rm -f ${MARIADB_DUMP/TYPE/data}
+            bashio::log.info "Data retention is explicitly turned off, unused exported database content is removed"
+        fi
+    fi
+fi
 
 # Init logins
 bashio::log.info "Ensure users exists and are updated"
@@ -129,18 +117,17 @@ PAYLOAD=$(\
         password "${SECRET}"
 )
 if bashio::services.publish "mysql" "${PAYLOAD}"; then
-    bashio::log.info "Successfully send service information to Home Assistant."
+    bashio::log.info "Successfully sent service information to Home Assistant."
 else
     bashio::log.warning "Service message to Home Assistant failed!"
 fi
 
-# Register stop
-function stop_mariadb() {
-    bashio::services.delete "mysql"
-    mysqladmin shutdown
-    # Successful exit, avoid wait exit status to propagate
-    exit 0
-}
-trap "stop_mariadb" SIGTERM SIGHUP
+# Import database content
+if [[ "${EXPORT_IMPORT_DATABASE_CONTENT}" = "true" ]]; then
+    bashio::log.info "Importing database content"
+    gzip -d ${MARIADB_DUMP/TYPE/data} -c \
+        | mysql homeassistant
+fi
 
-wait "${MARIADB_PID}"
+# Save variables
+echo ${EXPORT_IMPORT_DATABASE_CONTENT} > /etc/EXPORT_IMPORT_DATABASE_CONTENT

@@ -1,6 +1,19 @@
 # Changelog
 
-**Note: Update of the add-on is mandatory if you are running HA core 2022.6.0 due to a bug in the database migration algorithm in HA core 2022.6.0! Update to HA core 2022.6.1 and later will work. - The database migration algorithm in HA core 2022.6.0 fails due to a hard-wired `ENGINE=InnoDB` statement, see: [#72883](https://github.com/home-assistant/core/issues/72883)!**
+## 2.5.1.0 (forked)
+
+- **New function**: Export homeassistant database on add-on backup and stop, import homeassistant database on add-on start (see documentation for details)
+- Automatically apply schema modifications to the schema created by the recorder, no more add-on updates because of schema changes
+- Sign add-on with Codenotary Community Attestation Service (CAS)
+- Merge upstream changes
+
+## 2.5.1
+
+- Remove deprecated `innodb-buffer-pool-instances`
+
+## 2.5.0
+
+- Update alpine to 3.16 and s6 to v3
 
 ## 2.4.0.24 (forked)
 

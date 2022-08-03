@@ -3,22 +3,15 @@
 ![Warning][warning_stripe]
 
 > This is a **fork** of the [official add-on][official_addon]! See changes below.
-
-> Updates are released:
-> - when the official add-on changes (changes are merged), or 
-> - when the DB schema changes in HA (`TRANSACTIONAL=0` has to be added to each table to NOT use to much memory).
 > 
-> So you usually don't need to update (and lose in-memory data):
-> - the new functions from the official add-on usually are not used in an in-memory DB,
-> - the DB schema changes in HA usually are not critical, HA will update the schema without any issue (adding/modifying columns, etc.)
-> 
-> __The only time you should update this add-on__ is when a new table added to the DB, when the in-memory version should add the `TRANSACTIONAL=0` parameter to the table to save memory. See the __Changelog__ under the __Info tab__ for this information.
-> 
-> But before updating the add-on, you can connect to it on port 3306 with eg. HeidiSQL, DBeaver, BeeKeeper-Studio and dump the content of the tables and reload them after restart. How to do it:
+> Updates are released when the official add-on changes (changes are merged).
+>
+> Even this is an in-memory database, it can export the `homeassistant` database's content during backup, update or restart and can import the content when the add-on starts again. The database dump is **gzip-ed** before written to the storage to minimize SD-card wear.
+ 
+> **Note:** If you update or restart the add-on, please stop HA core to avoid error messages that the database is not available (during plain backup, stopping HA core is not necessary). How to do it:
 > - \> ha core stop
-> - from the DB UI: save DB content __except__ `schema_changes` table (no table drop, no table create, only the content, a lof ot insert lines in the generated SQL file)
-> - \> ha ad update 45207088_mariadb
-> - from the DB UI: load DB content
+> - \> ha backup new --addons 45207088_mariadb
+> - \> ha addons update 45207088_mariadb
 > - \> ha core start
 
 ![Warning][warning_stripe]
@@ -49,6 +42,8 @@ Example add-on configuration:
 ```yaml
 tmpfs:
   size: 200m
+retention:
+  enabled: true
 databases:
   - homeassistant
 logins:
@@ -109,6 +104,26 @@ FROM `events`;
 >
 > </details>
 
+### Option: `retention` (required)
+
+This section defines the data retention parameters.
+
+### Option: `retention.enabled` (required)
+
+Even this is an in-memory database, this option enables to export the `homeassistant` database's content during backup, update or restart and to import the content when the add-on starts again.
+
+**Note:**
+- only the `homeassistant` database's content is exported and imported
+- the database dump is located in the /data folder, so it is part of the normal backup process
+- the database dump is **gzip-ed** before written to the storage to minimize SD-card wear
+- after a power failure, when the add-on is restarted, it will import the last known exported database content
+
+If enabled (default) the add-on will
+- export the database content before each backup and when stopped (restarted)
+- import the database content when started (restarted)
+
+If disabled the add-on will delete any previously saved database content when started (restarted).
+
 ### Option: `databases` (required)
 
 Database name, e.g., `homeassistant`. Multiple are allowed.
@@ -119,7 +134,7 @@ Database name, e.g., `homeassistant`. Multiple are allowed.
 >
 > ---
 >
-> Use the default database name `homeassistant` to automatically create modified database schema when the add-on starts (default recorder schema, but without crash safety overhead).
+> Use the default database name `homeassistant` to automatically backup database content and alter schema to remove crash safety overhead.
 
 ### Option: `logins` (required)
 
@@ -219,5 +234,5 @@ In case you've found a bug, please open an issue on our GitHub: [issue with the 
 [issue_forked]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/issues
 [reddit]: https://reddit.com/r/homeassistant
 [repository]: https://github.com/hassio-addons/repository
-[warning_stripe]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/raw/master/mariadb/warning_stripe_wide.png
+[warning_stripe]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/raw/master/images/warning_stripe_wide.png
 [official_addon]: https://github.com/home-assistant/addons/tree/master/mariadb
