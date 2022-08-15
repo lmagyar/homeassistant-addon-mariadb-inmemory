@@ -20,17 +20,18 @@
 
 Follow these steps to get the add-on installed on your system:
 
-1. Navigate in your Home Assistant frontend to **Supervisor** -> **Add-on Store**.
-2. Click **Repositories** in the **...** menu at the top right corner, add `https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory` as repository.
+1. Navigate in your Home Assistant frontend to **Settings** -> **Add-ons** -> **Add-on Store**.
+2. In the **...** menu at the top right corner click **Repositories**, add `https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory` as repository.
 3. Find the "In-memory MariaDB" add-on and click it. If it doesn't show up, wait until HA refreshes the information about the add-on, or click **Reload** in the **...** menu at the top right corner.
 4. Click on the "INSTALL" button.
 
 ## How to use
 
 1. Under the Configuration tab set the `logins` -> `password` field to something strong and unique.
-2. Start the add-on.
-3. Check the add-on log output to see the result.
-4. Add `recorder` component to your Home Assistant configuration.
+2. Save the configuration.
+3. Start the add-on.
+4. Check the add-on log output to see the result.
+5. Add `recorder` component to your Home Assistant configuration.
 
 ## Add-on Configuration
 
