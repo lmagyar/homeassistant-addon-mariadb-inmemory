@@ -6,7 +6,7 @@
 > 
 > Updates are released when the official add-on changes (changes are merged).
 >
-> Even this is an in-memory database, it can export the `homeassistant` database's content during backup, update or restart and can import the content when the add-on starts again. The database dump is **gzip-ed** before written to the storage to minimize SD-card wear.
+> **Even this is an in-memory database, it can automatically export the `homeassistant` database's content during backup, update or restart and can automatically import the content when the add-on starts again.** The database dump is **gzip-ed** before written to the storage to minimize SD-card wear.
  
 > **Note:** If you update or restart the add-on, please stop HA core to avoid error messages that the database is not available (during plain backup, stopping HA core is not necessary). How to do it:
 > - \> ha core stop
@@ -111,7 +111,7 @@ This section defines the data retention parameters.
 
 ### Option: `retention.enabled` (required)
 
-Even this is an in-memory database, this option enables to export the `homeassistant` database's content during backup, update or restart and to import the content when the add-on starts again.
+Even this is an in-memory database, this option enables to automatically export the `homeassistant` database's content during backup, update or restart and to automatically import the content when the add-on starts again.
 
 **Note:**
 - only the `homeassistant` database's content is exported and imported
