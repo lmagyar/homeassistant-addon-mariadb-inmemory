@@ -6,7 +6,7 @@
 > 
 > Updates are released when the official add-on changes (changes are merged).
 >
-> Even this is an in-memory database, it can export the `homeassistant` database's content during backup, update or restart and can import the content when the add-on starts again. The database dump is **gzip-ed** before written to the storage to minimize SD-card wear.
+> **Even this is an in-memory database, it can automatically export the `homeassistant` database's content during backup, update or restart and can automatically import the content when the add-on starts again.** The database dump is **gzip-ed** before written to the storage to minimize SD-card wear.
  
 > **Note:** If you update or restart the add-on, please stop HA core to avoid error messages that the database is not available (during plain backup, stopping HA core is not necessary). How to do it:
 > - \> ha core stop
@@ -20,17 +20,18 @@
 
 Follow these steps to get the add-on installed on your system:
 
-1. Navigate in your Home Assistant frontend to **Supervisor** -> **Add-on Store**.
-2. Click **Repositories** in the **...** menu at the top right corner, add `https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory` as repository.
+1. Navigate in your Home Assistant frontend to **Settings** -> **Add-ons** -> **Add-on Store**.
+2. In the **...** menu at the top right corner click **Repositories**, add `https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory` as repository.
 3. Find the "In-memory MariaDB" add-on and click it. If it doesn't show up, wait until HA refreshes the information about the add-on, or click **Reload** in the **...** menu at the top right corner.
 4. Click on the "INSTALL" button.
 
 ## How to use
 
 1. Under the Configuration tab set the `logins` -> `password` field to something strong and unique.
-2. Start the add-on.
-3. Check the add-on log output to see the result.
-4. Add `recorder` component to your Home Assistant configuration.
+2. Save the configuration.
+3. Start the add-on.
+4. Check the add-on log output to see the result.
+5. Add `recorder` component to your Home Assistant configuration.
 
 ## Add-on Configuration
 
@@ -74,7 +75,7 @@ Specify an **upper limit** on the size of the in-memory filesystem. The size may
 >
 > ---
 >
-> During the first days regularly check the database size from eg. HeidiSQL, DBeaver, BeeKeeper-Studio. Or hardcore users can use Portainer add-on to get a console to this add-on's container (or without Portainer add-on SSH into the system, use `docker ps` and `docker exec -it 123456 /bin/bash`) and see the container's file-system directly, use `df` or `ls` to check free space and file sizes (database is located at `/tmp/databases`.
+> During the first days regularly check the database size from eg. HeidiSQL, DBeaver, BeeKeeper-Studio. Or hardcore users can use Portainer add-on to get a console to this add-on's container (or without Portainer add-on SSH into the system, use `docker exec -it addon_45207088_mariadb /bin/bash`) and see the container's file-system directly, use `df` or `ls` to check free space and file sizes (database is located at `/tmp/databases`.
 >
 > **Note:** The database occupies more space on tmpfs than you see in the client. And it needs even more temporary space to `repack` tables after `purge` deleted rows.
 >
@@ -110,7 +111,7 @@ This section defines the data retention parameters.
 
 ### Option: `retention.enabled` (required)
 
-Even this is an in-memory database, this option enables to export the `homeassistant` database's content during backup, update or restart and to import the content when the add-on starts again.
+Even this is an in-memory database, this option enables to automatically export the `homeassistant` database's content during backup, update or restart and to automatically import the content when the add-on starts again.
 
 **Note:**
 - only the `homeassistant` database's content is exported and imported
