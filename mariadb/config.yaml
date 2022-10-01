@@ -1,5 +1,5 @@
 ---
-version: 2.5.1.1
+version: 2.5.1.2
 homeassistant: 2022.6.1
 slug: mariadb
 name: In-memory MariaDB
@@ -25,6 +25,7 @@ options:
     size: 200m
   retention:
     enabled: true
+    periodic: disabled
   databases:
     - homeassistant
   logins:
@@ -40,6 +41,7 @@ schema:
     size: match(^\d+[kmg]?$)
   retention:
     enabled: bool
+    periodic: list(disabled|hourly|daily|weekly|monthly)
   databases:
     - str
   logins:
