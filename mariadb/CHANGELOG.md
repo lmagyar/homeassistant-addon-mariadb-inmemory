@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.5.1.2 (forked)
+
+- **New function**: Periodically export homeassistant database to minimize data loss in case of power failure. Disabled by default. 
+
 ## 2.5.1.1 (forked)
 
 - **New function**: Automatically export homeassistant database on add-on backup and stop, automatically import homeassistant database on add-on start (see documentation for details)
