@@ -45,6 +45,7 @@ tmpfs:
   size: 200m
 retention:
   enabled: true
+  periodic: disabled
 databases:
   - homeassistant
 logins:
@@ -124,6 +125,19 @@ If enabled (default) the add-on will
 - import the database content when started (restarted)
 
 If disabled the add-on will delete any previously saved database content when started (restarted).
+
+### Option: `retention.periodic` (required)
+
+This option helps to minimize data loss in case of power failure by periodically exporting the `homeassistant` database's content.
+
+Possible values:
+- disabled (default)
+- hourly (periodically export at each hour 00 minute)
+- daily (periodically export at 02:00h)
+- weekly (periodically export at 03:00h on each Saturday)
+- monthly (periodically export at 05:00h on the first day of each month)
+
+**Note:** This option exports the database content from memory to SD card, but doesn't create a complete backup nor uploads it to anywhere. In case you use a periodic backup solution, you don't need to enable this periodic retention option, only enable retention above, because exporting database content is part of the add-on's backup.
 
 ### Option: `databases` (required)
 
