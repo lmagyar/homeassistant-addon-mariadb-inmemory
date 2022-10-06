@@ -5,7 +5,7 @@ configuration:
     description: Inmemory tmpfs file system size to store the database.
   retention:
     name: Data retention
-    description: If enabled, in-memory data will be saved during backup, update or restart.
+    description: If enabled, in-memory data will be saved during backup, update, restart or even periodically.
   databases:
     name: Databases
     description: Database names.
