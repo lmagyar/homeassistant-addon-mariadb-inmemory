@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.5.1.3 (forked)
+
+- Bugfix in periodic export bash script
+
 ## 2.5.1.2 (forked)
 
 - **New function**: Periodically export homeassistant database to minimize data loss in case of power failure. Disabled by default. 
