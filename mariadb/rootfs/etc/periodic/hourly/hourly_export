@@ -3,6 +3,6 @@
 # Export homeassistant database periodically
 # ==============================================================================
 
-if bashio::config.true "retention.enabled" && bashio::config.has_value "retention.periodic" "hourly"; then
+if bashio::config.true "retention.enabled" && bashio::config.equals "retention.periodic" "hourly"; then
     export-homeassistant-database
 fi
