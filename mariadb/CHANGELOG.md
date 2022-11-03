@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.5.1.4 (forked)
+
+- Bump base image to 2022.09.0
+
 ## 2.5.1.3 (forked)
 
 - Bugfix in periodic export bash script

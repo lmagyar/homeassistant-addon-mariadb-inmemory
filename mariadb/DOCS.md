@@ -6,7 +6,7 @@
 > 
 > Updates are released when the official add-on changes (changes are merged).
 >
-> **Even this is an in-memory database, it can automatically export the `homeassistant` database's content during backup, update or restart and can automatically import the content when the add-on starts again.** The database dump is **gzip-ed** before written to the storage to minimize SD-card wear.
+> **Even this is an in-memory database, it can automatically export the `homeassistant` database's content during backup, update, restart or even periodically, and can automatically import the content when the add-on starts again.** The database dump is **gzip-ed** before written to the storage to minimize SD-card wear.
  
 > **Note:** If you update or restart the add-on, please stop HA core to avoid error messages that the database is not available (during plain backup, stopping HA core is not necessary). How to do it:
 > - \> ha core stop
@@ -137,7 +137,7 @@ Possible values:
 - weekly (periodically export at 03:00h on each Saturday)
 - monthly (periodically export at 05:00h on the first day of each month)
 
-**Note:** This option exports the database content from memory to SD card, but doesn't create a complete backup nor uploads it to anywhere. In case you use a periodic backup solution, you don't need to enable this periodic retention option, only enable retention above, because exporting database content is part of the add-on's backup.
+**Note:** This option exports the database content from memory to SD card, but doesn't create a complete Home Assistant backup nor uploads it to anywhere. In case you use a periodic Home Assistant backup solution, you don't need to enable this periodic retention option, only enable the retention functionality above, because exporting database content is part of the add-on's backup.
 
 ### Option: `databases` (required)
 
