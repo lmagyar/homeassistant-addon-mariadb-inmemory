@@ -4,6 +4,7 @@
 # ==============================================================================
 MARIADB_DATA=$(</etc/MARIADB_DATA)
 MARIADB_DUMP=$(</etc/MARIADB_DUMP)
+MARIADB_DUMP_FINISHED=$(</etc/MARIADB_DUMP_FINISHED)
 EXPORT_IMPORT_DATABASE_CONTENT=$(</etc/EXPORT_IMPORT_DATABASE_CONTENT)
 
 # do not use bashio functions, during shutdown they won't return true!
@@ -15,13 +16,21 @@ if [[ "${EXPORT_IMPORT_DATABASE_CONTENT}" = "true" ]]; then
     bashio::log.info "Exporting database structure and content"
     mysqldump homeassistant --no-data \
             --skip-lock-tables --skip-add-drop-table \
-        | gzip -9 > ${MARIADB_DUMP/TYPE/schema}
+        | gzip -9 > ${MARIADB_DUMP/TYPE/schema}.tmp
     mysqldump homeassistant schema_changes recorder_runs \
             --skip-lock-tables --skip-add-drop-table --no-create-info --skip-add-locks --complete-insert --insert-ignore \
-        | gzip -9 > ${MARIADB_DUMP/TYPE/recorder}
+        | gzip -9 > ${MARIADB_DUMP/TYPE/recorder}.tmp
     mysqldump homeassistant --ignore-table=homeassistant.schema_changes --ignore-table=homeassistant.recorder_runs \
             --skip-lock-tables --skip-add-drop-table --no-create-info --skip-add-locks --complete-insert --insert-ignore \
-        | gzip -9 > ${MARIADB_DUMP/TYPE/data}
+        | gzip -9 > ${MARIADB_DUMP/TYPE/data}.tmp
+    touch ${MARIADB_DUMP_FINISHED}
+    rm -f ${MARIADB_DUMP/TYPE/schema}
+    rm -f ${MARIADB_DUMP/TYPE/recorder}
+    rm -f ${MARIADB_DUMP/TYPE/data}
+    mv ${MARIADB_DUMP/TYPE/schema}.tmp ${MARIADB_DUMP/TYPE/schema}
+    mv ${MARIADB_DUMP/TYPE/recorder}.tmp ${MARIADB_DUMP/TYPE/recorder}
+    mv ${MARIADB_DUMP/TYPE/data}.tmp ${MARIADB_DUMP/TYPE/data}
+    rm ${MARIADB_DUMP_FINISHED}
 
     echo "UNLOCK TABLES;" >&4
     bashio::log.info "MariaDB tables unlocked"

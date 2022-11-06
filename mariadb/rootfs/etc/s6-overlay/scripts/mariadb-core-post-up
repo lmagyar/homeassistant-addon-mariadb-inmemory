@@ -4,6 +4,7 @@
 # ==============================================================================
 MARIADB_DATA=$(</etc/MARIADB_DATA)
 MARIADB_DUMP=$(</etc/MARIADB_DUMP)
+MARIADB_DUMP_FINISHED=$(</etc/MARIADB_DUMP_FINISHED)
 EXPORT_IMPORT_DATABASE_CONTENT=$(</etc/EXPORT_IMPORT_DATABASE_CONTENT)
 
 bashio::log.info "Check data integrity and fix corruptions"
@@ -39,6 +40,27 @@ for database in $(bashio::config "databases"); do
     bashio::log.info "Create database ${database}"
     mysql -e "CREATE DATABASE ${database};" 2> /dev/null || true
 done
+
+# Cleanup failed export
+if bashio::fs.file_exists "${MARIADB_DUMP_FINISHED}"; then
+    if bashio::fs.file_exists "${MARIADB_DUMP/TYPE/schema}.tmp"; then
+        rm -f ${MARIADB_DUMP/TYPE/schema}
+        mv ${MARIADB_DUMP/TYPE/schema}.tmp ${MARIADB_DUMP/TYPE/schema}
+    fi
+    if bashio::fs.file_exists "${MARIADB_DUMP/TYPE/recorder}.tmp"; then
+        rm -f ${MARIADB_DUMP/TYPE/recorder}
+        mv ${MARIADB_DUMP/TYPE/recorder}.tmp ${MARIADB_DUMP/TYPE/recorder}
+    fi
+    if bashio::fs.file_exists "${MARIADB_DUMP/TYPE/data}.tmp"; then
+        rm -f ${MARIADB_DUMP/TYPE/data}
+        mv ${MARIADB_DUMP/TYPE/data}.tmp ${MARIADB_DUMP/TYPE/data}
+    fi
+    rm ${MARIADB_DUMP_FINISHED}
+else
+    rm -f ${MARIADB_DUMP/TYPE/schema}.tmp
+    rm -f ${MARIADB_DUMP/TYPE/recorder}.tmp
+    rm -f ${MARIADB_DUMP/TYPE/data}.tmp
+fi
 
 # Import database structure
 if bashio::config.exists "retention.enabled" && bashio::fs.directory_exists "${MARIADB_DATA}/homeassistant"; then

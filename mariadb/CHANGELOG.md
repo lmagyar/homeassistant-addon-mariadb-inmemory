@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.5.1.5 (forked)
+
+- Bugfix: dump database export in failsafe, "transactional" way
+
 ## 2.5.1.4 (forked)
 
 - Bump base image to 2022.09.0
