@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.5.1.6 (forked)
+
+- Bugfix: fine tune export/import table order to avoid errors after host (re)boot [#18](https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/issues/18)
+
+## 2.5.1.5 (forked) (unreleased see [#19](https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/issues/19))
+
+- Bugfix: dump database export in failsafe, "transactional" way
+
 ## 2.5.1.4 (forked)
 
 - Bump base image to 2022.09.0
