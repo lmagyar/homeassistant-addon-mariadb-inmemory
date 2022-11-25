@@ -1,5 +1,9 @@
 # Changelog
 
+## vNext (forked)
+
+- Bump base image to 2022.11.0
+
 ## 2.5.1.6 (forked)
 
 - Bugfix: fine tune export/import table order to avoid errors after host (re)boot [#18](https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/issues/18)
