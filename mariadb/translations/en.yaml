@@ -6,6 +6,9 @@ configuration:
   retention:
     name: Data retention
     description: If enabled, in-memory data will be saved during backup, update, restart or even periodically.
+  purge_statistics:
+    name: Statistics data purge
+    description: Specify how frequently should the statistics data be purged, the number of periods to keep in database after a purge and whether export the data before deletion.
   databases:
     name: Databases
     description: Database names.

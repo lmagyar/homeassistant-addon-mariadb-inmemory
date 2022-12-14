@@ -16,6 +16,7 @@ tmpfs: true
 privileged:
   - SYS_ADMIN
 map:
+  - backup:rw
   - share:rw
 backup_pre: call-export-homeassistant-database
 image: lmagyar/{arch}-addon-mariadb-inmemory
@@ -26,6 +27,10 @@ options:
   retention:
     enabled: true
     periodic: disabled
+  purge_statistics:
+    period: monthly
+    keep_periods: 6
+    backup: false
   databases:
     - homeassistant
   logins:
@@ -42,6 +47,10 @@ schema:
   retention:
     enabled: bool
     periodic: list(disabled|hourly|daily|weekly|monthly)
+  purge_statistics:
+    period: list(daily|weekly|monthly)
+    keep_periods: int(1,)
+    backup: bool
   databases:
     - str
   logins:

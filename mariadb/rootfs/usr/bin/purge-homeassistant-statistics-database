@@ -1,0 +1,33 @@
+#!/command/with-contenv bashio
+# ==============================================================================
+# Purge homeassistant statistics database
+# ==============================================================================
+STATISTICS_DUMP=$(</etc/STATISTICS_DUMP)
+
+# timestamps
+timestamp=$(mysql homeassistant -Nse "SELECT UTC_TIMESTAMP();" 2> /dev/null)
+purge_time_limit=$(mysql homeassistant -Nse "SELECT DATE_SUB('${timestamp}', INTERVAL $(bashio::config "purge_statistics.keep_periods") \
+    $(sed 's/daily/DAY/g;s/weekly/WEEK/g;s/monthly/MONTH/g' <<< "$(bashio::config "purge_statistics.period")"));" 2> /dev/null)
+
+bashio::log.info "Purging statistics database"
+if (( $(mysql homeassistant -Nse "SELECT COUNT(1) FROM \`statistics\` WHERE \`created\` < '${purge_time_limit}';" 2> /dev/null) == 0 )); then
+    bashio::log.info "Nothing to purge"
+else
+    if bashio::config "purge_statistics.backup"; then
+        bashio::log.info "Exporting statistics database structure and content to be purged"
+        file_timestamp=$(sed 's/-//g;s/://g;s/ /_/g;' <<< "${purge_time_limit}")
+        { \
+            mysqldump homeassistant statistics_meta \
+                --skip-lock-tables --skip-add-drop-table --skip-add-locks --complete-insert --insert-ignore ; \
+            mysqldump homeassistant statistics \
+                --where="created < '${purge_time_limit}'" \
+                --skip-lock-tables --skip-add-drop-table --skip-add-locks --complete-insert --insert-ignore ; \
+        } \
+            | sed 's/^CREATE TABLE /CREATE TABLE IF NOT EXISTS /g' \
+            | gzip -9 > ${STATISTICS_DUMP/TIMESTAMP/${file_timestamp}}.tmp
+        mv ${STATISTICS_DUMP/TIMESTAMP/${file_timestamp}}.tmp ${STATISTICS_DUMP/TIMESTAMP/${file_timestamp}}
+    fi
+
+    bashio::log.info "Deleting statistics database content to be purged"
+    ######## mysql homeassistant -Nse "DELETE FROM \`statistics\` WHERE \`created\` < '${timestamp}';" 2> /dev/null
+fi
