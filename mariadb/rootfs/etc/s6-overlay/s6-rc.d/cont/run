@@ -7,7 +7,7 @@ ADDON_EVENTS=${TMPFS_MNT}/events
 MARIADB_DATA=${TMPFS_MNT}/databases
 MARIADB_DUMP=/data/homeassistant-database-dump-TYPE.sql.gz
 MARIADB_DUMP_FINISHED=/data/homeassistant-database-dump-finished
-STATISTICS_DUMP=/backup/purged-homeassistant-statistics-database-older-than-TIMESTAMP.sql.gz
+STATISTICS_DUMP=/share/purged-statistics/purged-homeassistant-statistics-database-older-than-TIMESTAMP.sql.gz
 EXPORT_IMPORT_DATABASE_CONTENT=false
 
 # Save variables

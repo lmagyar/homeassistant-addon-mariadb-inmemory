@@ -16,7 +16,6 @@ tmpfs: true
 privileged:
   - SYS_ADMIN
 map:
-  - backup:rw
   - share:rw
 backup_pre: call-export-homeassistant-database
 image: lmagyar/{arch}-addon-mariadb-inmemory
