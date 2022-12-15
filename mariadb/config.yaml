@@ -1,5 +1,5 @@
 ---
-version: 2.5.1.6
+version: 2.5.1.7
 homeassistant: 2022.6.1
 slug: mariadb
 name: In-memory MariaDB
@@ -26,6 +26,10 @@ options:
   retention:
     enabled: true
     periodic: disabled
+  purge_statistics:
+    period: monthly
+    keep_periods: 6
+    archive: false
   databases:
     - homeassistant
   logins:
@@ -42,6 +46,10 @@ schema:
   retention:
     enabled: bool
     periodic: list(disabled|hourly|daily|weekly|monthly)
+  purge_statistics:
+    period: list(daily|weekly|monthly)
+    keep_periods: int(1,)
+    archive: bool
   databases:
     - str
   logins:

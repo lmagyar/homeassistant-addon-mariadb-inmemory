@@ -1,1 +1,1 @@
-/etc/s6-overlay/scripts/mariadb-core-post-up
+/etc/s6-overlay/s6-rc.d/mariadb-core-post/run

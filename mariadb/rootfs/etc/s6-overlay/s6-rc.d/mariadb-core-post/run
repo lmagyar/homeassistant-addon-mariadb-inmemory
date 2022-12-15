@@ -42,10 +42,18 @@ for database in $(bashio::config "databases"); do
 done
 
 # Cleanup outdated file naming if restored from older backup
-[[ -f ${MARIADB_DUMP/TYPE/recorder}.tmp ]] && mv ${MARIADB_DUMP/TYPE/recorder}.tmp ${MARIADB_DUMP/TYPE/data1}.tmp || true
-[[ -f ${MARIADB_DUMP/TYPE/recorder} ]] && mv ${MARIADB_DUMP/TYPE/recorder} ${MARIADB_DUMP/TYPE/data1} || true
-[[ -f ${MARIADB_DUMP/TYPE/data}.tmp ]] && mv ${MARIADB_DUMP/TYPE/data}.tmp ${MARIADB_DUMP/TYPE/data2}.tmp || true
-[[ -f ${MARIADB_DUMP/TYPE/data} ]] && mv ${MARIADB_DUMP/TYPE/data} ${MARIADB_DUMP/TYPE/data2} || true
+if bashio::fs.file_exists "${MARIADB_DUMP/TYPE/recorder}.tmp"; then
+    mv "${MARIADB_DUMP/TYPE/recorder}.tmp" "${MARIADB_DUMP/TYPE/data1}.tmp"
+fi
+if bashio::fs.file_exists "${MARIADB_DUMP/TYPE/recorder}"; then
+    mv "${MARIADB_DUMP/TYPE/recorder}" "${MARIADB_DUMP/TYPE/data1}"
+fi
+if bashio::fs.file_exists "${MARIADB_DUMP/TYPE/data}.tmp"; then
+    mv "${MARIADB_DUMP/TYPE/data}.tmp" "${MARIADB_DUMP/TYPE/data2}.tmp"
+fi
+if bashio::fs.file_exists "${MARIADB_DUMP/TYPE/data}"; then
+    mv "${MARIADB_DUMP/TYPE/data}" "${MARIADB_DUMP/TYPE/data2}"
+fi
 
 # Cleanup failed export
 if bashio::fs.file_exists "${MARIADB_DUMP_FINISHED}"; then

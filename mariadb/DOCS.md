@@ -48,6 +48,10 @@ tmpfs:
 retention:
   enabled: true
   periodic: disabled
+purge_statistics:
+  period: monthly
+  keep_periods: 6
+  archive: false
 databases:
   - homeassistant
 logins:
@@ -140,6 +144,35 @@ Possible values:
 - monthly (periodically export at 05:00h on the first day of each month)
 
 **Note:** This option exports the database content from memory to SD card, but doesn't create a complete Home Assistant backup nor uploads it to anywhere. In case you use a periodic Home Assistant backup solution, you don't need to enable this periodic retention option, only enable the retention functionality above, because exporting database content is part of the add-on's backup.
+
+### Option: `purge_statistics` (required)
+
+This section defines the parameters for statics data purging.
+
+Homeassistant never deletes old statistics data, so the database size can overgrow the memory limit. 
+
+### Option: `purge_statistics.period` (required)
+
+Specifies how frequently should the statistics data be purged.
+
+Possible values:
+- daily (periodically purge at 02:00h)
+- weekly (periodically purge at 03:00h on each Saturday)
+- monthly (periodically purge at 05:00h on the first day of each month) (default)
+
+### Option: `purge_statistics.keep_periods` (required)
+
+The number of periods to keep in database after a purge.
+
+Default is 6 months.
+
+### Option: `purge_statistics.archive` (required)
+
+Whether export the data before deletion.
+
+Default is disabled.
+
+**Note:** The export location is in the `/share/purged-statistics` folder, that can be acessed with eg. the Samba share add-on. This folder is also part of the full backup of Homeassistant, so without moving these exported old data anywhere, they will be part of the Homeassistant backup (not the add-on's backup, these are deleted from the database, these are archive values, not belonging to the add-on anymore).
 
 ### Option: `databases` (required)
 

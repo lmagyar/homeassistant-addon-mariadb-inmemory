@@ -1,1 +1,1 @@
-/etc/s6-overlay/scripts/cont-up
+/etc/s6-overlay/s6-rc.d/cont/run

@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.5.1.7 (forked)
+
+- **New function**: Periodically purge old statistics values. Enabled by default (purge older than 6 months).
+- Bump base image to 2022.11.0
+
 ## 2.5.1.6 (forked)
 
 - Bugfix: fine tune export/import table order to avoid errors after host (re)boot [#18](https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/issues/18)
