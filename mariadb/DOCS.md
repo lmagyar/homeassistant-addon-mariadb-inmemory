@@ -51,7 +51,7 @@ retention:
 purge_statistics:
   period: monthly
   keep_periods: 6
-  backup: false
+  archive: false
 databases:
   - homeassistant
 logins:
@@ -166,11 +166,13 @@ The number of periods to keep in database after a purge.
 
 Default is 6 months.
 
-### Option: `purge_statistics.backup` (required)
+### Option: `purge_statistics.archive` (required)
 
 Whether export the data before deletion.
 
-**Note:** The export location is in the `/share/purged-statistics` folder, that can be acessed with eg. the Samba share add-on. This folder is also part of the full backup of Homeassistant, so without moving these exported olda data anywhere, they will be part of the Homeassistant backup (not the add-on's backup, these are deleted from the database, these are archive values, not belonging to the add-on anymore).
+Default is disabled.
+
+**Note:** The export location is in the `/share/purged-statistics` folder, that can be acessed with eg. the Samba share add-on. This folder is also part of the full backup of Homeassistant, so without moving these exported old data anywhere, they will be part of the Homeassistant backup (not the add-on's backup, these are deleted from the database, these are archive values, not belonging to the add-on anymore).
 
 ### Option: `databases` (required)
 

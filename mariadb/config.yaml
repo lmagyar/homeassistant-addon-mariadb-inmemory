@@ -29,7 +29,7 @@ options:
   purge_statistics:
     period: monthly
     keep_periods: 6
-    backup: false
+    archive: false
   databases:
     - homeassistant
   logins:
@@ -49,7 +49,7 @@ schema:
   purge_statistics:
     period: list(daily|weekly|monthly)
     keep_periods: int(1,)
-    backup: bool
+    archive: bool
   databases:
     - str
   logins:
