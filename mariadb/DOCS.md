@@ -151,7 +151,7 @@ Possible values:
 
 This section defines the parameters for statics data purging.
 
-Homeassistant never deletes old statistics data, so the database size can overgrow the memory limit. 
+Home Assistant never deletes old statistics data, so the database size can overgrow the memory limit. 
 
 ### Option: `purge_statistics.period` (required)
 
@@ -174,7 +174,7 @@ Whether export the data before deletion.
 
 Default is disabled.
 
-**Note:** The export location is in the `/share/purged-statistics` folder, that can be acessed with eg. the Samba share add-on. This folder is also part of the full backup of Homeassistant, so without moving these exported old data anywhere, they will be part of the Homeassistant backup (not the add-on's backup, these are deleted from the database, these are archive values, not belonging to the add-on anymore).
+**Note:** The export location is in the `/share/purged-statistics` folder, that can be acessed with eg. the Samba share add-on. This folder is also part of the full backup of Home Assistant, so without moving these exported old data anywhere, they will be part of the Home Assistant backup (not the add-on's backup, these are deleted from the database, these are archive values, not belonging to the add-on anymore).
 
 ### Option: `databases` (required)
 
