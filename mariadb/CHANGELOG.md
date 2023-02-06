@@ -1,5 +1,9 @@
 # Changelog
 
+## vNext (forked)
+
+- Bugfix: Change statistics dump filename separator from _ to - in timestamp
+
 ## 2.5.2
 
 - ~~Update to MariaDB version 10.6.10~~ (forked version already uses this MariaDB version)
