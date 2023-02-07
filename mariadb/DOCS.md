@@ -6,7 +6,9 @@
 > 
 > Updates are released when the official add-on changes (changes are merged).
 >
-> **Even this is an in-memory database, it can automatically export the `homeassistant` database's content during backup, update, restart or even periodically, and can automatically import the content when the add-on starts again.** The database dump is **gzip-ed** before written to the storage to minimize SD-card wear.
+> **Even this is an in-memory database, it can automatically export (from memory to SD card) the `homeassistant` database's content during backup, update, restart or even periodically, and can automatically import (from SD card to memory) the content when the add-on starts again**. The database dump is **gzip-ed** before written to the storage to minimize SD-card wear.
+>
+> Though it won't protect you from power failures. After a power failure, when the add-on is restarted, it will import the last known exported database content.
  
 > **Note:** If you update or restart the add-on, please stop HA core to avoid error messages that the database is not available (during plain backup, stopping HA core is not necessary). How to do it:
 > - \> ha core stop
@@ -118,11 +120,11 @@ This section defines the data retention parameters.
 
 ### Option: `retention.enabled` (required)
 
-Even this is an in-memory database, this option enables to automatically export the `homeassistant` database's content during backup, update or restart and to automatically import the content when the add-on starts again.
+Even this is an in-memory database, it can automatically export (from memory to SD card) the `homeassistant` database's content during backup, update, restart or even periodically, and can automatically import (from SD card to memory) the content when the add-on starts again. The database dump is gzip-ed before written to the storage to minimize SD-card wear.
 
 **Note:**
 - only the `homeassistant` database's content is exported and imported
-- the database dump is located in the /data folder, so it is part of the normal backup process
+- the database dump is located in the /data folder, so it is part of the normal Home Assistant backup process
 - the database dump is **gzip-ed** before written to the storage to minimize SD-card wear
 - after a power failure, when the add-on is restarted, it will import the last known exported database content
 
@@ -149,7 +151,7 @@ Possible values:
 
 This section defines the parameters for statics data purging.
 
-Homeassistant never deletes old statistics data, so the database size can overgrow the memory limit. 
+Home Assistant never deletes old statistics data, so the database size can overgrow the memory limit. 
 
 ### Option: `purge_statistics.period` (required)
 
@@ -172,7 +174,7 @@ Whether export the data before deletion.
 
 Default is disabled.
 
-**Note:** The export location is in the `/share/purged-statistics` folder, that can be acessed with eg. the Samba share add-on. This folder is also part of the full backup of Homeassistant, so without moving these exported old data anywhere, they will be part of the Homeassistant backup (not the add-on's backup, these are deleted from the database, these are archive values, not belonging to the add-on anymore).
+**Note:** The export location is in the `/share/purged-statistics` folder, that can be acessed with eg. the Samba share add-on. This folder is also part of the full backup of Home Assistant, so without moving these exported old data anywhere, they will be part of the Home Assistant backup (not the add-on's backup, these are deleted from the database, these are archive values, not belonging to the add-on anymore).
 
 ### Option: `databases` (required)
 

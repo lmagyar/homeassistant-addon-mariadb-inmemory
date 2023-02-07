@@ -21,7 +21,7 @@ else
             mkdir -p "${file_path}"
         fi
 
-        readonly file_timestamp=$(sed 's/-//g;s/://g;s/ /_/g;' <<< "${purge_time_limit}")
+        readonly file_timestamp=$(sed 's/-//g;s/://g;s/ /-/g;' <<< "${purge_time_limit}")
         { \
             mysqldump homeassistant statistics_meta \
                 --skip-lock-tables --skip-add-drop-table --skip-add-locks --complete-insert --insert-ignore ; \

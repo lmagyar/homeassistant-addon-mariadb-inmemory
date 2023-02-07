@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.5.2.1 (forked)
+
+- Bugfix: Change statistics dump filename separator from _ to - in timestamp
+
+## 2.5.2
+
+- ~~Update to MariaDB version 10.6.10~~ (forked version already uses this MariaDB version)
+
 ## 2.5.1.7 (forked)
 
 - **New function**: Periodically purge old statistics values. Enabled by default (purge older than 6 months).

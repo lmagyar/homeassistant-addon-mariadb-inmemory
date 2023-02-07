@@ -30,7 +30,7 @@ You can use this add-on to install an _**in-memory**_ MariaDB, which is an open-
 
 If you are trying to minimize your SD-card's wear, give this add-on a try.
 
-**Even this is an in-memory database, it can automatically export the database content during backup, update, restart or even periodically, and can automatically import the content when the add-on starts again**.
+**Even this is an in-memory database, it can automatically export (from memory to SD card) the `homeassistant` database's content during backup, update, restart or even periodically, and can automatically import (from SD card to memory) the content when the add-on starts again**. The database dump is **gzip-ed** before written to the storage to minimize SD-card wear.
 
 Though it won't protect you from power failures. After a power failure, when the add-on is restarted, it will import the last known exported database content.
 
@@ -50,7 +50,7 @@ This version uses **tmpfs** to store MariaDB databases in-memory. The default ~~
 [installations-shield]: https://img.shields.io/badge/dynamic/json?label=reported%20installations&query=$[%2745207088_mariadb%27].total&url=https%3A%2F%2Fanalytics.home-assistant.io%2Faddons.json
 [license-shield]: https://img.shields.io/github/license/lmagyar/homeassistant-addon-mariadb-inmemory.svg
 [licence]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/blob/master/LICENSE
-[maintenance-shield]: https://img.shields.io/maintenance/yes/2022.svg
+[maintenance-shield]: https://img.shields.io/maintenance/yes/2023.svg
 [project-stage-shield]: https://img.shields.io/badge/project%20stage-custom-orange.svg
 [releases-shield]: https://img.shields.io/github/tag/lmagyar/homeassistant-addon-mariadb-inmemory.svg?label=release
 [releases]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/tags
