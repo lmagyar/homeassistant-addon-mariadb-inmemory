@@ -1,6 +1,6 @@
 # Changelog
 
-## vNext (forked)
+## 2.5.2.1 (forked)
 
 - Bugfix: Change statistics dump filename separator from _ to - in timestamp
 
