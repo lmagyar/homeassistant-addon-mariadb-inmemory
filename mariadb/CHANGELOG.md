@@ -1,5 +1,9 @@
 # Changelog
 
+## vNext (forked)
+
+- Bump base image to 2023.02.0
+
 ## 2.5.2.1 (forked)
 
 - Bugfix: Change statistics dump filename separator from _ to - in timestamp
