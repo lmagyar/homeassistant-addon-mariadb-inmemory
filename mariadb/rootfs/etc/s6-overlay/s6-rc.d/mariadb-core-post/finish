@@ -3,12 +3,9 @@
 # Post-start finalization of  MariaDB service
 # ==============================================================================
 
-# Send service information to the Supervisor
-if bashio::services.delete "mysql"; then
-    bashio::log.info "Successfully deleted service information from Home Assistant."
-else
-    bashio::log.warning "Service message to Home Assistant failed!"
-fi
+# Delete service information from the Supervisor
+bashio::log.info "Deleting service information from Home Assistant."
+bashio::services.delete "mysql"
 
 # Export database content
 export-homeassistant-database
