@@ -7,6 +7,19 @@ MARIADB_DUMP=$(</etc/MARIADB_DUMP)
 MARIADB_DUMP_FINISHED=$(</etc/MARIADB_DUMP_FINISHED)
 EXPORT_IMPORT_DATABASE_CONTENT=$(</etc/EXPORT_IMPORT_DATABASE_CONTENT)
 
+function execute_without_error_messages() {
+    local current_log_level="${__BASHIO_LOG_LEVEL}"
+    bashio::log.level fatal
+    local exit_code=0
+    $@ || exit_code=$?
+    bashio::log.level ${__BASHIO_LOG_LEVELS[${current_log_level}]}
+    return ${exit_code}
+}
+
+# Delete service information from the Supervisor
+bashio::log.info "Deleting service information from Home Assistant."
+execute_without_error_messages bashio::services.delete "mysql"
+
 bashio::log.info "Check data integrity and fix corruptions"
 mysqlcheck --no-defaults --databases mysql --fix-db-names --fix-table-names || true
 mysqlcheck --no-defaults --databases mysql --check --check-upgrade --auto-repair || true
@@ -76,7 +89,7 @@ else
     rm -f ${MARIADB_DUMP/TYPE/data2}.tmp
 fi
 
-# Import database structure
+# Import database structure and content... (no connection is allowed until it is finished)
 if bashio::config.exists "retention.enabled" && bashio::fs.directory_exists "${MARIADB_DATA}/homeassistant"; then
     if bashio::config.true "retention.enabled"; then
         EXPORT_IMPORT_DATABASE_CONTENT=true
@@ -84,10 +97,12 @@ if bashio::config.exists "retention.enabled" && bashio::fs.directory_exists "${M
             bashio::log.warning "Importing last known database content skipped, no dump file found"
         else
             bashio::log.info "Last known database content time stamp is $(stat ${MARIADB_DUMP/TYPE/schema} -c %y)"
-            bashio::log.info "Importing database structure and partial content"
+            bashio::log.info "Importing database structure and content... (no connection is allowed until it is finished)"
             gzip -d ${MARIADB_DUMP/TYPE/schema} -c \
                 | mysql homeassistant
             gzip -d ${MARIADB_DUMP/TYPE/data1} -c \
+                | mysql homeassistant
+            gzip -d ${MARIADB_DUMP/TYPE/data2} -c \
                 | mysql homeassistant
         fi
     else
@@ -98,6 +113,14 @@ if bashio::config.exists "retention.enabled" && bashio::fs.directory_exists "${M
             bashio::log.info "Data retention is explicitly turned off, unused exported database content is removed"
         fi
     fi
+fi
+
+# Create default schema after initial setup to force using Aria instead of InnoDB
+if (( 0 == $(mysql -Nse "SELECT count(1) FROM information_schema.tables WHERE table_schema = 'homeassistant' AND table_name = 'schema_changes';") )); then
+    bashio::log.info "Create default schema in database homeassistant"
+    declare schema_version=$(ls /usr/share/schema.v??.sql | sed -n 's/^\/usr\/share\/schema\.v\(\d\d\)\.sql$/\1/p')
+    mysql homeassistant < "/usr/share/schema.v${schema_version}.sql"
+    mysql homeassistant -Nse "INSERT IGNORE INTO schema_changes (change_id, schema_version, changed) VALUES (1, ${schema_version}, UTC_TIMESTAMP());"
 fi
 
 # Init logins
@@ -152,20 +175,8 @@ PAYLOAD=$(\
         username "service" \
         password "${SECRET}"
 )
-if bashio::services.publish "mysql" "${PAYLOAD}"; then
-    bashio::log.info "Successfully sent service information to Home Assistant."
-else
-    bashio::log.warning "Service message to Home Assistant failed!"
-fi
-
-# Import database content
-if [[ "${EXPORT_IMPORT_DATABASE_CONTENT}" = "true" ]]; then
-    if bashio::fs.file_exists "${MARIADB_DUMP/TYPE/data2}"; then
-        bashio::log.info "Importing database content"
-        gzip -d ${MARIADB_DUMP/TYPE/data2} -c \
-            | mysql homeassistant
-    fi
-fi
+bashio::log.info "Sending service information to Home Assistant."
+bashio::services.publish "mysql" "${PAYLOAD}"
 
 # Save variables
 echo ${EXPORT_IMPORT_DATABASE_CONTENT} > /etc/EXPORT_IMPORT_DATABASE_CONTENT

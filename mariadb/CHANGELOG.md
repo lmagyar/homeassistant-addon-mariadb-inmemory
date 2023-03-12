@@ -1,5 +1,30 @@
 # Changelog
 
+## 2.5.2.2 (forked)
+
+**Important:** Add the following lines to the Home Assistant configuration (and do not delete what is already there):
+
+```
+recorder:
+  db_max_retries: 20
+  db_retry_wait: 15
+
+logger:
+  default: warning
+  filters:
+    homeassistant.components.recorder.core:
+      - 'Error during connection setup: .MySQLdb.OperationalError. .2002'
+      - 'Error during connection setup: .MySQLdb.OperationalError. .1130'
+      - 'Error during connection setup: .MySQLdb.OperationalError. .1044'
+```
+
+For more details see the documentation.
+
+- Finish importing the whole database before enabling external access
+- Create default schema after initial setup to force using Aria instead of InnoDB
+- Update to MariaDB version 10.6.12
+- Bump base image to 2023.02.0
+
 ## 2.5.2.1 (forked)
 
 - Bugfix: Change statistics dump filename separator from _ to - in timestamp
