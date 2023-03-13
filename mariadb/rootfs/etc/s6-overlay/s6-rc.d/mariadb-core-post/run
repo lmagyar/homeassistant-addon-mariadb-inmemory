@@ -8,11 +8,11 @@ MARIADB_DUMP_FINISHED=$(</etc/MARIADB_DUMP_FINISHED)
 EXPORT_IMPORT_DATABASE_CONTENT=$(</etc/EXPORT_IMPORT_DATABASE_CONTENT)
 
 function execute_without_error_messages() {
-    local current_log_level="${__BASHIO_LOG_LEVEL}"
+    local current_log_level="${__BASHIO_LOG_LEVELS[${__BASHIO_LOG_LEVEL}]}"
     bashio::log.level fatal
     local exit_code=0
     $@ || exit_code=$?
-    bashio::log.level ${__BASHIO_LOG_LEVELS[${current_log_level}]}
+    bashio::log.level ${current_log_level}
     return ${exit_code}
 }
 
