@@ -13,8 +13,8 @@
 > **Note:** If you update or restart the add-on, please stop HA core to avoid error messages that the database is not available (during plain backup, stopping HA core is not necessary). How to do it:
 > - \> ha core stop
 > - \> ha addons update 45207088_mariadb --backup
-> - \> ha addons info 45207088_mariadb | grep -E '^version(:|_)'   # wait until the new version is installed
-> - \> ha addons log 45207088_mariadb                              # wait until the add-on is started
+> - \> ha addons info 45207088_mariadb | grep -E '^version'   # wait until the new version is installed
+> - \> ha addons log 45207088_mariadb                         # wait until the add-on is started
 > - \> ha core start
 
 ![Warning][warning_stripe]
