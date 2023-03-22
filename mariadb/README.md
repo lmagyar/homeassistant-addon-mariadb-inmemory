@@ -53,7 +53,7 @@ This version uses **tmpfs** to store MariaDB databases in-memory. The default ~~
 [license-shield]: https://img.shields.io/github/license/lmagyar/homeassistant-addon-mariadb-inmemory.svg
 [licence]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/blob/master/LICENSE
 [maintenance-shield]: https://img.shields.io/maintenance/yes/2023.svg
-[project-stage-shield]: https://img.shields.io/badge/project%20stage-custom-orange.svg
+[project-stage-shield]: https://img.shields.io/badge/project%20stage-production%20ready-green.svg
 [releases-shield]: https://img.shields.io/github/tag/lmagyar/homeassistant-addon-mariadb-inmemory.svg?label=release
 [releases]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/tags
 [updated-shield]: https://img.shields.io/github/last-commit/lmagyar/homeassistant-addon-mariadb-inmemory/master?label=updated
