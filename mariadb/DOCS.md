@@ -24,17 +24,17 @@
 Follow these steps to get the add-on installed on your system:
 
 1. Navigate in your Home Assistant frontend to **Settings** -> **Add-ons** -> **Add-on Store**.
-2. In the **...** menu at the top right corner click **Repositories**, add `https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory` as repository.
-3. Find the "In-memory MariaDB" add-on and click it. If it doesn't show up, wait until HA refreshes the information about the add-on, or click **Reload** in the **...** menu at the top right corner.
-4. Click on the "INSTALL" button.
+1. In the **...** menu at the top right corner click **Repositories**, add `https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory` as repository.
+1. Find the "In-memory MariaDB" add-on and click it. If it doesn't show up, wait until HA refreshes the information about the add-on, or click **Reload** in the **...** menu at the top right corner.
+1. Click on the "INSTALL" button.
 
 ## How to use
 
 1. Under the Configuration tab set the `logins` -> `password` field to something strong and unique.
-2. Save the configuration.
-3. Start the add-on.
-4. Check the add-on log output to see the result.
-5. Add `recorder` component to your Home Assistant configuration.
+1. Save the configuration.
+1. Start the add-on.
+1. Check the add-on log output to see the result.
+1. Add `recorder` component to your Home Assistant configuration. See details below.
 
 ## Add-on Configuration
 
@@ -220,7 +220,7 @@ to view recorder data should create a user limited to read-only access on the da
 
 ## Home Assistant Configuration
 
-MariaDB will be used by the `recorder` and `history` components within Home Assistant. For more information about setting this up, see the [recorder integration][mariadb-ha-recorder] documentation for Home Assistant.
+MariaDB will be used by the `recorder` and `history` components within Home Assistant. For more information about setting this up, see the [recorder integration][recorder] documentation for Home Assistant.
 
 Example Home Assistant configuration:
 
@@ -286,14 +286,12 @@ In case you've found a bug, please open an issue on our GitHub: [issue with the 
 
 [createuser]: https://mariadb.com/kb/en/library/create-user
 [username]: https://mariadb.com/kb/en/library/create-user/#user-name-component
-[hostname]: https://mariadb.com/kb/en/library/create-user/#host-name-component
 [grant]: https://mariadb.com/kb/en/library/grant
-[mariadb-ha-recorder]: https://www.home-assistant.io/integrations/recorder/
+[recorder]: https://www.home-assistant.io/integrations/recorder/
 [discord]: https://discord.gg/c5DvZ4e
-[forum]: https://community.home-assistant.io
+[forum]: https://community.home-assistant.io/t/in-memory-mariadb-mysql-add-on-for-recorder-history-integration/281791
 [issue]: https://github.com/home-assistant/addons/issues
 [issue_forked]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/issues
 [reddit]: https://reddit.com/r/homeassistant
-[repository]: https://github.com/hassio-addons/repository
 [warning_stripe]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/raw/master/images/warning_stripe_wide.png
 [official_addon]: https://github.com/home-assistant/addons/tree/master/mariadb
