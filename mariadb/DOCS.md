@@ -34,7 +34,7 @@ Follow these steps to get the add-on installed on your system:
 1. Save the configuration.
 1. Start the add-on.
 1. Check the add-on log output to see the result.
-1. Add `recorder` component to your Home Assistant configuration. See details below.
+1. Add the `recorder` integration to your Home Assistant configuration. See details below.
 
 ## Add-on Configuration
 
@@ -284,9 +284,9 @@ You have several options to get them answered:
 
 In case you've found a bug, please open an issue on our GitHub: [issue with the official add-on][issue] or [issue with the forked, in-memory add-on][issue_forked]
 
-[createuser]: https://mariadb.com/kb/en/library/create-user
-[username]: https://mariadb.com/kb/en/library/create-user/#user-name-component
-[grant]: https://mariadb.com/kb/en/library/grant
+[createuser]: https://mariadb.com/kb/en/create-user/
+[username]: https://mariadb.com/kb/en/create-user/#user-name-component
+[grant]: https://mariadb.com/kb/en/grant/
 [recorder]: https://www.home-assistant.io/integrations/recorder/
 [discord]: https://discord.gg/c5DvZ4e
 [forum]: https://community.home-assistant.io/t/in-memory-mariadb-mysql-add-on-for-recorder-history-integration/281791
