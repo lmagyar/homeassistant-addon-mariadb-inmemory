@@ -3,10 +3,10 @@ FROM $BUILD_FROM
 
 # Setup base
 RUN apk add --no-cache \
-    mariadb \
-    mariadb-client \
-    mariadb-server-utils \
-    pwgen
+    mariadb=10.6.12-r0 \
+    mariadb-client=10.6.12-r0 \
+    mariadb-server-utils=10.6.12-r0 \
+    pwgen=2.08-r1
 
 ENV \
     LD_PRELOAD="/usr/local/lib/libjemalloc.so.2"
