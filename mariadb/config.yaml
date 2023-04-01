@@ -18,7 +18,7 @@ privileged:
 map:
   - share:rw
 backup_pre: call-export-homeassistant-database
-image: lmagyar/{arch}-addon-mariadb-inmemory
+image: ghcr.io/lmagyar/{arch}-addon-mariadb-inmemory-beta
 init: false
 options:
   tmpfs:
