@@ -1,5 +1,9 @@
 # Changelog
 
+## vNext (forked)
+
+- Update Add-on base image to v13.2.0
+
 ## 2.5.2.2 (forked)
 
 **Important:** Add the following lines to the Home Assistant configuration (and do not delete what is already there):
