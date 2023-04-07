@@ -33,11 +33,26 @@ max_binlog_size = 1M
 # Disable query cache
 query_cache_limit = 1M
 query_cache_size = 0M
-query_cache_type = 0
+query_cache_type = OFF
+
+# Storage engines
+default_storage_engine = InnoDB
+ignore_builtin_innodb = OFF
+
+# InnoDB Tweaks
+innodb_buffer_pool_size = 5M
+innodb_log_buffer_size = 256K
+innodb_log_file_size = 4M
+innodb_doublewrite = OFF
+innodb_change_buffering = none
+innodb_file_per_table = 1
+innodb_undo_log_truncate = ON
+innodb_page_size = 4096
+innodb_max_undo_log_size = 10485760
+innodb_undo_tablespaces = 2
+innodb_purge_rseg_truncate_frequency = 1
 
 # Aria Tweaks
-default_storage_engine = Aria
-ignore_builtin_innodb = ON
 aria_log_file_size = 8M
 aria_page_checksum = OFF
 aria_pagecache_buffer_size = 16M
