@@ -98,8 +98,21 @@ if bashio::config.exists "retention.enabled" && bashio::fs.directory_exists "${M
         else
             bashio::log.info "Last known database content time stamp is $(stat ${MARIADB_DUMP/TYPE/schema} -c %y)"
             bashio::log.info "Importing database structure and content... (no connection is allowed until it is finished)"
-            gzip -d ${MARIADB_DUMP/TYPE/schema} -c \
-                | mysql homeassistant
+            if gzip -d ${MARIADB_DUMP/TYPE/schema} -c | grep -q 'ENGINE=Aria'; then
+                bashio::log.info " Converting Aria storage engine schema into InnoDB storage engine schema"
+                # Create default v35 InnoDB schema
+                declare schema_version=$(ls /usr/share/schema.v??.InnoDB.sql | sed -n 's/^\/usr\/share\/schema\.v\(\d\d\)\.InnoDB\.sql$/\1/p')
+                mysql homeassistant < "/usr/share/schema.v${schema_version}.InnoDB.sql"
+                mysql homeassistant -e "INSERT IGNORE INTO schema_changes (change_id, schema_version, changed) VALUES (1, ${schema_version}, UTC_TIMESTAMP());"
+                # Set autoincrement values
+                eval "declare -A table_increments=($(gzip -d ${MARIADB_DUMP/TYPE/schema} -c | tr '\n' '\a' | sed -e 's/;\a/;\n/g' | tr '\a' ' ' | grep -Eo 'CREATE TABLE .*? AUTO_INCREMENT=[^;]*;' | sed -n -e "s/^CREATE TABLE .\(\w*\).*AUTO_INCREMENT=\(\d*\)[^;]*;/[\1]=\2/p"))"
+                for table in "${!table_increments[@]}"; do
+                    mysql homeassistant -e "ALTER TABLE ${table} AUTO_INCREMENT=${table_increments[${table}]};"
+                done
+            else
+                gzip -d ${MARIADB_DUMP/TYPE/schema} -c \
+                    | mysql homeassistant
+            fi
             gzip -d ${MARIADB_DUMP/TYPE/data1} -c \
                 | mysql homeassistant
             gzip -d ${MARIADB_DUMP/TYPE/data2} -c \
