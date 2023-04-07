@@ -16,6 +16,12 @@ function execute_without_error_messages() {
     return ${exit_code}
 }
 
+# Wait until DB is running
+while ! mysql -e "" 2> /dev/null; do
+    sleep 1
+done
+bashio::log.info "MariaDB started"
+
 # Delete service information from the Supervisor
 bashio::log.info "Deleting service information from Home Assistant"
 execute_without_error_messages bashio::services.delete "mysql"
