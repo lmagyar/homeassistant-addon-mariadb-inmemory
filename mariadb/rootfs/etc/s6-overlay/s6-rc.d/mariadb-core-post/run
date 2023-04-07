@@ -115,14 +115,6 @@ if bashio::config.exists "retention.enabled" && bashio::fs.directory_exists "${M
     fi
 fi
 
-# Create default schema after initial setup to force using Aria instead of InnoDB
-if (( 0 == $(mysql -Nse "SELECT count(1) FROM information_schema.tables WHERE table_schema = 'homeassistant' AND table_name = 'schema_changes';") )); then
-    bashio::log.info "Create default schema in database homeassistant"
-    declare schema_version=$(ls /usr/share/schema.v??.sql | sed -n 's/^\/usr\/share\/schema\.v\(\d\d\)\.sql$/\1/p')
-    mysql homeassistant < "/usr/share/schema.v${schema_version}.sql"
-    mysql homeassistant -Nse "INSERT IGNORE INTO schema_changes (change_id, schema_version, changed) VALUES (1, ${schema_version}, UTC_TIMESTAMP());"
-fi
-
 # Init logins
 bashio::log.info "Ensure users exists and are updated"
 for login in $(bashio::config "logins|keys"); do
