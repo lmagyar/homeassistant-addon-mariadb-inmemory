@@ -104,12 +104,27 @@ if bashio::config.exists "retention.enabled" && bashio::fs.directory_exists "${M
         else
             bashio::log.info "Last known database content time stamp is $(stat ${MARIADB_DUMP/TYPE/schema} -c %y)"
             bashio::log.info "Importing database structure and content... (no connection is allowed until it is finished)"
+            declare convert_schema=false
+            declare aria_schema_version
+            declare innodb_schema_version
             if gzip -d ${MARIADB_DUMP/TYPE/schema} -c | grep -q 'ENGINE=Aria'; then
-                bashio::log.info " Converting Aria storage engine schema into InnoDB storage engine schema"
+                # Check Aria schema version to be the latest known in dump
+                aria_schema_version=$(gzip -d ${MARIADB_DUMP/TYPE/data1} -c | grep -Eo 'INSERT  IGNORE INTO .schema_changes..*?;' | sed -n -e "s/^INSERT  IGNORE INTO.*VALUES \([^;]*\);/\1/p" | sed -e 's/),(/)\n(/g' | tr -d '()' | sed -n -e "s/^\d*,\(\d*\),.*$/\1/p" | sort | tail -n 1)
+                innodb_schema_version=$(ls /usr/share/schema.v??.InnoDB.sql | sed -n 's/^\/usr\/share\/schema\.v\(\d\d\)\.InnoDB\.sql$/\1/p')
+                if ! bashio::var.equals ${aria_schema_version} ${innodb_schema_version}; then
+                    bashio::log.warning "Can't convert older v${aria_schema_version} Aria storage engine schema into v${innodb_schema_version} InnoDB storage engine schema"
+                    bashio::log.warning "Please update Home Assistant to 2023.03.x and then restart this add-on"
+                    bashio::log.warning "Always stop Home Assistant before restarting this database add-on"
+                    bashio::log.notice "Importing database structure and content without conversion..."
+                else
+                    convert_schema=true
+                fi
+            fi
+            if bashio::var.true ${convert_schema}; then
+                bashio::log.notice "Converting Aria storage engine schema into InnoDB storage engine schema..."
                 # Create default v35 InnoDB schema
-                declare schema_version=$(ls /usr/share/schema.v??.InnoDB.sql | sed -n 's/^\/usr\/share\/schema\.v\(\d\d\)\.InnoDB\.sql$/\1/p')
-                mysql homeassistant < "/usr/share/schema.v${schema_version}.InnoDB.sql"
-                mysql homeassistant -e "INSERT IGNORE INTO schema_changes (change_id, schema_version, changed) VALUES (1, ${schema_version}, UTC_TIMESTAMP());"
+                mysql homeassistant < "/usr/share/schema.v${innodb_schema_version}.InnoDB.sql"
+                mysql homeassistant -e "INSERT IGNORE INTO schema_changes (change_id, schema_version, changed) VALUES (1, ${innodb_schema_version}, UTC_TIMESTAMP());"
                 # Set autoincrement values
                 eval "declare -A table_increments=($(gzip -d ${MARIADB_DUMP/TYPE/schema} -c | tr '\n' '\a' | sed -e 's/;\a/;\n/g' | tr '\a' ' ' | grep -Eo 'CREATE TABLE .*? AUTO_INCREMENT=[^;]*;' | sed -n -e "s/^CREATE TABLE .\(\w*\).*AUTO_INCREMENT=\(\d*\)[^;]*;/[\1]=\2/p"))"
                 for table in "${!table_increments[@]}"; do
