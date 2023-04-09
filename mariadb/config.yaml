@@ -1,6 +1,5 @@
 ---
 version: 2.5.2.2
-homeassistant: 2022.6.1
 slug: mariadb
 name: In-memory MariaDB
 description: An in-memory SQL database server
