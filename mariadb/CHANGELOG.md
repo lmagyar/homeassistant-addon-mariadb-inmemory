@@ -1,6 +1,8 @@
 # Changelog
 
-## vNext (forked)
+## 2.5.2.3 (forked)
+
+**Important:** Update this add-on first and after that update Home Assistant to the latest 2023.04.x or newer.
 
 - Use InnoDB as storage engine ([#24](https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/issues/24))
   - Convert old Aria schema content exports into InnoDB schema
