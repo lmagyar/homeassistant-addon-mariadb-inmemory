@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.5.2.4 (forked)
+
+- Bugfix for image location
+
 ## 2.5.2.3 (forked)
 
 **Important:** Update this add-on first and after that update Home Assistant to the latest 2023.04.x or newer.
