@@ -10,11 +10,11 @@ TMPFS_SIZE=$(bashio::config "tmpfs.size")
 bashio::log.info "Change tmpfs size to ${TMPFS_SIZE}"
 mount -o remount,size=${TMPFS_SIZE} tmpfs ${TMPFS_MNT}
 
+# Redirect log output
+mkdir -p "${MARIADB_DATA}"
+ln -s /proc/1/fd/1 "${MARIADB_DATA}/mariadb.err"
+
 # Init mariadb
 bashio::log.info "Create a new mariadb initial system"
 mysql_install_db --user=root --datadir="${MARIADB_DATA}" --skip-name-resolve --skip-test-db > /dev/null
 mkdir -p /run/mysqld
-
-# Redirect log output
-rm -f "${MARIADB_DATA}/mariadb.err"
-ln -s /proc/1/fd/1 "${MARIADB_DATA}/mariadb.err"

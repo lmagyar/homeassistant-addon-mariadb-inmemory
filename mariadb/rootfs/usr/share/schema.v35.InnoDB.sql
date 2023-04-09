@@ -14,17 +14,18 @@ CREATE TABLE IF NOT EXISTS `events` (
   `origin` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `origin_idx` smallint(6) DEFAULT NULL,
   `time_fired` datetime(6) DEFAULT NULL,
+  `time_fired_ts` double DEFAULT NULL,
   `context_id` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `context_user_id` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `context_parent_id` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `data_id` int(11) DEFAULT NULL,
-  `time_fired_ts` double DEFAULT NULL,
   PRIMARY KEY (`event_id`),
+  KEY `ix_events_event_type_time_fired_ts` (`event_type`,`time_fired_ts`),
+  KEY `ix_events_time_fired_ts` (`time_fired_ts`),
   KEY `ix_events_data_id` (`data_id`),
   KEY `ix_events_context_id` (`context_id`),
-  KEY `ix_events_time_fired_ts` (`time_fired_ts`),
-  KEY `ix_events_event_type_time_fired_ts` (`event_type`,`time_fired_ts`)
-) ENGINE=Aria DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 ROW_FORMAT=DYNAMIC TRANSACTIONAL=0;
+  CONSTRAINT `events_ibfk_1` FOREIGN KEY (`data_id`) REFERENCES `event_data` (`data_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `event_data` (
   `data_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -32,24 +33,24 @@ CREATE TABLE IF NOT EXISTS `event_data` (
   `shared_data` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`data_id`),
   KEY `ix_event_data_hash` (`hash`)
-) ENGINE=Aria DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 ROW_FORMAT=DYNAMIC TRANSACTIONAL=0;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `recorder_runs` (
   `run_id` int(11) NOT NULL AUTO_INCREMENT,
-  `start` datetime DEFAULT NULL,
-  `end` datetime DEFAULT NULL,
-  `closed_incorrect` tinyint(1) DEFAULT NULL,
-  `created` datetime DEFAULT NULL,
+  `start` datetime(6) NOT NULL,
+  `end` datetime(6) DEFAULT NULL,
+  `closed_incorrect` tinyint(1) NOT NULL,
+  `created` datetime(6) NOT NULL,
   PRIMARY KEY (`run_id`),
   KEY `ix_recorder_runs_start_end` (`start`,`end`)
-) ENGINE=Aria DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 ROW_FORMAT=DYNAMIC TRANSACTIONAL=0;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `schema_changes` (
   `change_id` int(11) NOT NULL AUTO_INCREMENT,
   `schema_version` int(11) DEFAULT NULL,
-  `changed` datetime DEFAULT NULL,
+  `changed` datetime(6) NOT NULL,
   PRIMARY KEY (`change_id`)
-) ENGINE=Aria DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 ROW_FORMAT=DYNAMIC TRANSACTIONAL=0;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `states` (
   `state_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -58,23 +59,26 @@ CREATE TABLE IF NOT EXISTS `states` (
   `attributes` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `event_id` int(11) DEFAULT NULL,
   `last_changed` datetime(6) DEFAULT NULL,
+  `last_changed_ts` double DEFAULT NULL,
   `last_updated` datetime(6) DEFAULT NULL,
+  `last_updated_ts` double DEFAULT NULL,
   `old_state_id` int(11) DEFAULT NULL,
   `attributes_id` int(11) DEFAULT NULL,
   `context_id` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `context_user_id` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `context_parent_id` varchar(36) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `origin_idx` smallint(6) DEFAULT NULL,
-  `last_updated_ts` double DEFAULT NULL,
-  `last_changed_ts` double DEFAULT NULL,
   PRIMARY KEY (`state_id`),
-  KEY `ix_states_old_state_id` (`old_state_id`),
+  KEY `ix_states_last_updated_ts` (`last_updated_ts`),
   KEY `ix_states_attributes_id` (`attributes_id`),
+  KEY `ix_states_entity_id_last_updated_ts` (`entity_id`,`last_updated_ts`),
   KEY `ix_states_context_id` (`context_id`),
   KEY `ix_states_event_id` (`event_id`),
-  KEY `ix_states_entity_id_last_updated_ts` (`entity_id`,`last_updated_ts`),
-  KEY `ix_states_last_updated_ts` (`last_updated_ts`)
-) ENGINE=Aria DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 ROW_FORMAT=DYNAMIC TRANSACTIONAL=0;
+  KEY `ix_states_old_state_id` (`old_state_id`),
+  CONSTRAINT `states_ibfk_1` FOREIGN KEY (`event_id`) REFERENCES `events` (`event_id`) ON DELETE CASCADE,
+  CONSTRAINT `states_ibfk_2` FOREIGN KEY (`old_state_id`) REFERENCES `states` (`state_id`),
+  CONSTRAINT `states_ibfk_3` FOREIGN KEY (`attributes_id`) REFERENCES `state_attributes` (`attributes_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `state_attributes` (
   `attributes_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -82,27 +86,29 @@ CREATE TABLE IF NOT EXISTS `state_attributes` (
   `shared_attrs` longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`attributes_id`),
   KEY `ix_state_attributes_hash` (`hash`)
-) ENGINE=Aria DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 ROW_FORMAT=DYNAMIC TRANSACTIONAL=0;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `statistics` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created` datetime(6) DEFAULT NULL,
+  `created_ts` double DEFAULT NULL,
+  `metadata_id` int(11) DEFAULT NULL,
   `start` datetime(6) DEFAULT NULL,
+  `start_ts` double DEFAULT NULL,
   `mean` double DEFAULT NULL,
   `min` double DEFAULT NULL,
   `max` double DEFAULT NULL,
   `last_reset` datetime(6) DEFAULT NULL,
+  `last_reset_ts` double DEFAULT NULL,
   `state` double DEFAULT NULL,
   `sum` double DEFAULT NULL,
-  `metadata_id` int(11) DEFAULT NULL,
-  `created_ts` double DEFAULT NULL,
-  `start_ts` double DEFAULT NULL,
-  `last_reset_ts` double DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `ix_statistics_statistic_id_start_ts` (`metadata_id`,`start_ts`),
   KEY `ix_statistics_metadata_id` (`metadata_id`),
-  KEY `ix_statistics_start_ts` (`start_ts`)
-) ENGINE=Aria DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 ROW_FORMAT=DYNAMIC TRANSACTIONAL=0;
+  KEY `ix_statistics_start` (`start`),
+  KEY `ix_statistics_start_ts` (`start_ts`),
+  CONSTRAINT `statistics_ibfk_1` FOREIGN KEY (`metadata_id`) REFERENCES `statistics_meta` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `statistics_meta` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -114,34 +120,36 @@ CREATE TABLE IF NOT EXISTS `statistics_meta` (
   `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `ix_statistics_meta_statistic_id` (`statistic_id`)
-) ENGINE=Aria DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 ROW_FORMAT=DYNAMIC TRANSACTIONAL=0;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `statistics_runs` (
   `run_id` int(11) NOT NULL AUTO_INCREMENT,
-  `start` datetime DEFAULT NULL,
+  `start` datetime(6) NOT NULL,
   PRIMARY KEY (`run_id`),
   KEY `ix_statistics_runs_start` (`start`)
-) ENGINE=Aria DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 ROW_FORMAT=DYNAMIC TRANSACTIONAL=0;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `statistics_short_term` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created` datetime(6) DEFAULT NULL,
+  `created_ts` double DEFAULT NULL,
+  `metadata_id` int(11) DEFAULT NULL,
   `start` datetime(6) DEFAULT NULL,
+  `start_ts` double DEFAULT NULL,
   `mean` double DEFAULT NULL,
   `min` double DEFAULT NULL,
   `max` double DEFAULT NULL,
   `last_reset` datetime(6) DEFAULT NULL,
+  `last_reset_ts` double DEFAULT NULL,
   `state` double DEFAULT NULL,
   `sum` double DEFAULT NULL,
-  `metadata_id` int(11) DEFAULT NULL,
-  `created_ts` double DEFAULT NULL,
-  `start_ts` double DEFAULT NULL,
-  `last_reset_ts` double DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `ix_statistics_short_term_statistic_id_start_ts` (`metadata_id`,`start_ts`),
+  KEY `ix_statistics_short_term_start_ts` (`start_ts`),
   KEY `ix_statistics_short_term_metadata_id` (`metadata_id`),
-  KEY `ix_statistics_short_term_start_ts` (`start_ts`)
-) ENGINE=Aria DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci PAGE_CHECKSUM=0 ROW_FORMAT=DYNAMIC TRANSACTIONAL=0;
+  KEY `ix_statistics_short_term_start` (`start`),
+  CONSTRAINT `statistics_short_term_ibfk_1` FOREIGN KEY (`metadata_id`) REFERENCES `statistics_meta` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

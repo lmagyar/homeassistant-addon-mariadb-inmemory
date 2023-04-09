@@ -1,17 +1,17 @@
-ARG BUILD_FROM
-FROM $BUILD_FROM
+ARG BUILD_FROM=ghcr.io/hassio-addons/base/amd64:13.2.0
+# hadolint ignore=DL3006
+FROM ${BUILD_FROM}
+
+# Environment variables
+ENV \
+    LD_PRELOAD="/usr/local/lib/libjemalloc.so.2"
 
 # Setup base
 RUN apk add --no-cache \
     mariadb=10.6.12-r0 \
     mariadb-client=10.6.12-r0 \
     mariadb-server-utils=10.6.12-r0 \
-    pwgen=2.08-r1
+    pwgen=2.08-r2
 
-ENV \
-    LD_PRELOAD="/usr/local/lib/libjemalloc.so.2"
-
-# Copy data
+# Copy root filesystem
 COPY rootfs /
-
-WORKDIR /

@@ -4,8 +4,6 @@
 
 > This is a **fork** of the [official add-on][official_addon]! See changes below.
 > 
-> Updates are released when the official add-on changes (changes are merged).
->
 > **Even this is an in-memory database, it can automatically export (from memory to SD card) the `homeassistant` database's content during backup, update, restart or even periodically, and can automatically import (from SD card to memory) the content when the add-on starts again**. The database dump is **gzip-ed** before written to the storage to minimize SD-card wear.
 >
 > Though it won't protect you from power failures. After a power failure, when the add-on is restarted, it will import the last known exported database content. So when eg. daily periodic export (from memory to SD card) is enabled, you will loose the latest sensory data within that day, but your long term statistics information will remain mostly intact.
@@ -13,8 +11,8 @@
 > **Note:** If you update or restart the add-on, please stop HA core to avoid error messages that the database is not available (during plain backup, stopping HA core is not necessary). How to do it:
 > - \> ha core stop
 > - \> ha addons update 45207088_mariadb --backup
-> - \> ha addons info 45207088_mariadb | grep -E '^version(:|_)'   # wait until the new version is installed
-> - \> ha addons log 45207088_mariadb                              # wait until the add-on is started
+> - \> ha addons info 45207088_mariadb | grep -E '^version'   # wait until the new version is really installed
+> - \> ha addons log 45207088_mariadb                         # wait until the add-on is started
 > - \> ha core start
 
 ![Warning][warning_stripe]
@@ -24,17 +22,17 @@
 Follow these steps to get the add-on installed on your system:
 
 1. Navigate in your Home Assistant frontend to **Settings** -> **Add-ons** -> **Add-on Store**.
-2. In the **...** menu at the top right corner click **Repositories**, add `https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory` as repository.
-3. Find the "In-memory MariaDB" add-on and click it. If it doesn't show up, wait until HA refreshes the information about the add-on, or click **Reload** in the **...** menu at the top right corner.
-4. Click on the "INSTALL" button.
+1. In the **...** menu at the top right corner click **Repositories**, add `https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory` as repository.
+1. Find the "In-memory MariaDB" add-on and click it. If it doesn't show up, wait until HA refreshes the information about the add-on, or click **Reload** in the **...** menu at the top right corner.
+1. Click on the "INSTALL" button.
 
 ## How to use
 
 1. Under the Configuration tab set the `logins` -> `password` field to something strong and unique.
-2. Save the configuration.
-3. Start the add-on.
-4. Check the add-on log output to see the result.
-5. Add `recorder` component to your Home Assistant configuration.
+1. Save the configuration.
+1. Start the add-on.
+1. Check the add-on log output to see the result.
+1. Add the `recorder` integration to your Home Assistant configuration. See details below.
 
 ## Add-on Configuration
 
@@ -87,7 +85,7 @@ Specify an **upper limit** on the size of the in-memory filesystem. The size may
 >
 > **Note:** The database occupies more space on tmpfs than you see in the client. And it needs even more temporary space to `repack` tables after `purge` deleted rows.
 >
-> **Rule of thumb:** <minimum tmpfs size [MB]> = \<data stored daily [MB]\> * (\<purge_keep_days\> + 1) * 1.6 + 10[MB]
+> **Rule of thumb:** <minimum tmpfs size [MB]> = \<data stored daily [MB]\> * (\<purge_keep_days\> + 1) * 2.0 + 50[MB]
 >
 > **Note:** If you delete data from the database manually, use `OPTIMIZE TABLE states, events;` to decrease database file sizes also.
 >
@@ -100,15 +98,14 @@ SELECT round(sum(data_length + index_length) / 1024 / 1024, 2)
 INTO @database_size_in_MB
 FROM information_schema.tables WHERE table_schema = database();
 >
->SELECT min(time_fired), max(time_fired), timediff(max(time_fired), min(time_fired)),
-  round(timestampdiff(minute, min(time_fired), max(time_fired)) / 1440, 2)
-INTO @first_entry_in_UTC, @last_entry_in_UTC, @timespan, @timespan_in_days
+>SELECT from_unixtime(min(time_fired_ts)), from_unixtime(max(time_fired_ts)),
+  round(timestampdiff(minute, from_unixtime(min(time_fired_ts)), from_unixtime(max(time_fired_ts))) / 1440, 2)
+INTO @first_entry_in_UTC, @last_entry_in_UTC, @timespan_in_days
 FROM `events`;
 >
->SELECT @first_entry_in_UTC AS first_entry_in_UTC, @last_entry_in_UTC AS last_entry_in_UTC,
-  @timespan AS timespan, @timespan_in_days AS timespan_in_days,
+>SELECT @first_entry_in_UTC AS first_entry_in_UTC, @last_entry_in_UTC AS last_entry_in_UTC, @timespan_in_days AS timespan_in_days,
   @database_size_in_MB AS database_size_in_MB, round(@database_size_in_MB / @timespan_in_days, 2) AS growth_per_day_in_MB,
-  round((@database_size_in_MB / @timespan_in_days) * 8 * 1.6 + 10, 0) AS suggested_tmpfs_size_for_1_week_data_in_MB;
+  round((@database_size_in_MB / @timespan_in_days) * 8 * 2.0 + 50, 0) AS suggested_tmpfs_size_for_1_week_data_in_MB;
 > ```
 >
 > </details>
@@ -220,7 +217,7 @@ to view recorder data should create a user limited to read-only access on the da
 
 ## Home Assistant Configuration
 
-MariaDB will be used by the `recorder` and `history` components within Home Assistant. For more information about setting this up, see the [recorder integration][mariadb-ha-recorder] documentation for Home Assistant.
+MariaDB will be used by the `recorder` and `history` components within Home Assistant. For more information about setting this up, see the [recorder integration][recorder] documentation for Home Assistant.
 
 Example Home Assistant configuration:
 
@@ -284,16 +281,14 @@ You have several options to get them answered:
 
 In case you've found a bug, please open an issue on our GitHub: [issue with the official add-on][issue] or [issue with the forked, in-memory add-on][issue_forked]
 
-[createuser]: https://mariadb.com/kb/en/library/create-user
-[username]: https://mariadb.com/kb/en/library/create-user/#user-name-component
-[hostname]: https://mariadb.com/kb/en/library/create-user/#host-name-component
-[grant]: https://mariadb.com/kb/en/library/grant
-[mariadb-ha-recorder]: https://www.home-assistant.io/integrations/recorder/
+[createuser]: https://mariadb.com/kb/en/create-user/
+[username]: https://mariadb.com/kb/en/create-user/#user-name-component
+[grant]: https://mariadb.com/kb/en/grant/
+[recorder]: https://www.home-assistant.io/integrations/recorder/
 [discord]: https://discord.gg/c5DvZ4e
-[forum]: https://community.home-assistant.io
-[issue]: https://github.com/home-assistant/hassio-addons/issues
+[forum]: https://community.home-assistant.io/t/in-memory-mariadb-mysql-add-on-for-recorder-history-integration/281791
+[issue]: https://github.com/home-assistant/addons/issues
 [issue_forked]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/issues
 [reddit]: https://reddit.com/r/homeassistant
-[repository]: https://github.com/hassio-addons/repository
 [warning_stripe]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/raw/master/images/warning_stripe_wide.png
 [official_addon]: https://github.com/home-assistant/addons/tree/master/mariadb

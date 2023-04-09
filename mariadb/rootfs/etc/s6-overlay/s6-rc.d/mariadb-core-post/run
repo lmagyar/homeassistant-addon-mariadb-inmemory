@@ -8,16 +8,22 @@ MARIADB_DUMP_FINISHED=$(</etc/MARIADB_DUMP_FINISHED)
 EXPORT_IMPORT_DATABASE_CONTENT=$(</etc/EXPORT_IMPORT_DATABASE_CONTENT)
 
 function execute_without_error_messages() {
-    local current_log_level="${__BASHIO_LOG_LEVEL}"
+    local current_log_level="${__BASHIO_LOG_LEVELS[${__BASHIO_LOG_LEVEL}]}"
     bashio::log.level fatal
     local exit_code=0
     $@ || exit_code=$?
-    bashio::log.level ${__BASHIO_LOG_LEVELS[${current_log_level}]}
+    bashio::log.level ${current_log_level}
     return ${exit_code}
 }
 
+# Wait until DB is running
+while ! mysql -e "" 2> /dev/null; do
+    sleep 1
+done
+bashio::log.info "MariaDB started"
+
 # Delete service information from the Supervisor
-bashio::log.info "Deleting service information from Home Assistant."
+bashio::log.info "Deleting service information from Home Assistant"
 execute_without_error_messages bashio::services.delete "mysql"
 
 bashio::log.info "Check data integrity and fix corruptions"
@@ -98,8 +104,36 @@ if bashio::config.exists "retention.enabled" && bashio::fs.directory_exists "${M
         else
             bashio::log.info "Last known database content time stamp is $(stat ${MARIADB_DUMP/TYPE/schema} -c %y)"
             bashio::log.info "Importing database structure and content... (no connection is allowed until it is finished)"
-            gzip -d ${MARIADB_DUMP/TYPE/schema} -c \
-                | mysql homeassistant
+            declare convert_schema=false
+            declare aria_schema_version
+            declare innodb_schema_version
+            if gzip -d ${MARIADB_DUMP/TYPE/schema} -c | grep -q 'ENGINE=Aria'; then
+                # Check Aria schema version to be the latest known in dump
+                aria_schema_version=$(gzip -d ${MARIADB_DUMP/TYPE/data1} -c | grep -Eo 'INSERT  IGNORE INTO .schema_changes..*?;' | sed -n -e "s/^INSERT  IGNORE INTO.*VALUES \([^;]*\);/\1/p" | sed -e 's/),(/)\n(/g' | tr -d '()' | sed -n -e "s/^\d*,\(\d*\),.*$/\1/p" | sort | tail -n 1)
+                innodb_schema_version=$(ls /usr/share/schema.v??.InnoDB.sql | sed -n 's/^\/usr\/share\/schema\.v\(\d\d\)\.InnoDB\.sql$/\1/p')
+                if ! bashio::var.equals ${aria_schema_version} ${innodb_schema_version}; then
+                    bashio::log.warning "Can't convert older v${aria_schema_version} Aria storage engine schema into v${innodb_schema_version} InnoDB storage engine schema"
+                    bashio::log.warning "Please update Home Assistant to 2023.03.x and then restart this add-on"
+                    bashio::log.warning "Always stop Home Assistant before restarting this database add-on"
+                    bashio::log.notice "Importing database structure and content without conversion..."
+                else
+                    convert_schema=true
+                fi
+            fi
+            if bashio::var.true ${convert_schema}; then
+                bashio::log.notice "Converting Aria storage engine schema into InnoDB storage engine schema..."
+                # Create default v35 InnoDB schema
+                mysql homeassistant < "/usr/share/schema.v${innodb_schema_version}.InnoDB.sql"
+                mysql homeassistant -e "INSERT IGNORE INTO schema_changes (change_id, schema_version, changed) VALUES (1, ${innodb_schema_version}, UTC_TIMESTAMP());"
+                # Set autoincrement values
+                eval "declare -A table_increments=($(gzip -d ${MARIADB_DUMP/TYPE/schema} -c | tr '\n' '\a' | sed -e 's/;\a/;\n/g' | tr '\a' ' ' | grep -Eo 'CREATE TABLE .*? AUTO_INCREMENT=[^;]*;' | sed -n -e "s/^CREATE TABLE .\(\w*\).*AUTO_INCREMENT=\(\d*\)[^;]*;/[\1]=\2/p"))"
+                for table in "${!table_increments[@]}"; do
+                    mysql homeassistant -e "ALTER TABLE ${table} AUTO_INCREMENT=${table_increments[${table}]};"
+                done
+            else
+                gzip -d ${MARIADB_DUMP/TYPE/schema} -c \
+                    | mysql homeassistant
+            fi
             gzip -d ${MARIADB_DUMP/TYPE/data1} -c \
                 | mysql homeassistant
             gzip -d ${MARIADB_DUMP/TYPE/data2} -c \
@@ -113,14 +147,6 @@ if bashio::config.exists "retention.enabled" && bashio::fs.directory_exists "${M
             bashio::log.info "Data retention is explicitly turned off, unused exported database content is removed"
         fi
     fi
-fi
-
-# Create default schema after initial setup to force using Aria instead of InnoDB
-if (( 0 == $(mysql -Nse "SELECT count(1) FROM information_schema.tables WHERE table_schema = 'homeassistant' AND table_name = 'schema_changes';") )); then
-    bashio::log.info "Create default schema in database homeassistant"
-    declare schema_version=$(ls /usr/share/schema.v??.sql | sed -n 's/^\/usr\/share\/schema\.v\(\d\d\)\.sql$/\1/p')
-    mysql homeassistant < "/usr/share/schema.v${schema_version}.sql"
-    mysql homeassistant -Nse "INSERT IGNORE INTO schema_changes (change_id, schema_version, changed) VALUES (1, ${schema_version}, UTC_TIMESTAMP());"
 fi
 
 # Init logins
@@ -175,7 +201,7 @@ PAYLOAD=$(\
         username "service" \
         password "${SECRET}"
 )
-bashio::log.info "Sending service information to Home Assistant."
+bashio::log.info "Sending service information to Home Assistant"
 bashio::services.publish "mysql" "${PAYLOAD}"
 
 # Save variables
