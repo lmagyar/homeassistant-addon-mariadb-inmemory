@@ -5,16 +5,20 @@
 TMPFS_MNT=/tmp
 ADDON_EVENTS=${TMPFS_MNT}/events
 MARIADB_DATA=${TMPFS_MNT}/databases
-MARIADB_DUMP=/data/homeassistant-database-dump-TYPE.sql.gz
-MARIADB_DUMP_FINISHED=/data/homeassistant-database-dump-finished
+OLD_MARIADB_DUMP=/data/homeassistant-database-dump-TYPE.sql.gz
+OLD_MARIADB_DUMP_FINISHED=/data/homeassistant-database-dump-finished
+MARIADB_DUMP=/data/databases-dump.sql.gz
+MARIADB_DUMP_FINISHED=/data/databases-dump-finished
 STATISTICS_DUMP=/share/purged-statistics/purged-homeassistant-statistics-database-older-than-TIMESTAMP.sql.gz
-EXPORT_IMPORT_DATABASE_CONTENT=false
+EXPORT_IMPORT_DATABASES_CONTENT=false
 
 # Save variables
-echo ${TMPFS_MNT} > /etc/TMPFS_MNT
-echo ${ADDON_EVENTS} > /etc/ADDON_EVENTS
-echo ${MARIADB_DATA} > /etc/MARIADB_DATA
-echo ${MARIADB_DUMP} > /etc/MARIADB_DUMP
-echo ${MARIADB_DUMP_FINISHED} > /etc/MARIADB_DUMP_FINISHED
-echo ${STATISTICS_DUMP} > /etc/STATISTICS_DUMP
-echo ${EXPORT_IMPORT_DATABASE_CONTENT} > /etc/EXPORT_IMPORT_DATABASE_CONTENT
+printf "${TMPFS_MNT}" > /var/run/s6/container_environment/TMPFS_MNT
+printf "${ADDON_EVENTS}" > /var/run/s6/container_environment/ADDON_EVENTS
+printf "${MARIADB_DATA}" > /var/run/s6/container_environment/MARIADB_DATA
+printf "${OLD_MARIADB_DUMP}" > /var/run/s6/container_environment/OLD_MARIADB_DUMP
+printf "${OLD_MARIADB_DUMP_FINISHED}" > /var/run/s6/container_environment/OLD_MARIADB_DUMP_FINISHED
+printf "${MARIADB_DUMP}" > /var/run/s6/container_environment/MARIADB_DUMP
+printf "${MARIADB_DUMP_FINISHED}" > /var/run/s6/container_environment/MARIADB_DUMP_FINISHED
+printf "${STATISTICS_DUMP}" > /var/run/s6/container_environment/STATISTICS_DUMP
+printf "${EXPORT_IMPORT_DATABASES_CONTENT}" > /var/run/s6/container_environment/EXPORT_IMPORT_DATABASES_CONTENT

@@ -2,10 +2,6 @@
 # ==============================================================================
 # Post-start initialization of  MariaDB service
 # ==============================================================================
-MARIADB_DATA=$(</etc/MARIADB_DATA)
-MARIADB_DUMP=$(</etc/MARIADB_DUMP)
-MARIADB_DUMP_FINISHED=$(</etc/MARIADB_DUMP_FINISHED)
-EXPORT_IMPORT_DATABASE_CONTENT=$(</etc/EXPORT_IMPORT_DATABASE_CONTENT)
 
 function execute_without_error_messages() {
     local current_log_level="${__BASHIO_LOG_LEVELS[${__BASHIO_LOG_LEVEL}]}"
@@ -22,9 +18,8 @@ while ! mysql -e "" 2> /dev/null; do
 done
 bashio::log.info "MariaDB started"
 
-# Delete service information from the Supervisor
 bashio::log.info "Deleting service information from Home Assistant"
-execute_without_error_messages bashio::services.delete "mysql"
+execute_without_error_messages bashio::services.delete "mysql" || true
 
 bashio::log.info "Check data integrity and fix corruptions"
 mysqlcheck --no-defaults --databases mysql --fix-db-names --fix-table-names || true
@@ -54,97 +49,86 @@ mysql <<-EOSQL
 EOSQL
 
 # Init databases
-bashio::log.info "Ensure databases exists"
+bashio::log.info "Ensure databases exist"
 for database in $(bashio::config "databases"); do
     bashio::log.info "Create database ${database}"
     mysql -e "CREATE DATABASE ${database};" 2> /dev/null || true
 done
 
-# Cleanup outdated file naming if restored from older backup
-if bashio::fs.file_exists "${MARIADB_DUMP/TYPE/recorder}.tmp"; then
-    mv "${MARIADB_DUMP/TYPE/recorder}.tmp" "${MARIADB_DUMP/TYPE/data1}.tmp"
-fi
-if bashio::fs.file_exists "${MARIADB_DUMP/TYPE/recorder}"; then
-    mv "${MARIADB_DUMP/TYPE/recorder}" "${MARIADB_DUMP/TYPE/data1}"
-fi
-if bashio::fs.file_exists "${MARIADB_DUMP/TYPE/data}.tmp"; then
-    mv "${MARIADB_DUMP/TYPE/data}.tmp" "${MARIADB_DUMP/TYPE/data2}.tmp"
-fi
-if bashio::fs.file_exists "${MARIADB_DUMP/TYPE/data}"; then
-    mv "${MARIADB_DUMP/TYPE/data}" "${MARIADB_DUMP/TYPE/data2}"
+# Cleanup failed export - old version
+if bashio::fs.file_exists "${OLD_MARIADB_DUMP_FINISHED}"; then
+    if bashio::fs.file_exists "${OLD_MARIADB_DUMP/TYPE/schema}.tmp"; then
+        rm -f ${OLD_MARIADB_DUMP/TYPE/schema}
+        mv ${OLD_MARIADB_DUMP/TYPE/schema}.tmp ${OLD_MARIADB_DUMP/TYPE/schema}
+    fi
+    if bashio::fs.file_exists "${OLD_MARIADB_DUMP/TYPE/data1}.tmp"; then
+        rm -f ${OLD_MARIADB_DUMP/TYPE/data1}
+        mv ${OLD_MARIADB_DUMP/TYPE/data1}.tmp ${OLD_MARIADB_DUMP/TYPE/data1}
+    fi
+    if bashio::fs.file_exists "${OLD_MARIADB_DUMP/TYPE/data2}.tmp"; then
+        rm -f ${OLD_MARIADB_DUMP/TYPE/data2}
+        mv ${OLD_MARIADB_DUMP/TYPE/data2}.tmp ${OLD_MARIADB_DUMP/TYPE/data2}
+    fi
+    rm ${OLD_MARIADB_DUMP_FINISHED}
+else
+    rm -f ${OLD_MARIADB_DUMP/TYPE/schema}.tmp
+    rm -f ${OLD_MARIADB_DUMP/TYPE/data1}.tmp
+    rm -f ${OLD_MARIADB_DUMP/TYPE/data2}.tmp
 fi
 
 # Cleanup failed export
 if bashio::fs.file_exists "${MARIADB_DUMP_FINISHED}"; then
-    if bashio::fs.file_exists "${MARIADB_DUMP/TYPE/schema}.tmp"; then
-        rm -f ${MARIADB_DUMP/TYPE/schema}
-        mv ${MARIADB_DUMP/TYPE/schema}.tmp ${MARIADB_DUMP/TYPE/schema}
-    fi
-    if bashio::fs.file_exists "${MARIADB_DUMP/TYPE/data1}.tmp"; then
-        rm -f ${MARIADB_DUMP/TYPE/data1}
-        mv ${MARIADB_DUMP/TYPE/data1}.tmp ${MARIADB_DUMP/TYPE/data1}
-    fi
-    if bashio::fs.file_exists "${MARIADB_DUMP/TYPE/data2}.tmp"; then
-        rm -f ${MARIADB_DUMP/TYPE/data2}
-        mv ${MARIADB_DUMP/TYPE/data2}.tmp ${MARIADB_DUMP/TYPE/data2}
+    if bashio::fs.file_exists "${MARIADB_DUMP}.tmp"; then
+        rm -f ${MARIADB_DUMP}
+        mv ${MARIADB_DUMP}.tmp ${MARIADB_DUMP}
     fi
     rm ${MARIADB_DUMP_FINISHED}
 else
-    rm -f ${MARIADB_DUMP/TYPE/schema}.tmp
-    rm -f ${MARIADB_DUMP/TYPE/data1}.tmp
-    rm -f ${MARIADB_DUMP/TYPE/data2}.tmp
+    rm -f ${MARIADB_DUMP}.tmp
 fi
 
-# Import database structure and content... (no connection is allowed until it is finished)
+# Import all databases' structure and content... (no connection is allowed until it is finished)
 if bashio::config.exists "retention.enabled" && bashio::fs.directory_exists "${MARIADB_DATA}/homeassistant"; then
     if bashio::config.true "retention.enabled"; then
-        EXPORT_IMPORT_DATABASE_CONTENT=true
-        if ! bashio::fs.file_exists "${MARIADB_DUMP/TYPE/schema}"; then
-            bashio::log.warning "Importing last known database content skipped, no dump file found"
+        EXPORT_IMPORT_DATABASES_CONTENT=true
+        printf "${EXPORT_IMPORT_DATABASES_CONTENT}" > /var/run/s6/container_environment/EXPORT_IMPORT_DATABASES_CONTENT
+        if ! bashio::fs.file_exists "${OLD_MARIADB_DUMP/TYPE/schema}" \
+            && ! bashio::fs.file_exists "${MARIADB_DUMP}"
+        then
+            bashio::log.warning "Importing last known databases' content skipped, no dump file found"
         else
-            bashio::log.info "Last known database content time stamp is $(stat ${MARIADB_DUMP/TYPE/schema} -c %y)"
-            bashio::log.info "Importing database structure and content... (no connection is allowed until it is finished)"
-            declare convert_schema=false
-            declare aria_schema_version
-            declare innodb_schema_version
-            if gzip -d ${MARIADB_DUMP/TYPE/schema} -c | grep -q 'ENGINE=Aria'; then
-                # Check Aria schema version to be the latest known in dump
-                aria_schema_version=$(gzip -d ${MARIADB_DUMP/TYPE/data1} -c | grep -Eo 'INSERT  IGNORE INTO .schema_changes..*?;' | sed -n -e "s/^INSERT  IGNORE INTO.*VALUES \([^;]*\);/\1/p" | sed -e 's/),(/)\n(/g' | tr -d '()' | sed -n -e "s/^\d*,\(\d*\),.*$/\1/p" | sort | tail -n 1)
-                innodb_schema_version=$(ls /usr/share/schema.v??.InnoDB.sql | sed -n 's/^\/usr\/share\/schema\.v\(\d\d\)\.InnoDB\.sql$/\1/p')
-                if ! bashio::var.equals ${aria_schema_version} ${innodb_schema_version}; then
-                    bashio::log.warning "Can't convert older v${aria_schema_version} Aria storage engine schema into v${innodb_schema_version} InnoDB storage engine schema"
-                    bashio::log.warning "Please update Home Assistant to 2023.03.x and then restart this add-on"
-                    bashio::log.warning "Always stop Home Assistant before restarting this database add-on"
-                    bashio::log.notice "Importing database structure and content without conversion..."
-                else
-                    convert_schema=true
-                fi
-            fi
-            if bashio::var.true ${convert_schema}; then
-                bashio::log.notice "Converting Aria storage engine schema into InnoDB storage engine schema..."
-                # Create default v35 InnoDB schema
-                mysql homeassistant < "/usr/share/schema.v${innodb_schema_version}.InnoDB.sql"
-                mysql homeassistant -e "INSERT IGNORE INTO schema_changes (change_id, schema_version, changed) VALUES (1, ${innodb_schema_version}, UTC_TIMESTAMP());"
-                # Set autoincrement values
-                eval "declare -A table_increments=($(gzip -d ${MARIADB_DUMP/TYPE/schema} -c | tr '\n' '\a' | sed -e 's/;\a/;\n/g' | tr '\a' ' ' | grep -Eo 'CREATE TABLE .*? AUTO_INCREMENT=[^;]*;' | sed -n -e "s/^CREATE TABLE .\(\w*\).*AUTO_INCREMENT=\(\d*\)[^;]*;/[\1]=\2/p"))"
-                for table in "${!table_increments[@]}"; do
-                    mysql homeassistant -e "ALTER TABLE ${table} AUTO_INCREMENT=${table_increments[${table}]};"
-                done
-            else
-                gzip -d ${MARIADB_DUMP/TYPE/schema} -c \
+            if bashio::fs.file_exists "${OLD_MARIADB_DUMP/TYPE/schema}"; then
+                # old version
+                bashio::log.info "Last known homeassistant database content timestamp is $(stat ${OLD_MARIADB_DUMP/TYPE/schema} -c %y)"
+                bashio::log.info "Importing homeassistant database structure and content... (no connection is allowed until it is finished)"
+                gzip -d ${OLD_MARIADB_DUMP/TYPE/schema} -c \
                     | mysql homeassistant
+                gzip -d ${OLD_MARIADB_DUMP/TYPE/data1} -c \
+                    | mysql homeassistant
+                gzip -d ${OLD_MARIADB_DUMP/TYPE/data2} -c \
+                    | mysql homeassistant
+            else
+                # new version
+                bashio::log.info "Last known databases' content timestamp is $(stat ${MARIADB_DUMP} -c %y)"
+                bashio::log.info "Importing all databases' structure and content... (no connection is allowed until it is finished)"
+                gzip -d ${MARIADB_DUMP} -c \
+                    | mysql
             fi
-            gzip -d ${MARIADB_DUMP/TYPE/data1} -c \
-                | mysql homeassistant
-            gzip -d ${MARIADB_DUMP/TYPE/data2} -c \
-                | mysql homeassistant
+            # Bugfix for v2.5.2.4 unnecessary schema version insertion
+            mysql homeassistant -e "DELETE FROM schema_changes WHERE change_id=1 AND schema_version=35;"
         fi
     else
-        if bashio::fs.file_exists "${MARIADB_DUMP/TYPE/schema}"; then
-            rm -f ${MARIADB_DUMP/TYPE/schema}
-            rm -f ${MARIADB_DUMP/TYPE/data1}
-            rm -f ${MARIADB_DUMP/TYPE/data2}
-            bashio::log.info "Data retention is explicitly turned off, unused exported database content is removed"
+        # old version
+        if bashio::fs.file_exists "${OLD_MARIADB_DUMP/TYPE/schema}"; then
+            rm -f ${OLD_MARIADB_DUMP/TYPE/schema}
+            rm -f ${OLD_MARIADB_DUMP/TYPE/data1}
+            rm -f ${OLD_MARIADB_DUMP/TYPE/data2}
+            bashio::log.info "Data retention is explicitly turned off, unused exported homeassistant database structure and content is removed"
+        fi
+        # new version
+        if bashio::fs.file_exists "${MARIADB_DUMP}"; then
+            rm -f ${MARIADB_DUMP}
+            bashio::log.info "Data retention is explicitly turned off, unused exported databases' structure and content is removed"
         fi
     fi
 fi
@@ -203,6 +187,3 @@ PAYLOAD=$(\
 )
 bashio::log.info "Sending service information to Home Assistant"
 bashio::services.publish "mysql" "${PAYLOAD}"
-
-# Save variables
-echo ${EXPORT_IMPORT_DATABASE_CONTENT} > /etc/EXPORT_IMPORT_DATABASE_CONTENT

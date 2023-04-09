@@ -1,12 +1,27 @@
 # Home Assistant Custom Add-on: In-memory MariaDB
 
-![Warning][warning_stripe]
-
-> This is a **fork** of the [official add-on][official_addon]! See changes below.
-
-![Warning][warning_stripe]
-
 In-memory MariaDB database for Home Assistant.
+
+![Warning][warning_stripe]
+
+> This is a **fork** of the [official add-on][official_addon]!
+>
+> This version uses **tmpfs** to store MariaDB databases in-memory. If you are
+> trying to minimize your SD-card's wear, give this add-on a try.
+>
+> **Even this is an in-memory database, it can automatically export (from memory
+> to SD card) the database's content during backup, update, restart or even
+> periodically, and can automatically import (from SD card to memory) the
+> content when the add-on starts again**. The database dump is **gzip-ed**
+> before written to the storage to minimize SD-card wear.
+>
+> Though it won't protect you from power failures completely. After a power
+> failure, when the add-on is restarted, it will import the last known exported
+> database content. So when eg. daily periodic export (from memory to SD card)
+> is enabled, you will loose the latest sensory data within that day, but your
+> long term statistics information will remain mostly intact.
+
+![Warning][warning_stripe]
 
 [![GitHub Release][releases-shield]][releases]
 [![Last Updated][updated-shield]][updated]
@@ -26,19 +41,12 @@ In-memory MariaDB database for Home Assistant.
 
 ## About
 
-You can use this add-on to install an _**in-memory**_ MariaDB, which is an open-source (GPLv2 licensed) database. MariaDB can be used as the database backend for Home Assistant. For more information, please see [MariaDB][mariadb]
+You can use this add-on to install an _**in-memory**_ MariaDB, which is an
+open-source (GPLv2 licensed) database. MariaDB can be used as the database
+backend for Home Assistant. For more information, please see [MariaDB][mariadb]
 
-If you are trying to minimize your SD-card's wear, give this add-on a try.
-
-**Even this is an in-memory database, it can automatically export (from memory to SD card) the `homeassistant` database's content during backup, update, restart or even periodically, and can automatically import (from SD card to memory) the content when the add-on starts again**. The database dump is **gzip-ed** before written to the storage to minimize SD-card wear.
-
-Though it won't protect you from power failures. After a power failure, when the add-on is restarted, it will import the last known exported database content. So when eg. daily periodic export (from memory to SD card) is enabled, you will loose the latest sensory data within that day, but your long term statistics information will remain mostly intact.
-
-The recorder's `commit_interval` parameter is not enough to drastically reduce database and storage (SD card) writes: even if the `commit_interval` is very high, eg. 10 minutes, recorder will still commit in each 5 minutes for statistics generation. So with `commit_interval` you can't limit your database and storage (SD card) writes to hourly or daily writes. With this add-on you can limit it to only a few MB-s eg. daily, though with the tradeoff, that you have some chance of data loss. 
-
-This version uses **tmpfs** to store MariaDB databases in-memory.
-
-**See the Documentation tab for the required configuration changes for the recorder integration!!!**
+**See the Documentation tab for the required configuration changes for the
+recorder integration!!!**
 
 [aarch64-shield]: https://img.shields.io/badge/aarch64-yes-green.svg
 [amd64-shield]: https://img.shields.io/badge/amd64-yes-green.svg

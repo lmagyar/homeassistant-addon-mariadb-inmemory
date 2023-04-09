@@ -8,5 +8,5 @@ if bashio::config.equals "purge_statistics.period" "monthly"; then
 fi
 
 if bashio::config.true "retention.enabled" && bashio::config.equals "retention.periodic" "monthly"; then
-    export-homeassistant-database
+    export-databases
 fi

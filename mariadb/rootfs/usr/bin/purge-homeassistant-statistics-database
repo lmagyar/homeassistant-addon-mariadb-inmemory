@@ -2,9 +2,8 @@
 # ==============================================================================
 # Purge homeassistant statistics database
 # ==============================================================================
-STATISTICS_DUMP=$(</etc/STATISTICS_DUMP)
 
-bashio::log.info "Purging statistics database"
+bashio::log.info "Purging homeassistant statistics database"
 readonly database_timestamp=$(mysql homeassistant -Nse "SELECT UTC_TIMESTAMP();" 2> /dev/null)
 readonly purge_time_limit=$(mysql homeassistant -Nse "SELECT DATE_SUB('${database_timestamp}', INTERVAL $(bashio::config "purge_statistics.keep_periods") \
     $(sed 's/daily/DAY/g;s/weekly/WEEK/g;s/monthly/MONTH/g' <<< "$(bashio::config "purge_statistics.period")"));" 2> /dev/null)
@@ -13,7 +12,7 @@ if (( $(mysql homeassistant -Nse "SELECT COUNT(1) FROM \`statistics\` WHERE \`cr
     bashio::log.info "Nothing to purge"
 else
     if bashio::config.true "purge_statistics.archive"; then
-        bashio::log.info "Exporting statistics database's structure and old content before purge"
+        bashio::log.info "Exporting homeassistant statistics database's structure and old content before purge"
 
         readonly file_path="$(dirname "${STATISTICS_DUMP}")"
         readonly file_path_length=${file_path//[^\/]}
@@ -34,7 +33,7 @@ else
         mv ${STATISTICS_DUMP/TIMESTAMP/${file_timestamp}}.tmp ${STATISTICS_DUMP/TIMESTAMP/${file_timestamp}}
     fi
 
-    bashio::log.info "Deleting statistics database's old content"
+    bashio::log.info "Deleting homeassistant statistics database's old content"
     result=$(mysql homeassistant -Nse "DELETE FROM \`statistics\` WHERE \`created\` < '${purge_time_limit}'; OPTIMIZE TABLE \`statistics\`;" 2> /dev/null)
     if ! [[ "${result}" =~ ^homeassistant\.statistics[[:blank:]]*optimize[[:blank:]]*status[[:blank:]]*OK$ ]]; then
         bashio::log.warning "${result}"
