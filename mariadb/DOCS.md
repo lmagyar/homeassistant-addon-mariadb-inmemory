@@ -4,8 +4,6 @@
 
 > This is a **fork** of the [official add-on][official_addon]! See changes below.
 > 
-> Updates are released when the official add-on changes (changes are merged).
->
 > **Even this is an in-memory database, it can automatically export (from memory to SD card) the `homeassistant` database's content during backup, update, restart or even periodically, and can automatically import (from SD card to memory) the content when the add-on starts again**. The database dump is **gzip-ed** before written to the storage to minimize SD-card wear.
 >
 > Though it won't protect you from power failures. After a power failure, when the add-on is restarted, it will import the last known exported database content. So when eg. daily periodic export (from memory to SD card) is enabled, you will loose the latest sensory data within that day, but your long term statistics information will remain mostly intact.
@@ -13,7 +11,7 @@
 > **Note:** If you update or restart the add-on, please stop HA core to avoid error messages that the database is not available (during plain backup, stopping HA core is not necessary). How to do it:
 > - \> ha core stop
 > - \> ha addons update 45207088_mariadb --backup
-> - \> ha addons info 45207088_mariadb | grep -E '^version'   # wait until the new version is installed
+> - \> ha addons info 45207088_mariadb | grep -E '^version'   # wait until the new version is really installed
 > - \> ha addons log 45207088_mariadb                         # wait until the add-on is started
 > - \> ha core start
 
@@ -87,7 +85,7 @@ Specify an **upper limit** on the size of the in-memory filesystem. The size may
 >
 > **Note:** The database occupies more space on tmpfs than you see in the client. And it needs even more temporary space to `repack` tables after `purge` deleted rows.
 >
-> **Rule of thumb:** <minimum tmpfs size [MB]> = \<data stored daily [MB]\> * (\<purge_keep_days\> + 1) * 1.6 + 10[MB]
+> **Rule of thumb:** <minimum tmpfs size [MB]> = \<data stored daily [MB]\> * (\<purge_keep_days\> + 1) * 2.0 + 50[MB]
 >
 > **Note:** If you delete data from the database manually, use `OPTIMIZE TABLE states, events;` to decrease database file sizes also.
 >
@@ -100,15 +98,14 @@ SELECT round(sum(data_length + index_length) / 1024 / 1024, 2)
 INTO @database_size_in_MB
 FROM information_schema.tables WHERE table_schema = database();
 >
->SELECT min(time_fired), max(time_fired), timediff(max(time_fired), min(time_fired)),
-  round(timestampdiff(minute, min(time_fired), max(time_fired)) / 1440, 2)
-INTO @first_entry_in_UTC, @last_entry_in_UTC, @timespan, @timespan_in_days
+>SELECT from_unixtime(min(time_fired_ts)), from_unixtime(max(time_fired_ts)),
+  round(timestampdiff(minute, from_unixtime(min(time_fired_ts)), from_unixtime(max(time_fired_ts))) / 1440, 2)
+INTO @first_entry_in_UTC, @last_entry_in_UTC, @timespan_in_days
 FROM `events`;
 >
->SELECT @first_entry_in_UTC AS first_entry_in_UTC, @last_entry_in_UTC AS last_entry_in_UTC,
-  @timespan AS timespan, @timespan_in_days AS timespan_in_days,
+>SELECT @first_entry_in_UTC AS first_entry_in_UTC, @last_entry_in_UTC AS last_entry_in_UTC, @timespan_in_days AS timespan_in_days,
   @database_size_in_MB AS database_size_in_MB, round(@database_size_in_MB / @timespan_in_days, 2) AS growth_per_day_in_MB,
-  round((@database_size_in_MB / @timespan_in_days) * 8 * 1.6 + 10, 0) AS suggested_tmpfs_size_for_1_week_data_in_MB;
+  round((@database_size_in_MB / @timespan_in_days) * 8 * 2.0 + 50, 0) AS suggested_tmpfs_size_for_1_week_data_in_MB;
 > ```
 >
 > </details>
