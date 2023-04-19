@@ -1,5 +1,9 @@
 # Changelog
 
+## vNext (forked)
+
+- Update Add-on base image to v13.2.1
+
 ## 2.5.2.4 (forked)
 
 - Bugfix for image location
