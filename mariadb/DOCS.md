@@ -2,7 +2,7 @@
 
 ![Warning][warning_stripe]
 
-> This is a **fork** of the [official add-on][official_addon]! See changes below.
+> This is a **fork** of the [official add-on][official_addon]!
 > 
 > **Even this is an in-memory database, it can automatically export (from memory to SD card) the `homeassistant` database's content during backup, update, restart or even periodically, and can automatically import (from SD card to memory) the content when the add-on starts again**. The database dump is **gzip-ed** before written to the storage to minimize SD-card wear.
 >
