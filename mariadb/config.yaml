@@ -1,5 +1,6 @@
 ---
-version: 2.5.2.4
+version: 2.5.2.5
+homeassistant: 2023.4.0
 slug: mariadb
 name: In-memory MariaDB
 description: An in-memory SQL database server
@@ -16,7 +17,7 @@ privileged:
   - SYS_ADMIN
 map:
   - share:rw
-backup_pre: call-export-homeassistant-database
+backup_pre: call-export-all-databases
 image: ghcr.io/lmagyar/{arch}-addon-mariadb-inmemory
 init: false
 options:

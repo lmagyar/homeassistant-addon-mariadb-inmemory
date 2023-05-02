@@ -45,10 +45,11 @@ innodb_log_buffer_size = 256K
 innodb_log_file_size = 4M
 innodb_doublewrite = OFF
 innodb_change_buffering = none
-innodb_file_per_table = 1
+innodb_file_per_table = ON
 innodb_undo_log_truncate = ON
 innodb_page_size = 4096
 innodb_max_undo_log_size = 10485760
+innodb_autoextend_increment = 1
 innodb_undo_tablespaces = 2
 innodb_purge_rseg_truncate_frequency = 1
 

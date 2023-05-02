@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.5.2.5 (forked)
+
+- Export and import all databases, not only `homeassistant`
+- Avoid crond logging to system console
+- Require Home Assistant 2023.4.0 or newer
+- Remove any pre 2023.4.0 backward compatibility with exported database content (Aria storage engine is not used anymore)
+- Update Add-on base image to v13.2.2
+
 ## 2.5.2.4 (forked)
 
 - Bugfix for image location
