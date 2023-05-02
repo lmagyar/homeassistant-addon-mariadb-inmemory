@@ -1,6 +1,6 @@
 # Changelog
 
-## vNext (forked)
+## 2.5.2.5 (forked)
 
 - Export and import all databases, not only `homeassistant`
 - Avoid crond logging to system console
