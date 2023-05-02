@@ -12,7 +12,7 @@ if (( $(mysql homeassistant -Nse "SELECT COUNT(1) FROM \`statistics\` WHERE \`cr
     bashio::log.info "Nothing to purge"
 else
     if bashio::config.true "purge_statistics.archive"; then
-        bashio::log.info "Exporting homeassistant statistics database's structure and old content before purge"
+        bashio::log.info "Exporting homeassistant statistics database structure and old content before purge"
 
         readonly file_path="$(dirname "${STATISTICS_DUMP}")"
         readonly file_path_length=${file_path//[^\/]}
@@ -33,7 +33,7 @@ else
         mv ${STATISTICS_DUMP/TIMESTAMP/${file_timestamp}}.tmp ${STATISTICS_DUMP/TIMESTAMP/${file_timestamp}}
     fi
 
-    bashio::log.info "Deleting homeassistant statistics database's old content"
+    bashio::log.info "Deleting homeassistant statistics database old content"
     result=$(mysql homeassistant -Nse "DELETE FROM \`statistics\` WHERE \`created\` < '${purge_time_limit}'; OPTIMIZE TABLE \`statistics\`;" 2> /dev/null)
     if ! [[ "${result}" =~ ^homeassistant\.statistics[[:blank:]]*optimize[[:blank:]]*status[[:blank:]]*OK$ ]]; then
         bashio::log.warning "${result}"

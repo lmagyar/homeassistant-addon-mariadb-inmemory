@@ -17,7 +17,7 @@ privileged:
   - SYS_ADMIN
 map:
   - share:rw
-backup_pre: call-export-databases
+backup_pre: call-export-all-databases
 image: ghcr.io/lmagyar/{arch}-addon-mariadb-inmemory
 init: false
 options:

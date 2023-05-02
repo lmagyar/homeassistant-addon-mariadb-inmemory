@@ -8,6 +8,6 @@ s6-mkfifodir ${ADDON_EVENTS}
 while :
 do
     s6-ftrig-wait ${ADDON_EVENTS} "e" > /dev/null
-    export-databases
+    export-all-databases
     s6-ftrig-notify ${ADDON_EVENTS} "E"
 done

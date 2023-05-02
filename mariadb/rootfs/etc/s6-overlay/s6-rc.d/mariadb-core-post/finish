@@ -6,5 +6,5 @@
 bashio::log.info "Deleting service information from Home Assistant"
 bashio::services.delete "mysql" || true
 
-# Export database content
-export-databases
+# Export all databases content
+export-all-databases

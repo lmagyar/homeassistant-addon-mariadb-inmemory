@@ -1,6 +1,6 @@
 #!/command/with-contenv bashio
 # ==============================================================================
-# Call export homeassistant database
+# Call export all databases
 # ==============================================================================
 
 s6-ftrig-notify ${ADDON_EVENTS} "e"

@@ -4,12 +4,12 @@
 # ==============================================================================
 
 # do not use bashio functions, during shutdown they won't return true!
-if [[ "${EXPORT_IMPORT_DATABASES_CONTENT}" = "true" ]]; then
+if [[ "${EXPORT_IMPORT_ALL_DATABASES_CONTENT}" = "true" ]]; then
     exec 4> >(mysql)
     echo "FLUSH TABLES WITH READ LOCK;" >&4
     bashio::log.info "MariaDB tables locked" || true
 
-    bashio::log.info "Exporting all databases' structure and content" || true
+    bashio::log.info "Exporting all databases structure and content" || true
 
     mysqldump --all-databases --ignore-database=mysql \
             --skip-lock-tables --skip-add-locks --skip-add-drop-table --complete-insert --insert-ignore \

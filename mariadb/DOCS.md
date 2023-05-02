@@ -353,12 +353,13 @@ You have several options to get them answered:
 In case you've found a bug, please [open an issue on our GitHub][issue].
 
 [createuser]: https://mariadb.com/kb/en/create-user/
-[username]: https://mariadb.com/kb/en/create-user/#user-name-component
-[grant]: https://mariadb.com/kb/en/grant/
-[recorder]: https://www.home-assistant.io/integrations/recorder/
 [discord]: https://discord.gg/c5DvZ4e
 [forum]: https://community.home-assistant.io/t/in-memory-mariadb-mysql-add-on-for-recorder-history-integration/281791
+[grant]: https://mariadb.com/kb/en/grant/
 [issue]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/issues
+[mariadb]: https://mariadb.com
+[recorder]: https://www.home-assistant.io/integrations/recorder/
 [reddit]: https://reddit.com/r/homeassistant
+[username]: https://mariadb.com/kb/en/create-user/#user-name-component
 [warning_stripe]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/raw/master/images/warning_stripe_wide.png
 [official_addon]: https://github.com/home-assistant/addons/tree/master/mariadb
