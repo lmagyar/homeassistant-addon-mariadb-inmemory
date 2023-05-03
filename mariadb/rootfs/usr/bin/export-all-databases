@@ -1,10 +1,11 @@
 #!/command/with-contenv bashio
+# shellcheck shell=bash
 # ==============================================================================
 # Export all databases
 # ==============================================================================
 
 # do not use bashio functions, during shutdown they won't return true!
-if [[ "${EXPORT_IMPORT_ALL_DATABASES_CONTENT}" = "true" ]]; then
+if [[ "${EXPORT_IMPORT_ALL_DATABASES_CONTENT}" == "true" ]]; then
     exec 4> >(mysql)
     echo "FLUSH TABLES WITH READ LOCK;" >&4
     bashio::log.info "MariaDB tables locked" || true

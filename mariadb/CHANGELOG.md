@@ -1,5 +1,16 @@
 # Changelog
 
+## vNext (forked)
+
+- Use S6 service names from the official add-on
+- Use S6 service management from the official add-on for backup notifications instead of S6 fifodir
+- Use proper log redirection during backup
+
+## 2.6.0
+
+- ~~Migrate add-on layout to S6 Overlay~~ (forked version already migrated it's layout)
+- ~~Update to MariaDB version 10.6.12~~ (forked version already uses this MariaDB version)
+
 ## 2.5.2.5 (forked)
 
 - Export and import all databases, not only `homeassistant`

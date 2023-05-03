@@ -17,7 +17,10 @@ privileged:
   - SYS_ADMIN
 map:
   - share:rw
-backup_pre: call-export-all-databases
+backup_post: "redirfd -wn 1 /proc/1/fd/1 fdmove -c 2 1 \
+  s6-rc -v 2 -d change mariadb-export"
+backup_pre: "redirfd -wn 1 /proc/1/fd/1 fdmove -c 2 1 \
+  s6-rc -v 2 -u change mariadb-export"
 image: ghcr.io/lmagyar/{arch}-addon-mariadb-inmemory
 init: false
 options:

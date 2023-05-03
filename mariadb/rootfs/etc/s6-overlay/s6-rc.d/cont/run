@@ -1,9 +1,9 @@
 #!/command/with-contenv bashio
+# shellcheck shell=bash
 # ==============================================================================
 # Prepare the MariaDB add-on for running
 # ==============================================================================
 TMPFS_MNT=/tmp
-ADDON_EVENTS=${TMPFS_MNT}/events
 MARIADB_DATA=${TMPFS_MNT}/databases
 OLD_MARIADB_DUMP=/data/homeassistant-database-dump-TYPE.sql.gz
 OLD_MARIADB_DUMP_FINISHED=/data/homeassistant-database-dump-finished
@@ -14,7 +14,6 @@ EXPORT_IMPORT_ALL_DATABASES_CONTENT=false
 
 # Save variables
 printf "${TMPFS_MNT}" > /var/run/s6/container_environment/TMPFS_MNT
-printf "${ADDON_EVENTS}" > /var/run/s6/container_environment/ADDON_EVENTS
 printf "${MARIADB_DATA}" > /var/run/s6/container_environment/MARIADB_DATA
 printf "${OLD_MARIADB_DUMP}" > /var/run/s6/container_environment/OLD_MARIADB_DUMP
 printf "${OLD_MARIADB_DUMP_FINISHED}" > /var/run/s6/container_environment/OLD_MARIADB_DUMP_FINISHED
