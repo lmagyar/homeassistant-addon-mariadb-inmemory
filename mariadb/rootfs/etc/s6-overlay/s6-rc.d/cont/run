@@ -21,3 +21,7 @@ printf "${MARIADB_DUMP}" > /var/run/s6/container_environment/MARIADB_DUMP
 printf "${MARIADB_DUMP_FINISHED}" > /var/run/s6/container_environment/MARIADB_DUMP_FINISHED
 printf "${STATISTICS_DUMP}" > /var/run/s6/container_environment/STATISTICS_DUMP
 printf "${EXPORT_IMPORT_ALL_DATABASES_CONTENT}" > /var/run/s6/container_environment/EXPORT_IMPORT_ALL_DATABASES_CONTENT
+
+# Copy scripts to share folder
+mkdir -p /share/bin || true
+cp -pf /usr/bin/update-mariadb-inmemory-while-ha-core-restarted /share/bin/ || true
