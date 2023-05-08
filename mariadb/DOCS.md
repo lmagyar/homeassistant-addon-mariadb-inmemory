@@ -27,6 +27,10 @@
 > - \> ha addons info 45207088_mariadb | grep -E '^version'   # wait until the new version is really installed
 > - \> ha addons log 45207088_mariadb                         # wait until the add-on is started
 > - \> ha core start
+>
+> Or you can execute in the command line the
+> `/share/bin/update-mariadb-inmemory-while-ha-core-restarted` script to do it
+> automatically.
 
 > **Note:** The recorder's `commit_interval` parameter is not enough to
 > drastically reduce database and storage (SD card) writes: even if the

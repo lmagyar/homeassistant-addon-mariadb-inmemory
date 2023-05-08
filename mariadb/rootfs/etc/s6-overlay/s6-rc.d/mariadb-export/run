@@ -1,13 +1,8 @@
 #!/command/with-contenv bashio
+# shellcheck shell=bash
 # ==============================================================================
-# Start MariaDB-backup service
+# Export all databases for backups
 # ==============================================================================
 
-s6-mkfifodir ${ADDON_EVENTS}
-
-while :
-do
-    s6-ftrig-wait ${ADDON_EVENTS} "e" > /dev/null
-    export-all-databases
-    s6-ftrig-notify ${ADDON_EVENTS} "E"
-done
+# Export all databases content
+export-all-databases

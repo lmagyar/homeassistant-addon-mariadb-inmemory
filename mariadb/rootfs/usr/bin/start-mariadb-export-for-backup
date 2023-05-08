@@ -1,7 +1,9 @@
 #!/command/with-contenv bashio
+# shellcheck shell=bash
 # ==============================================================================
-# Call export all databases
+# Start maridb-export for backup
 # ==============================================================================
 
-s6-ftrig-notify ${ADDON_EVENTS} "e"
-s6-ftrig-wait -t 180000 ${ADDON_EVENTS} "E" > /dev/null
+# Redirect stdout to the add-on's log
+exec &> /proc/1/fd/1
+exec s6-rc -v 2 -u change mariadb-export

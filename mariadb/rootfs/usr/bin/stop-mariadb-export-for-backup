@@ -1,9 +1,9 @@
 #!/command/with-contenv bashio
 # shellcheck shell=bash
 # ==============================================================================
-# Export all databases periodically
+# Stop maridb-export for backup
 # ==============================================================================
 
-if bashio::config.true "retention.enabled" && bashio::config.equals "retention.periodic" "hourly"; then
-    export-all-databases
-fi
+# Redirect stdout to the add-on's log
+exec &> /proc/1/fd/1
+exec s6-rc -v 2 -d change mariadb-export
