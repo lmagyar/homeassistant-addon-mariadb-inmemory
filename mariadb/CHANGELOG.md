@@ -4,6 +4,9 @@
 
 - Use S6 service names from the official add-on
 - Use S6 service management from the official add-on for backup notifications instead of S6 fifodir
+
+## 2.6.1
+
 - Use proper log redirection during backup
 
 ## 2.6.0
