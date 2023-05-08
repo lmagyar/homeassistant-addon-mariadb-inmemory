@@ -88,7 +88,7 @@ else
     rm -f ${MARIADB_DUMP}.tmp
 fi
 
-# Import all databases structure and content... (no connection is allowed until it is finished)
+# Import all databases schema and data... (no connection is allowed until it is finished)
 if bashio::config.exists "retention.enabled"; then
     if bashio::config.true "retention.enabled"; then
         EXPORT_IMPORT_ALL_DATABASES_CONTENT=true
@@ -101,7 +101,7 @@ if bashio::config.exists "retention.enabled"; then
             if bashio::fs.file_exists "${OLD_MARIADB_DUMP/TYPE/schema}"; then
                 # File structure before v2.5.2.5
                 bashio::log.info "Last known homeassistant database content timestamp is $(stat ${OLD_MARIADB_DUMP/TYPE/schema} -c %y)"
-                bashio::log.info "Importing homeassistant database structure and content... (no connection is allowed until it is finished)"
+                bashio::log.info "Importing homeassistant database schema and data... (no connection is allowed until it is finished)"
                 gzip -d ${OLD_MARIADB_DUMP/TYPE/schema} -c \
                     | mysql homeassistant
                 gzip -d ${OLD_MARIADB_DUMP/TYPE/data1} -c \
@@ -110,7 +110,7 @@ if bashio::config.exists "retention.enabled"; then
                     | mysql homeassistant
             else
                 bashio::log.info "Last known all databases content timestamp is $(stat ${MARIADB_DUMP} -c %y)"
-                bashio::log.info "Importing all databases structure and content... (no connection is allowed until it is finished)"
+                bashio::log.info "Importing all databases schema and data... (no connection is allowed until it is finished)"
                 gzip -d ${MARIADB_DUMP} -c \
                     | mysql
             fi
@@ -123,11 +123,11 @@ if bashio::config.exists "retention.enabled"; then
             rm -f ${OLD_MARIADB_DUMP/TYPE/schema}
             rm -f ${OLD_MARIADB_DUMP/TYPE/data1}
             rm -f ${OLD_MARIADB_DUMP/TYPE/data2}
-            bashio::log.info "Data retention is explicitly turned off, unused exported homeassistant database structure and content is removed"
+            bashio::log.info "Data retention is explicitly turned off, unused exported homeassistant database schema and data is removed"
         fi
         if bashio::fs.file_exists "${MARIADB_DUMP}"; then
             rm -f ${MARIADB_DUMP}
-            bashio::log.info "Data retention is explicitly turned off, unused exported all databases structure and content is removed"
+            bashio::log.info "Data retention is explicitly turned off, unused exported all databases schema and data is removed"
         fi
     fi
 fi
