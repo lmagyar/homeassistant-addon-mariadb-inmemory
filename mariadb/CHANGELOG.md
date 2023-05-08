@@ -1,6 +1,6 @@
 # Changelog
 
-## vNext (forked)
+## 2.6.1.0 (forked)
 
 - Use S6 service names from the official add-on
 - Use S6 service management from the official add-on for backup notifications instead of S6 fifodir
