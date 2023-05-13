@@ -10,7 +10,7 @@ ENV \
 RUN apk add --no-cache \
     mariadb=10.6.13-r0 \
     mariadb-client=10.6.13-r0 \
-    mariadb-server-utils=10.6.12-r0 \
+    mariadb-server-utils=10.6.13-r0 \
     pwgen=2.08-r2
 
 # Copy root filesystem
