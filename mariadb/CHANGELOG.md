@@ -1,5 +1,9 @@
 # Changelog
 
+## vNext (forked)
+
+- Update Add-on base image to v14 (Update Alpine base image to v3.18.0)
+
 ## 2.6.1.0 (forked)
 
 - Use S6 service names from the official add-on
