@@ -188,6 +188,12 @@ started (restarted).
 This option helps to minimize data loss in case of power failure by periodically
 exporting the database's content.
 
+Though it won't protect you from power failures completely. After a power
+failure, when the add-on is restarted, it will import the last known exported
+database content. So when eg. daily periodic export (from memory to SD card) is
+enabled, you will loose the latest sensory data within that day, but your long
+term statistics information will remain mostly intact.
+
 Possible values:
 - disabled (default)
 - hourly (periodically export at each hour 00 minute)
