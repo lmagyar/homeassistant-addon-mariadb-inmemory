@@ -109,7 +109,8 @@ rights:
 
 ### Option: `tmpfs`
 
-This section defines the tmpfs filesystem.
+This add-on uses tmpfs to store MariaDB databases in-memory. This section
+defines the tmpfs filesystem.
 
 ### Option: `tmpfs.size`
 
