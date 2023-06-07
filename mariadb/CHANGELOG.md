@@ -2,7 +2,7 @@
 
 ## vNext (forked)
 
-- Update MariaDB to v10.11.3-r0
+- Update MariaDB to v10.11.4-r0
 - Update Add-on base image to v14 (Update Alpine base image to v3.18.0)
 
 ## 2.6.1.0 (forked)
