@@ -1,0 +1,12 @@
+addon_slug=45207088_mariadb
+addon_name="In-memory MariaDB"
+set -e
+echo "Stopping HA core..."
+ha core stop --no-progress
+echo -e "\nRestarting ${addon_name} add-on..."
+ha addons restart ${addon_slug} --no-progress
+echo -e -n "\nWaiting for the add-on to be fully started..."
+while ! ha ad log ${addon_slug} | grep -q "s6-rc: info: service legacy-services successfully started"; do sleep 5; echo -n '.'; done
+echo
+echo -e "\nStarting HA core..."
+ha core start --no-progress
