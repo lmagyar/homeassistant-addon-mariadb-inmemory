@@ -30,4 +30,5 @@ jobs:
           --${{ matrix.arch }} \
           --target mariadb \
           --cosign \
+          --no-cache \
           --docker-hub ghcr.io/${{ github.actor }}
