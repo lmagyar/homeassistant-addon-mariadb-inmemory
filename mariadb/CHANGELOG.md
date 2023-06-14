@@ -2,6 +2,7 @@
 
 ## vNext (forked)
 
+- Fix statistics data purge for new database schema
 - Update MariaDB to v10.11.4-r0
 - Update Add-on base image to v14.0.1 (Update Alpine base image to v3.18.0)
 - Sign add-on with Sigstore Cosign
