@@ -38,7 +38,7 @@ else
 
     bashio::log.info "Deleting homeassistant statistics database old data"
     result=$(mysql homeassistant -Nse "DELETE FROM \`statistics\` WHERE \`created_ts\` < '${purge_time_limit_ts}'; OPTIMIZE TABLE \`statistics\`;" 2> /dev/null)
-    if ! [[ "${result}" =~ ^homeassistant\.statistics[[:blank:]]*optimize[[:blank:]]*status[[:blank:]]*OK$ ]]; then
+    if ! [[ "${result}" =~ homeassistant\.statistics[[:blank:]]*optimize[[:blank:]]*status[[:blank:]]*OK$ ]]; then
         bashio::log.warning "${result}"
     fi
 fi
