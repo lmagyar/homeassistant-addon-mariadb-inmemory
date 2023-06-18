@@ -16,9 +16,14 @@ if [[ "${EXPORT_IMPORT_ALL_DATABASES_CONTENT}" == "true" ]]; then
             --skip-lock-tables --skip-add-locks --skip-add-drop-table --complete-insert --insert-ignore \
         | gzip -9 > ${MARIADB_DUMP}.tmp
 
-    # replace old exported data in atomic way
+    # indicate we are finished
+    fsync ${MARIADB_DUMP}.tmp
     touch ${MARIADB_DUMP_FINISHED}
+    fsync ${MARIADB_DUMP_FINISHED}
+
+    # replace old exported data in atomic way
     rm -f ${MARIADB_DUMP}
+    # File structure before v2.5.2.5
     rm -f ${OLD_MARIADB_DUMP/TYPE/schema}
     rm -f ${OLD_MARIADB_DUMP/TYPE/data1}
     rm -f ${OLD_MARIADB_DUMP/TYPE/data2}
