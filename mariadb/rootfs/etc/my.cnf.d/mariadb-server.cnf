@@ -41,7 +41,7 @@ ignore_builtin_innodb = OFF
 
 # InnoDB Tweaks
 innodb_buffer_pool_size = 5M
-innodb_log_buffer_size = 256K
+innodb_log_buffer_size = 2M
 innodb_log_file_size = 4M
 innodb_doublewrite = OFF
 innodb_change_buffering = none
