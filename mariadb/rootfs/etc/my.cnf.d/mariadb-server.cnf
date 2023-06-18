@@ -52,6 +52,7 @@ innodb_max_undo_log_size = 10485760
 innodb_autoextend_increment = 1
 innodb_undo_tablespaces = 2
 innodb_purge_rseg_truncate_frequency = 1
+innodb_flush_method = fsync
 
 # Aria Tweaks
 aria_log_file_size = 8M
