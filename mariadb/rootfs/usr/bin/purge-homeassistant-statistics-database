@@ -4,18 +4,17 @@
 # Purge homeassistant statistics database
 # ==============================================================================
 
-bashio::log.info "Purging homeassistant statistics database"
 readonly database_timestamp=$(mysql homeassistant -Nse "SELECT UTC_TIMESTAMP();" 2> /dev/null)
 readonly purge_time_limit=$(mysql homeassistant -Nse "SELECT DATE_SUB('${database_timestamp}', INTERVAL $(bashio::config "purge_statistics.keep_periods") \
     $(sed 's/daily/DAY/g;s/weekly/WEEK/g;s/monthly/MONTH/g' <<< "$(bashio::config "purge_statistics.period")"));" 2> /dev/null)
 readonly purge_time_limit_ts=$(date -d "${purge_time_limit}" "+%s")
-bashio::log.info "Purging data older than ${purge_time_limit}"
+bashio::log.info "Purging homeassistant statistics database, purging data older than ${purge_time_limit}"
 
 if (( $(mysql homeassistant -Nse "SELECT COUNT(1) FROM \`statistics\` WHERE \`created_ts\` < '${purge_time_limit_ts}';" 2> /dev/null) == 0 )); then
     bashio::log.info "Nothing to purge"
 else
     if bashio::config.true "purge_statistics.archive"; then
-        bashio::log.info "Exporting homeassistant statistics database schema and old data before purge"
+        bashio::log.info "Exporting homeassistant statistics database schema and old data before deletion"
 
         readonly file_path="$(dirname "${STATISTICS_DUMP}")"
         readonly file_path_length=${file_path//[^\/]}
