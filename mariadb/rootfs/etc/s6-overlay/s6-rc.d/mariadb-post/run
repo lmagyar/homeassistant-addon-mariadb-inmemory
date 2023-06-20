@@ -96,11 +96,11 @@ if bashio::config.exists "retention.enabled"; then
         if ! bashio::fs.file_exists "${OLD_MARIADB_DUMP/TYPE/schema}" \
             && ! bashio::fs.file_exists "${MARIADB_DUMP}"
         then
-            bashio::log.warning "Importing last known all databases content skipped, no dump file found"
+            bashio::log.warning "Importing last known all databases schema and data skipped, no dump file found"
         else
             if bashio::fs.file_exists "${OLD_MARIADB_DUMP/TYPE/schema}"; then
                 # File structure before v2.5.2.5
-                bashio::log.info "Last known homeassistant database content timestamp is $(stat ${OLD_MARIADB_DUMP/TYPE/schema} -c %y)"
+                bashio::log.info "Last known exported homeassistant database schema and data timestamp is $(stat ${OLD_MARIADB_DUMP/TYPE/schema} -c %y)"
                 bashio::log.info "Importing homeassistant database schema and data... (no connection is allowed until it is finished)"
                 gzip -d ${OLD_MARIADB_DUMP/TYPE/schema} -c \
                     | mysql homeassistant
@@ -109,7 +109,7 @@ if bashio::config.exists "retention.enabled"; then
                 gzip -d ${OLD_MARIADB_DUMP/TYPE/data2} -c \
                     | mysql homeassistant
             else
-                bashio::log.info "Last known all databases content timestamp is $(stat ${MARIADB_DUMP} -c %y)"
+                bashio::log.info "Last known exported all databases schema and data timestamp is $(stat ${MARIADB_DUMP} -c %y)"
                 bashio::log.info "Importing all databases schema and data... (no connection is allowed until it is finished)"
                 gzip -d ${MARIADB_DUMP} -c \
                     | mysql
