@@ -32,5 +32,6 @@ if [[ "${EXPORT_IMPORT_ALL_DATABASES_CONTENT}" == "true" ]]; then
     rm -f ${OLD_MARIADB_DUMP/TYPE/data1}
     rm -f ${OLD_MARIADB_DUMP/TYPE/data2}
     mv ${MARIADB_DUMP}.tmp ${MARIADB_DUMP}
+    fsync ${MARIADB_DUMP}
     rm ${MARIADB_DUMP_FINISHED}
 fi
