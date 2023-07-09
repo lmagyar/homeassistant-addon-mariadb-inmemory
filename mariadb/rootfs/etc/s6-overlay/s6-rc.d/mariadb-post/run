@@ -82,6 +82,7 @@ if bashio::fs.file_exists "${MARIADB_DUMP_FINISHED}"; then
     if bashio::fs.file_exists "${MARIADB_DUMP}.tmp"; then
         rm -f ${MARIADB_DUMP}
         mv ${MARIADB_DUMP}.tmp ${MARIADB_DUMP}
+        fsync ${MARIADB_DUMP}
     fi
     rm ${MARIADB_DUMP_FINISHED}
 else
