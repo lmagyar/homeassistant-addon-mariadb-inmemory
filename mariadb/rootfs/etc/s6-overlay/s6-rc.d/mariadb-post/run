@@ -116,7 +116,9 @@ if bashio::config.exists "retention.enabled"; then
                     | mysql
             fi
             # Bugfix for v2.5.2.4 unnecessary schema version insertion
-            mysql homeassistant -e "DELETE FROM schema_changes WHERE change_id=1 AND schema_version=35;"
+            if (( 1 == $(mysql -Nse "SELECT COUNT(1) FROM information_schema.tables WHERE table_schema = 'homeassistant' AND table_name = 'schema_changes';") )); then
+                mysql homeassistant -e "DELETE FROM schema_changes WHERE change_id=1 AND schema_version=35;"
+            fi
         fi
     else
         # File structure before v2.5.2.5
