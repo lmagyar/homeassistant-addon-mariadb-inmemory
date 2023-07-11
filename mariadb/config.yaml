@@ -19,7 +19,8 @@ map:
   - share:rw
 backup_post: stop-mariadb-export-for-backup
 backup_pre: start-mariadb-export-for-backup
-backup_exclude: /data/databases-dump.sql.gz.bak
+backup_exclude:
+  - databases-dump.sql.gz.bak
 image: ghcr.io/lmagyar/{arch}-addon-mariadb-inmemory
 init: false
 options:
