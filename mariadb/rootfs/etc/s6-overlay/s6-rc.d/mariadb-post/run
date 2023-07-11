@@ -84,6 +84,13 @@ if bashio::fs.file_exists "${MARIADB_DUMP_FINISHED}"; then
     rm ${MARIADB_DUMP_FINISHED}
 else
     rm -f ${MARIADB_DUMP}.tmp
+    if bashio::fs.file_exists "${MARIADB_DUMP}.bak" \
+        && ! bashio::fs.file_exists "${MARIADB_DUMP}";
+    then
+        # This is when even replacing last damaged dump with previous backup also failed below
+        mv ${MARIADB_DUMP}.bak ${MARIADB_DUMP}
+        fsync ${MARIADB_DUMP}
+    fi
 fi
 
 # Import all databases schema and data... (no connection is allowed until it is finished)
@@ -124,6 +131,10 @@ if bashio::config.exists "retention.enabled"; then
                         bashio::log.info "Importing all databases schema and data... (no connection is allowed until it is finished)"
                         gzip -d ${MARIADB_DUMP}.bak -c \
                             | mysql
+                        bashio::log.info "Replacing damaged last known exported all databases schema and data with internal backup of previous export"
+                        rm -f ${MARIADB_DUMP}
+                        mv ${MARIADB_DUMP}.bak ${MARIADB_DUMP}
+                        fsync ${MARIADB_DUMP}
                     fi
                 fi
             fi
