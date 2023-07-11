@@ -49,13 +49,6 @@ mysql <<-EOSQL
     FLUSH PRIVILEGES;
 EOSQL
 
-# Init databases
-bashio::log.info "Ensure databases exist"
-for database in $(bashio::config "databases"); do
-    bashio::log.info "Create database ${database}"
-    mysql -e "CREATE DATABASE ${database};" 2> /dev/null || true
-done
-
 # Cleanup failed export - file structure before v2.5.2.5
 if bashio::fs.file_exists "${OLD_MARIADB_DUMP_FINISHED}"; then
     if bashio::fs.file_exists "${OLD_MARIADB_DUMP/TYPE/schema}.tmp"; then
@@ -154,6 +147,13 @@ if bashio::config.exists "retention.enabled"; then
         fi
     fi
 fi
+
+# Init databases
+bashio::log.info "Ensure databases exist"
+for database in $(bashio::config "databases"); do
+    bashio::log.info "Create database ${database}"
+    mysql -e "CREATE DATABASE ${database};" 2> /dev/null || true
+done
 
 # Init logins
 bashio::log.info "Ensure users exist and are updated"
