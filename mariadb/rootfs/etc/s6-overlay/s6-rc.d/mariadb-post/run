@@ -80,7 +80,11 @@ fi
 # Cleanup failed export
 if bashio::fs.file_exists "${MARIADB_DUMP_FINISHED}"; then
     if bashio::fs.file_exists "${MARIADB_DUMP}.tmp"; then
-        rm -f ${MARIADB_DUMP}
+        if bashio::fs.file_exists "${MARIADB_DUMP}"; then
+            rm -f ${MARIADB_DUMP}.bak
+            mv ${MARIADB_DUMP} ${MARIADB_DUMP}.bak
+            fsync ${MARIADB_DUMP}.bak
+        fi
         mv ${MARIADB_DUMP}.tmp ${MARIADB_DUMP}
         fsync ${MARIADB_DUMP}
     fi
@@ -112,8 +116,23 @@ if bashio::config.exists "retention.enabled"; then
             else
                 bashio::log.info "Last known exported all databases schema and data timestamp is $(stat ${MARIADB_DUMP} -c %y)"
                 bashio::log.info "Importing all databases schema and data... (no connection is allowed until it is finished)"
-                gzip -d ${MARIADB_DUMP} -c \
+                if ! gzip -d ${MARIADB_DUMP} -c \
                     | mysql
+                then
+                    if ! bashio::fs.file_exists "${MARIADB_DUMP}.bak"; then
+                        bashio::exit.nok
+                    else
+                        bashio::log.warning "Importing failed, dropping all current databases and reimporting from internal backup of previous export"
+                        mysql -Nse "SHOW DATABASES" \
+                            | grep -Ev 'sys|mysql|information_schema|performance_schema' \
+                            | awk '{print "DROP DATABASE `" $1 "`;"}' \
+                            | mysql
+                        bashio::log.notice "Previous (!) known exported all databases schema and data timestamp is $(stat ${MARIADB_DUMP}.bak -c %y)"
+                        bashio::log.info "Importing all databases schema and data... (no connection is allowed until it is finished)"
+                        gzip -d ${MARIADB_DUMP}.bak -c \
+                            | mysql
+                    fi
+                fi
             fi
             # Bugfix for v2.5.2.4 unnecessary schema version insertion
             if (( 1 == $(mysql -Nse "SELECT COUNT(1) FROM information_schema.tables WHERE table_schema = 'homeassistant' AND table_name = 'schema_changes';") )); then
@@ -129,6 +148,7 @@ if bashio::config.exists "retention.enabled"; then
             bashio::log.info "Data retention is explicitly turned off, unused exported homeassistant database schema and data is removed"
         fi
         if bashio::fs.file_exists "${MARIADB_DUMP}"; then
+            rm -f ${MARIADB_DUMP}.bak
             rm -f ${MARIADB_DUMP}
             bashio::log.info "Data retention is explicitly turned off, unused exported all databases schema and data is removed"
         fi

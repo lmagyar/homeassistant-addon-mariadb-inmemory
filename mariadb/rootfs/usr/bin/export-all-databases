@@ -26,7 +26,11 @@ if [[ "${EXPORT_IMPORT_ALL_DATABASES_CONTENT}" == "true" ]]; then
     fsync ${MARIADB_DUMP_FINISHED}
 
     # replace old exported data in atomic way
-    rm -f ${MARIADB_DUMP}
+    rm -f ${MARIADB_DUMP}.bak
+    if [ -f ${MARIADB_DUMP} ]; then
+        mv ${MARIADB_DUMP} ${MARIADB_DUMP}.bak
+        fsync ${MARIADB_DUMP}.bak
+    fi
     # File structure before v2.5.2.5
     rm -f ${OLD_MARIADB_DUMP/TYPE/schema}
     rm -f ${OLD_MARIADB_DUMP/TYPE/data1}
