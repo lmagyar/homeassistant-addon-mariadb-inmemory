@@ -4,6 +4,7 @@
 
 - Fix statistics data purge for new database schema
 - Fix database export durability with fsync
+- Workaround for LOG_LEVEL environment variable superfluous newline character
 - Update MariaDB to v10.11.4-r0
 - Update Add-on base image to v14.0.2 (Update Alpine base image to v3.18.2)
 - Sign add-on with Sigstore Cosign
