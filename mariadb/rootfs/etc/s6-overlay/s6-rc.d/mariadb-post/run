@@ -127,7 +127,7 @@ if bashio::config.exists "retention.enabled"; then
                             | grep -Ev 'sys|mysql|information_schema|performance_schema' \
                             | awk '{print "DROP DATABASE `" $1 "`;"}' \
                             | mysql
-                        bashio::log.notice "Previous (!) known exported all databases schema and data timestamp is $(stat ${MARIADB_DUMP}.bak -c %y)"
+                        bashio::log.info "Previous (!) known exported all databases schema and data timestamp is $(stat ${MARIADB_DUMP}.bak -c %y)"
                         bashio::log.info "Importing all databases schema and data... (no connection is allowed until it is finished)"
                         gzip -d ${MARIADB_DUMP}.bak -c \
                             | mysql
