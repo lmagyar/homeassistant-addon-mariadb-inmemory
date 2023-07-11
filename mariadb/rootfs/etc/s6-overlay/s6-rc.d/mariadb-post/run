@@ -120,6 +120,7 @@ if bashio::config.exists "retention.enabled"; then
                     | mysql
                 then
                     if ! bashio::fs.file_exists "${MARIADB_DUMP}.bak"; then
+                        bashio::log.error "Importing failed"
                         bashio::exit.nok
                     else
                         bashio::log.warning "Importing failed, dropping all current databases and reimporting from internal backup of previous export"
@@ -129,8 +130,12 @@ if bashio::config.exists "retention.enabled"; then
                             | mysql
                         bashio::log.info "Previous (!) known exported all databases schema and data timestamp is $(stat ${MARIADB_DUMP}.bak -c %y)"
                         bashio::log.info "Importing all databases schema and data... (no connection is allowed until it is finished)"
-                        gzip -d ${MARIADB_DUMP}.bak -c \
+                        if ! gzip -d ${MARIADB_DUMP}.bak -c \
                             | mysql
+                        then
+                            bashio::log.error "Importing failed"
+                            bashio::exit.nok
+                        fi
                         bashio::log.info "Replacing damaged last known exported all databases schema and data with internal backup of previous export"
                         rm -f ${MARIADB_DUMP}
                         mv ${MARIADB_DUMP}.bak ${MARIADB_DUMP}
