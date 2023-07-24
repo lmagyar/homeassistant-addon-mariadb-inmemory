@@ -7,7 +7,7 @@
 - Internally store previous export in case storage (SD card) fails to execute fsync completely
 - Workaround for LOG_LEVEL environment variable superfluous newline character
 - Update MariaDB to v10.11.4-r0
-- Update Add-on base image to v14.0.2 (Update Alpine base image to v3.18.2)
+- Update Add-on base image to v14.0.5 (Update Alpine base image to v3.18.2)
 - Sign add-on with Sigstore Cosign
 
 ## 2.6.1.0 (forked)
