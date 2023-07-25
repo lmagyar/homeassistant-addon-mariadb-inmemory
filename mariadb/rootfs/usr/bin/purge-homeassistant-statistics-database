@@ -4,6 +4,11 @@
 # Purge homeassistant statistics database
 # ==============================================================================
 
+if (( 1 != $(mysql -Nse "SELECT COUNT(1) FROM information_schema.tables WHERE table_schema = 'homeassistant' AND table_name = 'statistics';") )); then
+    bashio::log.warning "Purging homeassistant statistics database is scheduled, but there is no homeassistant database"
+    bashio::exit.ok
+fi
+
 readonly database_timestamp=$(mysql homeassistant -Nse "SELECT UTC_TIMESTAMP();" 2> /dev/null)
 readonly purge_time_limit=$(mysql homeassistant -Nse "SELECT DATE_SUB('${database_timestamp}', INTERVAL $(bashio::config "purge_statistics.keep_periods") \
     $(sed 's/daily/DAY/g;s/weekly/WEEK/g;s/monthly/MONTH/g' <<< "$(bashio::config "purge_statistics.period")"));" 2> /dev/null)
