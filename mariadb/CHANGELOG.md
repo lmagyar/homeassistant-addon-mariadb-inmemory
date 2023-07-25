@@ -6,6 +6,7 @@
 - Fix database export durability with fsync
 - Internally store previous export in case storage (SD card) fails to execute fsync completely
 - Fix issue [#46](https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/issues/46) (Table 'homeassistant.schema_changes' doesn't exist)
+- Fix issue [#44](https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/issues/44) (Debian 12 (Supervised installation): Failed to connect to supervisor port 80)
 - Update MariaDB to v10.11.4-r0
 - Update Add-on base image to v14.0.5 (Update Alpine base image to v3.18.2)
 - Sign add-on with Sigstore Cosign
