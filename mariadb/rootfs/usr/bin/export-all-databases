@@ -16,16 +16,26 @@ if [[ "${EXPORT_IMPORT_ALL_DATABASES_CONTENT}" == "true" ]]; then
             --skip-lock-tables --skip-add-locks --skip-add-drop-table --complete-insert --insert-ignore \
         | gzip -9 > ${MARIADB_DUMP}.tmp
 
-    # replace old exported data in atomic way
+    echo "UNLOCK TABLES;" >&4
+    bashio::log.info "MariaDB tables unlocked" || true
+    exec 4>&-
+
+    # indicate we are finished
+    fsync ${MARIADB_DUMP}.tmp
     touch ${MARIADB_DUMP_FINISHED}
-    rm -f ${MARIADB_DUMP}
+    fsync ${MARIADB_DUMP_FINISHED}
+
+    # replace old exported data in atomic way
+    rm -f ${MARIADB_DUMP}.bak
+    if [ -f ${MARIADB_DUMP} ]; then
+        mv ${MARIADB_DUMP} ${MARIADB_DUMP}.bak
+        fsync ${MARIADB_DUMP}.bak
+    fi
+    # File structure before v2.5.2.5
     rm -f ${OLD_MARIADB_DUMP/TYPE/schema}
     rm -f ${OLD_MARIADB_DUMP/TYPE/data1}
     rm -f ${OLD_MARIADB_DUMP/TYPE/data2}
     mv ${MARIADB_DUMP}.tmp ${MARIADB_DUMP}
+    fsync ${MARIADB_DUMP}
     rm ${MARIADB_DUMP_FINISHED}
-
-    echo "UNLOCK TABLES;" >&4
-    bashio::log.info "MariaDB tables unlocked" || true
-    exec 4>&-
 fi

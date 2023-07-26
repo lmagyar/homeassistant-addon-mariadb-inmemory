@@ -25,3 +25,4 @@ printf "${EXPORT_IMPORT_ALL_DATABASES_CONTENT}" > /var/run/s6/container_environm
 # Copy scripts to share folder
 mkdir -p /share/bin || true
 cp -pf /usr/bin/update-mariadb-inmemory-while-ha-core-restarted /share/bin/ || true
+cp -pf /usr/bin/restart-mariadb-inmemory-while-ha-core-restarted /share/bin/ || true

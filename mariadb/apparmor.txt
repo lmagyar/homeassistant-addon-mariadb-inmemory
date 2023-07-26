@@ -6,6 +6,9 @@ profile mariadb flags=(attach_disconnected,mediate_deleted) {
   # Capabilities
   file,
   signal (send) set=(kill,term,int,hup,cont),
+  network,
+  capability chown,
+  capability net_bind_service,
 
   # S6-Overlay
   /init ix,
@@ -32,4 +35,5 @@ profile mariadb flags=(attach_disconnected,mediate_deleted) {
   capability setgid,
   capability setuid,
   mount,
+  remount,
 }

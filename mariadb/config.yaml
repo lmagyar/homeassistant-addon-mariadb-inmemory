@@ -1,5 +1,5 @@
 ---
-version: 2.6.1.0
+version: 2.6.1.1
 homeassistant: 2023.4.0
 slug: mariadb
 name: In-memory MariaDB
@@ -19,6 +19,8 @@ map:
   - share:rw
 backup_post: stop-mariadb-export-for-backup
 backup_pre: start-mariadb-export-for-backup
+backup_exclude:
+  - databases-dump.sql.gz.bak
 image: ghcr.io/lmagyar/{arch}-addon-mariadb-inmemory
 init: false
 options:

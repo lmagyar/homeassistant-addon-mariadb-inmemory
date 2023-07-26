@@ -21,16 +21,17 @@
  
 > **Note:** If you update or restart the add-on, please stop HA core to avoid
 > error messages that the database is not available (during plain backup,
-> stopping HA core is not necessary). How to do it:
+> stopping HA core is not necessary). **You can execute in the command line
+> the** `/share/bin/update-mariadb-inmemory-while-ha-core-restarted` **or**
+> `/share/bin/restart-mariadb-inmemory-while-ha-core-restarted` **scripts to do
+> it automatically.**
+>
+> Or you can execute these commands step by step manually to update the add-on:
 > - \> ha core stop
 > - \> ha addons update 45207088_mariadb --backup
 > - \> ha addons info 45207088_mariadb | grep -E '^version'   # wait until the new version is really installed
 > - \> ha addons log 45207088_mariadb                         # wait until the add-on is started
 > - \> ha core start
->
-> Or you can execute in the command line the
-> `/share/bin/update-mariadb-inmemory-while-ha-core-restarted` script to do it
-> automatically.
 
 > **Note:** The recorder's `commit_interval` parameter is not enough to
 > drastically reduce database and storage (SD card) writes: even if the
@@ -70,6 +71,22 @@ Follow these steps to get the add-on installed on your system:
 1. Add the `recorder` integration to your Home Assistant configuration. See
    details below.
 
+## How to update
+
+If you update or restart the add-on, please stop HA core to avoid error messages
+that the database is not available (during plain backup, stopping HA core is not
+necessary). **You can execute in the command line the**
+`/share/bin/update-mariadb-inmemory-while-ha-core-restarted` **or**
+`/share/bin/restart-mariadb-inmemory-while-ha-core-restarted` **scripts to do it
+automatically.**
+
+Or you can execute these commands step by step manually to update the add-on:
+- \> ha core stop
+- \> ha addons update 45207088_mariadb --backup
+- \> ha addons info 45207088_mariadb | grep -E '^version'   # wait until the new version is really installed
+- \> ha addons log 45207088_mariadb                         # wait until the add-on is started
+- \> ha core start
+
 ## Add-on Configuration
 
 The MariaDB server add-on can be tweaked to your likings. This section describes
@@ -105,7 +122,8 @@ rights:
 
 ### Option: `tmpfs`
 
-This section defines the tmpfs filesystem.
+This add-on uses tmpfs to store MariaDB databases in-memory. This section
+defines the tmpfs filesystem.
 
 ### Option: `tmpfs.size`
 
@@ -187,6 +205,12 @@ started (restarted).
 
 This option helps to minimize data loss in case of power failure by periodically
 exporting the database's content.
+
+Though it won't protect you from power failures completely. After a power
+failure, when the add-on is restarted, it will import the last known exported
+database content. So when eg. daily periodic export (from memory to SD card) is
+enabled, you will loose the latest sensory data within that day, but your long
+term statistics information will remain mostly intact.
 
 Possible values:
 - disabled (default)

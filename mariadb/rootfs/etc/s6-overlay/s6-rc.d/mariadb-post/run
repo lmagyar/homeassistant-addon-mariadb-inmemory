@@ -6,7 +6,7 @@
 
 function execute_without_error_messages() {
     local current_log_level="${__BASHIO_LOG_LEVELS[${__BASHIO_LOG_LEVEL}]}"
-    bashio::log.level fatal
+    bashio::log.level off
     local exit_code=0
     $@ || exit_code=$?
     bashio::log.level ${current_log_level}
@@ -49,13 +49,6 @@ mysql <<-EOSQL
     FLUSH PRIVILEGES;
 EOSQL
 
-# Init databases
-bashio::log.info "Ensure databases exist"
-for database in $(bashio::config "databases"); do
-    bashio::log.info "Create database ${database}"
-    mysql -e "CREATE DATABASE ${database};" 2> /dev/null || true
-done
-
 # Cleanup failed export - file structure before v2.5.2.5
 if bashio::fs.file_exists "${OLD_MARIADB_DUMP_FINISHED}"; then
     if bashio::fs.file_exists "${OLD_MARIADB_DUMP/TYPE/schema}.tmp"; then
@@ -80,12 +73,24 @@ fi
 # Cleanup failed export
 if bashio::fs.file_exists "${MARIADB_DUMP_FINISHED}"; then
     if bashio::fs.file_exists "${MARIADB_DUMP}.tmp"; then
-        rm -f ${MARIADB_DUMP}
+        if bashio::fs.file_exists "${MARIADB_DUMP}"; then
+            rm -f ${MARIADB_DUMP}.bak
+            mv ${MARIADB_DUMP} ${MARIADB_DUMP}.bak
+            fsync ${MARIADB_DUMP}.bak
+        fi
         mv ${MARIADB_DUMP}.tmp ${MARIADB_DUMP}
+        fsync ${MARIADB_DUMP}
     fi
     rm ${MARIADB_DUMP_FINISHED}
 else
     rm -f ${MARIADB_DUMP}.tmp
+    if bashio::fs.file_exists "${MARIADB_DUMP}.bak" \
+        && ! bashio::fs.file_exists "${MARIADB_DUMP}";
+    then
+        # This is when even replacing last damaged dump with previous backup also failed below
+        mv ${MARIADB_DUMP}.bak ${MARIADB_DUMP}
+        fsync ${MARIADB_DUMP}
+    fi
 fi
 
 # Import all databases schema and data... (no connection is allowed until it is finished)
@@ -96,11 +101,11 @@ if bashio::config.exists "retention.enabled"; then
         if ! bashio::fs.file_exists "${OLD_MARIADB_DUMP/TYPE/schema}" \
             && ! bashio::fs.file_exists "${MARIADB_DUMP}"
         then
-            bashio::log.warning "Importing last known all databases content skipped, no dump file found"
+            bashio::log.warning "Importing last known all databases schema and data skipped, no dump file found"
         else
             if bashio::fs.file_exists "${OLD_MARIADB_DUMP/TYPE/schema}"; then
                 # File structure before v2.5.2.5
-                bashio::log.info "Last known homeassistant database content timestamp is $(stat ${OLD_MARIADB_DUMP/TYPE/schema} -c %y)"
+                bashio::log.info "Last known exported homeassistant database schema and data timestamp is $(stat ${OLD_MARIADB_DUMP/TYPE/schema} -c %y)"
                 bashio::log.info "Importing homeassistant database schema and data... (no connection is allowed until it is finished)"
                 gzip -d ${OLD_MARIADB_DUMP/TYPE/schema} -c \
                     | mysql homeassistant
@@ -109,13 +114,39 @@ if bashio::config.exists "retention.enabled"; then
                 gzip -d ${OLD_MARIADB_DUMP/TYPE/data2} -c \
                     | mysql homeassistant
             else
-                bashio::log.info "Last known all databases content timestamp is $(stat ${MARIADB_DUMP} -c %y)"
+                bashio::log.info "Last known exported all databases schema and data timestamp is $(stat ${MARIADB_DUMP} -c %y)"
                 bashio::log.info "Importing all databases schema and data... (no connection is allowed until it is finished)"
-                gzip -d ${MARIADB_DUMP} -c \
+                if ! gzip -d ${MARIADB_DUMP} -c \
                     | mysql
+                then
+                    if ! bashio::fs.file_exists "${MARIADB_DUMP}.bak"; then
+                        bashio::log.error "Importing failed"
+                        bashio::exit.nok
+                    else
+                        bashio::log.warning "Importing failed, dropping all current databases and reimporting from internal backup of previous export"
+                        mysql -Nse "SHOW DATABASES" \
+                            | grep -Ev 'sys|mysql|information_schema|performance_schema' \
+                            | awk '{print "DROP DATABASE `" $1 "`;"}' \
+                            | mysql
+                        bashio::log.info "Previous (!) known exported all databases schema and data timestamp is $(stat ${MARIADB_DUMP}.bak -c %y)"
+                        bashio::log.info "Importing all databases schema and data... (no connection is allowed until it is finished)"
+                        if ! gzip -d ${MARIADB_DUMP}.bak -c \
+                            | mysql
+                        then
+                            bashio::log.error "Importing failed"
+                            bashio::exit.nok
+                        fi
+                        bashio::log.info "Replacing damaged last known exported all databases schema and data with internal backup of previous export"
+                        rm -f ${MARIADB_DUMP}
+                        mv ${MARIADB_DUMP}.bak ${MARIADB_DUMP}
+                        fsync ${MARIADB_DUMP}
+                    fi
+                fi
             fi
             # Bugfix for v2.5.2.4 unnecessary schema version insertion
-            mysql homeassistant -e "DELETE FROM schema_changes WHERE change_id=1 AND schema_version=35;"
+            if (( 1 == $(mysql -Nse "SELECT COUNT(1) FROM information_schema.tables WHERE table_schema = 'homeassistant' AND table_name = 'schema_changes';") )); then
+                mysql homeassistant -e "DELETE FROM schema_changes WHERE change_id=1 AND schema_version=35;"
+            fi
         fi
     else
         # File structure before v2.5.2.5
@@ -126,11 +157,19 @@ if bashio::config.exists "retention.enabled"; then
             bashio::log.info "Data retention is explicitly turned off, unused exported homeassistant database schema and data is removed"
         fi
         if bashio::fs.file_exists "${MARIADB_DUMP}"; then
+            rm -f ${MARIADB_DUMP}.bak
             rm -f ${MARIADB_DUMP}
             bashio::log.info "Data retention is explicitly turned off, unused exported all databases schema and data is removed"
         fi
     fi
 fi
+
+# Init databases
+bashio::log.info "Ensure databases exist"
+for database in $(bashio::config "databases"); do
+    bashio::log.info "Create database ${database}"
+    mysql -e "CREATE DATABASE ${database};" 2> /dev/null || true
+done
 
 # Init logins
 bashio::log.info "Ensure users exist and are updated"
