@@ -1,6 +1,6 @@
 # Changelog
 
-## vNext (forked)
+## 2.6.1.1 (forked)
 
 - Fix statistics data purge for new database schema
 - Fix database export durability with fsync
