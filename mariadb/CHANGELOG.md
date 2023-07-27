@@ -1,5 +1,9 @@
 # Changelog
 
+## vNext (forked)
+
+- Update Add-on base image to v14.0.6
+
 ## 2.6.1.1 (forked)
 
 - Fix statistics data purge for new database schema
