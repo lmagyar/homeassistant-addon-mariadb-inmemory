@@ -125,7 +125,7 @@ if bashio::config.exists "retention.enabled"; then
                     else
                         bashio::log.warning "Importing failed, dropping all current databases and reimporting from internal backup of previous export"
                         mysql -Nse "SHOW DATABASES" \
-                            | grep -Ev 'sys|mysql|information_schema|performance_schema' \
+                            | { grep -Ev 'sys|mysql|information_schema|performance_schema' || true ;} \
                             | awk '{print "DROP DATABASE `" $1 "`;"}' \
                             | mysql
                         bashio::log.info "Previous (!) known exported all databases schema and data timestamp is $(stat ${MARIADB_DUMP}.bak -c %y)"
