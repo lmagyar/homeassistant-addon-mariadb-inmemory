@@ -18,6 +18,8 @@
 > database content. So when eg. daily periodic export (from memory to SD card)
 > is enabled, you will loose the latest sensory data within that day, but your
 > long term statistics information will remain mostly intact.
+
+![Warning][warning_stripe]
  
 > **Note:** If you update or restart the add-on, please stop HA core to avoid
 > error messages that the database is not available (during plain backup,
