@@ -231,10 +231,10 @@ because exporting database content is part of the add-on's backup.
 
 ### Option: `purge_statistics`
 
-This section defines the parameters for statics data purging.
+This section defines the parameters for statistics data purging.
 
-Home Assistant never deletes old statistics data, so the database size can
-overgrow the memory limit. 
+By default, Home Assistant never deletes statistics data. This means that over 
+time the size of the database can grow beyond the memory limit. 
 
 ### Option: `purge_statistics.period`
 
