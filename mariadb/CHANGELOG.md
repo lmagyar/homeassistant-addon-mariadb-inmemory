@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.6.1.2 (forked)
+
+- Update MariaDB to v10.11.5-r0
+- Update Add-on base image to v14.1.0 (Update Alpine base image to v3.18.3)
+
 ## 2.6.1.1 (forked)
 
 - Fix statistics data purge for new database schema

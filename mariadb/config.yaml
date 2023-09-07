@@ -1,5 +1,5 @@
 ---
-version: 2.6.1.1
+version: 2.6.1.2
 homeassistant: 2023.4.0
 slug: mariadb
 name: In-memory MariaDB
