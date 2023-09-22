@@ -21,29 +21,11 @@
 
 > ---
  
-> **Note:** If you update or restart the add-on, please stop HA core to avoid
-> error messages that the database is not available (during plain backup,
-> stopping HA core is not necessary). **You can execute in the command line
-> the** `/share/bin/update-mariadb-inmemory-while-ha-core-restarted` **or**
-> `/share/bin/restart-mariadb-inmemory-while-ha-core-restarted` **scripts to do
-> it automatically.**
->
-> Or you can execute these commands step by step manually to update the add-on:
-> - \> ha core stop
-> - \> ha addons update 45207088_mariadb --backup
-> - \> ha addons info 45207088_mariadb | grep -E '^version'   # wait until the new version is really installed
-> - \> ha addons log 45207088_mariadb                         # wait until the add-on is started
-> - \> ha core start
-
-> ---
-
-> **Note:** The recorder's `commit_interval` parameter is not enough to
-> drastically reduce database and storage (SD card) writes: even if the
-> `commit_interval` is very high, eg. 10 minutes, recorder will still commit in
-> each 5 minutes for statistics generation. So with `commit_interval` you can't
-> limit your database and storage (SD card) writes to hourly or daily writes.
-> With this add-on you can limit it to only a few MB-s eg. daily, though with
-> the tradeoff, that you have some chance of short term data loss. 
+> **Note:** If you update the add-on, please stop HA core to avoid error
+> messages that the database is not available (during plain backup, stopping HA
+> core is not necessary). **You can execute in the command line the**
+> `/share/bin/update-mariadb-inmemory-while-ha-core-restarted` **script to do it
+> automatically.**
 
 ![Warning][warning_stripe]
 
