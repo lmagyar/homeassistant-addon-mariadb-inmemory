@@ -234,6 +234,25 @@ The number of periods to keep in database after a purge.
 
 Default is 6 months.
 
+> ---
+>
+> **Important!**
+>
+> ---
+>
+> Purging of statistics data impacts "Energy dashboard - Energy usage" graph in
+> a weird way:
+> - Energy usage values are stored in the database as cumulative (continuously
+>   increasing) values.
+> - Energy usage *graph* values are calculated as the difference between
+>   cumulative database values.
+> - After the statistics data purge, the first graph values will be compared to
+>   0, so the displayed first graph values will be unrealistically high.
+>
+> Please consider increasing `keep_periods` to a high enough value that will not
+> disturbe your Energy dashboard (eg. 13 months). For more details see [Issue
+> #58](https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/issues/58)
+
 ### Option: `purge_statistics.archive`
 
 Whether export the data before deletion.
