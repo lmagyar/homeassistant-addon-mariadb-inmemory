@@ -244,14 +244,32 @@ Default is 6 months.
 > a weird way:
 > - Energy usage values are stored in the database as cumulative (continuously
 >   increasing) values.
-> - Energy usage *graph* values are calculated as the difference between
+> - Energy usage *graph* values are calculated as the difference between these
 >   cumulative database values.
 > - After the statistics data purge, the first graph values will be compared to
 >   0, so the displayed first graph values will be unrealistically high.
 >
 > Please consider increasing `keep_periods` to a high enough value that will not
-> disturbe your Energy dashboard (eg. 13 months). For more details see [Issue
+> disturbe your Energy dashboard (eg. 13 months).
+>
+> <details>
+>
+> | <img width="75%" title="&quot;Energy dashboard - Energy usage&quot; graph after purge" src="https://user-images.githubusercontent.com/2125455/268935889-598b0e64-437b-446f-8da5-58554a690d1b.png"> |
+> | :---: |
+> | _"Energy dashboard - Energy usage" graph after purge_ |
+>
+> | Month | Energy statistic value <br> (before purge) | Change to previous value <br> (before purge) | Energy statistic value <br> (after purge) | Change to previous value <br> (after purge) |
+> |:---:|:-----:|:---:|:----:|:---:|
+> | Jan | 400   | 200 | 0    | 0   |
+> | Feb | 600   | 200 | 0    | 0   |
+> | Mar | 800   | 200 | 800  | ***800 !!!*** |
+> | Apr | 1000  | 200 | 1000 | 200 |
+> | May | 1200  | 200 | 1200 | 200 |
+>
+> For more details see [Issue
 > #58](https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/issues/58)
+>
+> </details>
 
 ### Option: `purge_statistics.archive`
 
