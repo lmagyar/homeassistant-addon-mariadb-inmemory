@@ -1,5 +1,9 @@
 # Changelog
 
+## vNext (forked)
+
+- Update Add-on base image to v14.1.1
+
 ## 2.6.1.2 (forked)
 
 - Update MariaDB to v10.11.5-r0
