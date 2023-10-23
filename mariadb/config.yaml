@@ -7,11 +7,9 @@ description: An in-memory SQL database server
 url: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory
 codenotary: lmagyar1973@gmail.com
 arch:
-  - armhf
-  - armv7
   - aarch64
   - amd64
-  - i386
+  - armv7
 tmpfs: true
 privileged:
   - SYS_ADMIN
