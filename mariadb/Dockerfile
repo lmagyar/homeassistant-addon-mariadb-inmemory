@@ -14,4 +14,7 @@ ENV \
 # Copy data
 COPY rootfs /
 
+HEALTHCHECK \
+    CMD healthcheck --defaults-file=/home/healthcheck/.my.cnf --connect --innodb_initialized --innodb_buffer_pool_loaded
+
 WORKDIR /

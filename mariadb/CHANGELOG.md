@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.8.0
+
+- Add HEALTHCHECK support
+
 ## 2.7.1
 
 **Note:** Restart the add-on before upgrade if the current version is lower
