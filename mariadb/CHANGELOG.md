@@ -6,6 +6,7 @@
 - Drop support for armhf & i386
 
 Nonbreaking changes:
+- Adds HEALTCHECK support
 - Update MariaDB to v10.11.5-r3
 - Update Add-on base image to v15.0.1 (Update Alpine base image to v3.19.0)
 
