@@ -15,3 +15,6 @@ RUN apk add --no-cache \
 
 # Copy root filesystem
 COPY rootfs /
+
+HEALTHCHECK \
+    CMD healthcheck --connect --innodb_initialized --innodb_buffer_pool_loaded
