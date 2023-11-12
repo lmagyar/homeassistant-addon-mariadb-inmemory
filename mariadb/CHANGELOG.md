@@ -6,7 +6,7 @@
 - Drop support for armhf & i386
 
 Nonbreaking changes:
-- Update Add-on base image to v14.3.1
+- Update Add-on base image to v14.3.2
 
 ## 2.6.1.2 (forked)
 
