@@ -6,6 +6,7 @@
 - Drop support for armhf & i386
 
 Nonbreaking changes:
+- Update MariaDB to v10.11.5-r3
 - Update Add-on base image to v15.0.0 (Update Alpine base image to v3.19.0)
 
 ## 2.6.1.2 (forked)
