@@ -19,14 +19,6 @@
 > is enabled, you will loose the latest sensory data within that day, but your
 > long term statistics information will remain mostly intact.
 
-> ---
- 
-> **Note:** If you update the add-on, please stop HA core to avoid error
-> messages that the database is not available (during plain backup, stopping HA
-> core is not necessary). **You can execute in the command line the**
-> `/share/bin/update-mariadb-inmemory-while-ha-core-restarted` **script to do it
-> automatically.**
-
 ![Warning][warning_stripe]
 
 You can use this add-on to install an _**in-memory**_ MariaDB, which is an

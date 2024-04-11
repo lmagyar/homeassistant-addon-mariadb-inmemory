@@ -1,5 +1,11 @@
 # Changelog
 
+**Note:** If you update the add-on, please stop HA core to avoid error messages
+that the database is not available (during plain backup, stopping HA core is not
+necessary). **You can execute in the command line the**
+`/share/bin/update-mariadb-inmemory-while-ha-core-restarted` **script to do it
+automatically.**
+
 ## vNext (forked)
 
 ***BREAKING CHANGES:***
@@ -117,7 +123,7 @@ For more details see the documentation.
 
 ## 2.5.1.2 (forked)
 
-- **New function**: Periodically export homeassistant database to minimize data loss in case of power failure. Disabled by default. 
+- **New function**: Periodically export homeassistant database to minimize data loss in case of power failure. Disabled by default.
 
 ## 2.5.1.1 (forked)
 
