@@ -8,7 +8,7 @@
 Nonbreaking changes:
 - Add HEALTCHECK support
 - Update MariaDB to v10.11.6-r0
-- Update Add-on base image to v15.0.7 (Update Alpine base image to v3.19.1)
+- Update Add-on base image to v15.0.8 (Update Alpine base image to v3.19.1)
 
 ## 2.6.1.2 (forked)
 
