@@ -6,7 +6,7 @@ necessary). **You can execute in the command line the**
 `/share/bin/update-mariadb-inmemory-while-ha-core-restarted` **script to do it
 automatically.**
 
-## vNext (forked)
+## 2.6.1.3 (forked)
 
 ***BREAKING CHANGES:***
 - Drop support for armhf & i386
