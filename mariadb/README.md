@@ -54,9 +54,9 @@ recorder integration!!!**
 
 [aarch64-shield]: https://img.shields.io/badge/aarch64-yes-green.svg
 [amd64-shield]: https://img.shields.io/badge/amd64-yes-green.svg
-[armhf-shield]: https://img.shields.io/badge/armhf-yes-green.svg
+[armhf-shield]: https://img.shields.io/badge/armhf-no-red.svg
 [armv7-shield]: https://img.shields.io/badge/armv7-yes-green.svg
-[i386-shield]: https://img.shields.io/badge/i386-yes-green.svg
+[i386-shield]: https://img.shields.io/badge/i386-no-red.svg
 [commits-shield]: https://img.shields.io/github/commit-activity/y/lmagyar/homeassistant-addon-mariadb-inmemory.svg
 [commits]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/commits/master
 [github-actions-shield]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/workflows/Publish/badge.svg
@@ -64,7 +64,7 @@ recorder integration!!!**
 [installations-shield]: https://img.shields.io/badge/dynamic/json?label=reported%20installations&query=$[%2745207088_mariadb%27].total&url=https%3A%2F%2Fanalytics.home-assistant.io%2Faddons.json
 [license-shield]: https://img.shields.io/github/license/lmagyar/homeassistant-addon-mariadb-inmemory.svg
 [licence]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/blob/master/LICENSE
-[maintenance-shield]: https://img.shields.io/maintenance/yes/2023.svg
+[maintenance-shield]: https://img.shields.io/maintenance/yes/2024.svg
 [project-stage-shield]: https://img.shields.io/badge/project%20stage-production%20ready-green.svg
 [releases-shield]: https://img.shields.io/github/tag/lmagyar/homeassistant-addon-mariadb-inmemory.svg?label=release
 [releases]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/tags

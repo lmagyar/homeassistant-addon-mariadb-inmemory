@@ -1,5 +1,21 @@
 # Changelog
 
+**Note:** If you update the add-on, please stop HA core to avoid error messages
+that the database is not available (during plain backup, stopping HA core is not
+necessary). **You can execute in the command line the**
+`/share/bin/update-mariadb-inmemory-while-ha-core-restarted` **script to do it
+automatically.**
+
+## 2.6.1.3 (forked)
+
+***BREAKING CHANGES:***
+- Drop support for armhf & i386
+
+Nonbreaking changes:
+- Add HEALTCHECK support
+- Update MariaDB to v10.11.6-r0
+- Update Add-on base image to v15.0.8 (Update Alpine base image to v3.19.1)
+
 ## 2.6.1.2 (forked)
 
 - Update MariaDB to v10.11.5-r0
@@ -107,7 +123,7 @@ For more details see the documentation.
 
 ## 2.5.1.2 (forked)
 
-- **New function**: Periodically export homeassistant database to minimize data loss in case of power failure. Disabled by default. 
+- **New function**: Periodically export homeassistant database to minimize data loss in case of power failure. Disabled by default.
 
 ## 2.5.1.1 (forked)
 
