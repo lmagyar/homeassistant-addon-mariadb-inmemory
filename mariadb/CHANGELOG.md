@@ -6,6 +6,10 @@ necessary). **You can execute in the command line the**
 `/share/bin/update-mariadb-inmemory-while-ha-core-restarted` **script to do it
 automatically.**
 
+## 2.7.0
+
+- ~~Update to Alpine 3.19~~ (forked version already uses this Alpine version)
+
 ## 2.6.1.3 (forked)
 
 ***BREAKING CHANGES:***
