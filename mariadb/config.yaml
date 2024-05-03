@@ -15,6 +15,7 @@ privileged:
   - SYS_ADMIN
 map:
   - share:rw
+homeassistant_api: true
 backup_post: stop-mariadb-export-for-backup
 backup_pre: start-mariadb-export-for-backup
 backup_exclude:

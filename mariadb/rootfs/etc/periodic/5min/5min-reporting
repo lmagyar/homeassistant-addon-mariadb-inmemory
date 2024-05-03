@@ -1,9 +1,7 @@
 #!/command/with-contenv bashio
 # shellcheck shell=bash
 # ==============================================================================
-# Start crond service
+# Report sensors periodically
 # ==============================================================================
 
-(crontab -l; echo "*/5     *       *       *       *       run-parts /etc/periodic/5min" ) | grep . | crontab -
-
-exec crond -f -d 9
+report-sensors

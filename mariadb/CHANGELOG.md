@@ -6,6 +6,10 @@ necessary). **You can execute in the command line the**
 `/share/bin/update-mariadb-inmemory-while-ha-core-restarted` **script to do it
 automatically.**
 
+## vNext (forked)
+
+- Report tmpfs usage as `sensor.in_memory_mariadb_memory_storage_percent`, see documentation for more details.
+
 ## 2.7.1
 
 - ~~Increase MariaDB add-on shutdown timeout to 300s~~ (forked version already uses this timeout value)

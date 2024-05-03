@@ -383,6 +383,21 @@ tab.
 >   database and analyze it's content. Search for the entries you don't need,
 >   but fill up the database!
 
+## Reported diagnostic values
+
+### Sensor: `sensor.in_memory_mariadb_memory_storage_percent`
+
+Reports the usage of the specified tmpfs capacity in percent.
+
+Additional reported attributes:
+
+- `capacity`: Basically the specified `tmpfs.size` option in human readable
+  format.
+
+- `used`: Used capacity in human readable format.
+
+- `available`: Available capacity in human readable format.
+
 ## Support
 
 Got questions?

@@ -1,0 +1,25 @@
+#!/command/with-contenv bashio
+# shellcheck shell=bash
+# ==============================================================================
+# Report sensors
+# ==============================================================================
+
+source /usr/lib/core.sh
+
+# Collect tmpfs sensor values
+declare use size used available
+read -r use size used available <<<$(df -h /tmp | awk 'NR == 2{print $5, $2, $3, $4}' | tr -d '%')
+
+# Report tmpfs sensor values
+declare request=$(bashio::var.json \
+    state "${use}" \
+    attributes "^$(bashio::var.json \
+      friendly_name "In-memory MariaDB memory storage (tmpfs) usage in percent" \
+      unit_of_measurement "%" \
+      state_class "measurement" \
+      capacity "${size}" \
+      used "${used}" \
+      available "${available}" \
+    )" \
+)
+core.api POST states/sensor.in_memory_mariadb_memory_storage_percent "${request}" >/dev/null
