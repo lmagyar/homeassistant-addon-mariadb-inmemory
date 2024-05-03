@@ -17,6 +17,7 @@ declare request=$(bashio::var.json \
       friendly_name "In-memory MariaDB memory storage (tmpfs) usage in percent" \
       unit_of_measurement "%" \
       state_class "measurement" \
+      icon "mdi:database" \
       capacity "${size}" \
       used "${used}" \
       available "${available}" \
