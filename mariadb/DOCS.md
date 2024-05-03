@@ -387,7 +387,7 @@ tab.
 
 ### Sensor: `sensor.in_memory_mariadb_memory_storage_percent`
 
-Reports the usage of the specified tmpfs capacity in percent.
+Reports the usage of the specified tmpfs capacity in percent in each 5 minutes.
 
 Additional reported attributes:
 
