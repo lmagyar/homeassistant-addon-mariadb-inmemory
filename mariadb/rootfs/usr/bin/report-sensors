@@ -30,7 +30,7 @@ request=$(bashio::var.json \
       icon "mdi:database" \
     )" \
 )
-core.api POST states/sensor.in_memory_mariadb_memory_storage_percent "${request}" -w >/dev/null
+core.api POST states/sensor.in_memory_mariadb_memory_storage_percent "${request}" -w > /dev/null
 
 # Report tmpfs size/capacity sensor value
 unit_length=$(unit_length "${size}")
@@ -44,7 +44,7 @@ request=$(bashio::var.json \
       icon "mdi:database" \
     )" \
 )
-core.api POST states/sensor.in_memory_mariadb_memory_storage_capacity "${request}" -w >/dev/null
+core.api POST states/sensor.in_memory_mariadb_memory_storage_capacity "${request}" -w > /dev/null
 
 # Report tmpfs used sensor value
 unit_length=$(unit_length "${used}")
@@ -58,7 +58,7 @@ request=$(bashio::var.json \
       icon "mdi:database-arrow-up" \
     )" \
 )
-core.api POST states/sensor.in_memory_mariadb_memory_storage_used "${request}" -w >/dev/null
+core.api POST states/sensor.in_memory_mariadb_memory_storage_used "${request}" -w > /dev/null
 
 # Report tmpfs available sensor value
 unit_length=$(unit_length "${available}")
@@ -72,4 +72,4 @@ request=$(bashio::var.json \
       icon "mdi:database-check" \
     )" \
 )
-core.api POST states/sensor.in_memory_mariadb_memory_storage_available "${request}" -w >/dev/null
+core.api POST states/sensor.in_memory_mariadb_memory_storage_available "${request}" -w > /dev/null
