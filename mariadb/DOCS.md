@@ -387,9 +387,10 @@ tab.
 
 Values are reported in each 5 minutes.
 
-**Note:** Please wait, the sensors won't be available in Home Assistant until
-the values are first reported. When Home Assistant is restarted, the previous
-sensor states and even their existence are not remembered.
+**Note:** Please wait until the values are first reported, the sensors as
+_entities_ won't be available until the first update. Though the _historical_
+values for charts are always available, because they are coming from the
+database, not from Home Assistant's internal state.
 
 ### Sensor: `sensor.in_memory_mariadb_memory_storage_percent`
 
