@@ -8,7 +8,7 @@ automatically.**
 
 ## vNext (forked)
 
-- Report tmpfs usage as `sensor.in_memory_mariadb_memory_storage_percent`, see documentation for more details.
+- Report tmpfs usage as sensors, like `sensor.in_memory_mariadb_memory_storage_percent`, see documentation for more details.
 
 ## 2.7.1
 

@@ -385,18 +385,23 @@ tab.
 
 ## Reported diagnostic values
 
+Values are reported in each 5 minutes.
+
 ### Sensor: `sensor.in_memory_mariadb_memory_storage_percent`
 
-Reports the usage of the specified tmpfs capacity in percent in each 5 minutes.
+The usage of the specified tmpfs capacity in percent.
 
-Additional reported attributes:
+### Sensor: `sensor.in_memory_mariadb_memory_storage_capacity`
 
-- `capacity`: Basically the specified `tmpfs.size` option in human readable
-  format.
+Basically the specified `tmpfs.size` option in human readable format.
 
-- `used`: Used capacity in human readable format.
+### Sensor: `sensor.in_memory_mariadb_memory_storage_used`
 
-- `available`: Available capacity in human readable format.
+Used capacity in human readable format.
+
+### Sensor: `sensor.in_memory_mariadb_memory_storage_available`
+
+Available capacity in human readable format.
 
 ## Support
 

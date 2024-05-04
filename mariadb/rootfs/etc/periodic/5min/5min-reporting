@@ -4,4 +4,5 @@
 # Report sensors periodically
 # ==============================================================================
 
-report-sensors
+# Always successful, but preserv error messages
+report-sensors || true
