@@ -1,6 +1,15 @@
 #!/command/with-contenv bashio
 # shellcheck shell=bash
 
+function log.error_or_warning() {
+    local warning_only="$1"; shift
+    if ! bashio::var.has_value "${warning_only}"; then
+        bashio::log.error $*
+    else
+        bashio::log.warning $*
+    fi
+}
+
 # ------------------------------------------------------------------------------
 # Makes a call to the Home Assistant REST API.
 #
@@ -12,6 +21,7 @@
 #
 # Options (after arguments):
 #   -s "Silent" Supress error message in case of a 404 Not found HTTP status code
+#   -w "Warning only" Log only warnings instead of errors
 # ------------------------------------------------------------------------------
 function core.api() {
     local method=${1}; shift
@@ -26,10 +36,14 @@ function core.api() {
     fi
 
     local OPTIND o a
-    while getopts "s" o; do
+    local silent= local warning_only=
+    while getopts "sw" o; do
         case "${o}" in
             s)
-                local silent=
+                silent=1
+                ;;
+            w)
+                warning_only=1
                 ;;
         esac
     done
@@ -52,7 +66,7 @@ function core.api() {
         "${__BASHIO_SUPERVISOR_API}${resource}"
     ); then
         bashio::log.debug "${response}"
-        bashio::log.error "Something went wrong contacting the API"
+        log.error_or_warning "${warning_only}" "Something went wrong contacting the API"
         return "${__BASHIO_EXIT_NOK}"
     fi
 
@@ -66,34 +80,34 @@ function core.api() {
     bashio::log.debug "API Response: ${response}"
 
     if [[ "${status}" -eq 400 ]]; then
-        bashio::log.error "Requested resource ${resource} was called with a bad request"
+        log.error_or_warning "${warning_only}" "Requested resource ${resource} was called with a bad request"
         return "${__BASHIO_EXIT_NOK}"
     fi
 
     if [[ "${status}" -eq 401 ]]; then
-        bashio::log.error "Unable to authenticate with the API, permission denied"
+        log.error_or_warning "${warning_only}" "Unable to authenticate with the API, permission denied"
         return "${__BASHIO_EXIT_NOK}"
     fi
 
     if [[ "${status}" -eq 403 ]]; then
-        bashio::log.error "Unable to access the API, forbidden"
+        log.error_or_warning "${warning_only}" "Unable to access the API, forbidden"
         return "${__BASHIO_EXIT_NOK}"
     fi
 
     if [[ "${status}" -eq 404 ]]; then
-        if [[ -z ${silent+x} ]]; then
-            bashio::log.error "Requested resource ${resource} was not found"
+        if ! bashio::var.has_value "${silent}"; then
+            log.error_or_warning "${warning_only}" "Requested resource ${resource} was not found"
         fi
         return "${__BASHIO_EXIT_NOK}"
     fi
 
     if [[ "${status}" -eq 405 ]]; then
-        bashio::log.error "Requested resource ${resource} was called using an unallowed method"
+        log.error_or_warning "${warning_only}" "Requested resource ${resource} was called using an unallowed method"
         return "${__BASHIO_EXIT_NOK}"
     fi
 
     if [[ "${status}" -ne 200 && "${status}" -ne 201 ]]; then
-        bashio::log.error "Unknown HTTP error ${status} occurred"
+        log.error_or_warning "${warning_only}" "Unknown HTTP error ${status} occurred"
         return "${__BASHIO_EXIT_NOK}"
     fi
 
