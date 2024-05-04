@@ -5,4 +5,6 @@
 # ==============================================================================
 
 # Always successful, but preserv error messages
-report-sensors || true
+if ! report-sensors; then
+    bashio::log.warning "Failed to report diagnostic sensor values"
+fi
