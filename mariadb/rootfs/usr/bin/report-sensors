@@ -41,7 +41,7 @@ request=$(bashio::var.json \
       unit_of_measurement "${size: -$unit_length}" \
       device_class "data_size" \
       state_class "measurement" \
-      icon "mdi:database" \
+      icon "mdi:database-arrow-up" \
     )" \
 )
 core.api POST states/sensor.in_memory_mariadb_memory_storage_capacity "${request}" -w > /dev/null
@@ -55,7 +55,7 @@ request=$(bashio::var.json \
       unit_of_measurement "${used: -$unit_length}" \
       device_class "data_size" \
       state_class "measurement" \
-      icon "mdi:database-arrow-up" \
+      icon "mdi:database" \
     )" \
 )
 core.api POST states/sensor.in_memory_mariadb_memory_storage_used "${request}" -w > /dev/null
