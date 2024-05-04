@@ -383,7 +383,7 @@ tab.
 >   database and analyze it's content. Search for the entries you don't need,
 >   but fill up the database!
 
-## Reported diagnostic values
+## Reported diagnostic sensor values
 
 Values are reported in each 5 minutes.
 
