@@ -233,4 +233,5 @@ bashio::log.info "Sending service information to Home Assistant"
 bashio::services.publish "mysql" "${PAYLOAD}"
 
 # Report sensors at startup
-report-sensors
+# No errors, there is a chance, that HA is not running
+report-sensors &>/dev/null || true
