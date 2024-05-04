@@ -387,6 +387,10 @@ tab.
 
 Values are reported in each 5 minutes.
 
+**Note:** Please wait, the sensors won't be available in Home Assistant until
+the values are first reported. When Home Assistant is restarted, the previous
+sensor states and even their existence are not remembered.
+
 ### Sensor: `sensor.in_memory_mariadb_memory_storage_percent`
 
 The usage of the specified tmpfs capacity in percent.
