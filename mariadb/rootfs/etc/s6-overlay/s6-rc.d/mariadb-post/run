@@ -231,3 +231,6 @@ PAYLOAD=$(\
 )
 bashio::log.info "Sending service information to Home Assistant"
 bashio::services.publish "mysql" "${PAYLOAD}"
+
+# Report sensors at startup
+report-sensors
