@@ -1,0 +1,75 @@
+#!/command/with-contenv bashio
+# shellcheck shell=bash
+# ==============================================================================
+# Report sensors
+# ==============================================================================
+
+source /usr/lib/core.sh
+
+declare use size used available
+declare unit_length request
+
+function unit_length() {
+  if [[ "$1" =~ ^[0-9\.]+(.+)$ ]]; then
+      echo "${#BASH_REMATCH[1]}"
+  else
+      echo 0
+  fi
+}
+
+# Collect tmpfs sensor values
+read -r use size used available <<<$(df -h /tmp | awk 'NR == 2{print $5, $2"B", $3"B", $4"B"}')
+
+# Report tmpfs use sensor value
+request=$(bashio::var.json \
+    state "${use::-1}" \
+    attributes "^$(bashio::var.json \
+      friendly_name "In-memory MariaDB memory storage (tmpfs) usage in percent" \
+      unit_of_measurement "${use: -1}" \
+      state_class "measurement" \
+      icon "mdi:database" \
+    )" \
+)
+core.api POST states/sensor.in_memory_mariadb_memory_storage_percent "${request}" -w > /dev/null
+
+# Report tmpfs size/capacity sensor value
+unit_length=$(unit_length "${size}")
+request=$(bashio::var.json \
+    state "${size::-$unit_length}" \
+    attributes "^$(bashio::var.json \
+      friendly_name "In-memory MariaDB memory storage (tmpfs) capacity" \
+      unit_of_measurement "${size: -$unit_length}" \
+      device_class "data_size" \
+      state_class "measurement" \
+      icon "mdi:database-arrow-up" \
+    )" \
+)
+core.api POST states/sensor.in_memory_mariadb_memory_storage_capacity "${request}" -w > /dev/null
+
+# Report tmpfs used sensor value
+unit_length=$(unit_length "${used}")
+request=$(bashio::var.json \
+    state "${used::-$unit_length}" \
+    attributes "^$(bashio::var.json \
+      friendly_name "In-memory MariaDB memory storage (tmpfs) used" \
+      unit_of_measurement "${used: -$unit_length}" \
+      device_class "data_size" \
+      state_class "measurement" \
+      icon "mdi:database" \
+    )" \
+)
+core.api POST states/sensor.in_memory_mariadb_memory_storage_used "${request}" -w > /dev/null
+
+# Report tmpfs available sensor value
+unit_length=$(unit_length "${available}")
+request=$(bashio::var.json \
+    state "${available::-$unit_length}" \
+    attributes "^$(bashio::var.json \
+      friendly_name "In-memory MariaDB memory storage (tmpfs) available" \
+      unit_of_measurement "${available: -$unit_length}" \
+      device_class "data_size" \
+      state_class "measurement" \
+      icon "mdi:database-check" \
+    )" \
+)
+core.api POST states/sensor.in_memory_mariadb_memory_storage_available "${request}" -w > /dev/null

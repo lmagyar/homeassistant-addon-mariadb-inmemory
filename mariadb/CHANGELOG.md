@@ -6,6 +6,18 @@ necessary). **You can execute in the command line the**
 `/share/bin/update-mariadb-inmemory-while-ha-core-restarted` **script to do it
 automatically.**
 
+## 2.7.1.1 (forked)
+
+- Report tmpfs usage as sensors, like `sensor.in_memory_mariadb_memory_storage_percent`, see documentation for more details.
+
+## 2.7.1
+
+- ~~Increase MariaDB add-on shutdown timeout to 300s~~ (forked version already uses this timeout value)
+
+## 2.7.0
+
+- ~~Update to Alpine 3.19~~ (forked version already uses this Alpine version)
+
 ## 2.6.1.3 (forked)
 
 ***BREAKING CHANGES:***
