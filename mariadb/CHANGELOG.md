@@ -6,6 +6,10 @@ necessary). **You can execute in the command line the**
 `/share/bin/update-mariadb-inmemory-while-ha-core-restarted` **script to do it
 automatically.**
 
+## vNext (forked)
+
+- Update Add-on base image to v15.0.9
+
 ## 2.7.1.1 (forked)
 
 - Report tmpfs usage as sensors, like `sensor.in_memory_mariadb_memory_storage_percent`, see documentation for more details.
