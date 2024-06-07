@@ -8,7 +8,7 @@ automatically.**
 
 ## vNext (forked)
 
-- Update Add-on base image to v16.0.0 (Update Alpine base image to v3.20.0)
+- Update Add-on base image to v16.0.1 (Update Alpine base image to v3.20.0)
 - Update mariadb to v10.11.8-r0
 
 ## 2.7.1.1 (forked)
