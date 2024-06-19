@@ -6,7 +6,7 @@ necessary). **You can execute in the command line the**
 `/share/bin/update-mariadb-inmemory-while-ha-core-restarted` **script to do it
 automatically.**
 
-## vNext (forked)
+## 2.7.1.2 (forked)
 
 - Fix HEALTHCHECK support for IPv6 ::1
 - Update Add-on base image to v16.0.1 (Update Alpine base image to v3.20.0)
