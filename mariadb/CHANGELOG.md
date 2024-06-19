@@ -8,6 +8,7 @@ automatically.**
 
 ## vNext (forked)
 
+- Fix HEALTHCHECK support for IPv6 ::1
 - Update Add-on base image to v16.0.1 (Update Alpine base image to v3.20.0)
 - Update mariadb to v10.11.8-r0
 
