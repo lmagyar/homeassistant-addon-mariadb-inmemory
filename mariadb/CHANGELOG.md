@@ -6,6 +6,12 @@ necessary). **You can execute in the command line the**
 `/share/bin/update-mariadb-inmemory-while-ha-core-restarted` **script to do it
 automatically.**
 
+## 2.7.1.2 (forked)
+
+- Fix HEALTHCHECK support for IPv6 ::1
+- Update Add-on base image to v16.0.1 (Update Alpine base image to v3.20.0)
+- Update mariadb to v10.11.8-r0
+
 ## 2.7.1.1 (forked)
 
 - Report tmpfs usage as sensors, like `sensor.in_memory_mariadb_memory_storage_percent`, see documentation for more details.
