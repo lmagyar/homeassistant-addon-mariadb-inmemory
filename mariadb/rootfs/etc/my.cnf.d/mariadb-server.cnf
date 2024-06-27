@@ -40,7 +40,7 @@ default_storage_engine = InnoDB
 ignore_builtin_innodb = OFF
 
 # InnoDB Tweaks
-innodb_buffer_pool_size = 5M
+innodb_buffer_pool_size = 16M
 innodb_log_buffer_size = 2M
 innodb_log_file_size = 4M
 innodb_doublewrite = OFF
