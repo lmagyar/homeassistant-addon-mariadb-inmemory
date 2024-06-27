@@ -40,7 +40,7 @@ default_storage_engine = InnoDB
 ignore_builtin_innodb = OFF
 
 # InnoDB Tweaks
-innodb_buffer_pool_size = 5M
+innodb_buffer_pool_size = 16M
 innodb_log_buffer_size = 2M
 innodb_log_file_size = 4M
 innodb_doublewrite = OFF
@@ -51,7 +51,6 @@ innodb_page_size = 4096
 innodb_max_undo_log_size = 10485760
 innodb_autoextend_increment = 1
 innodb_undo_tablespaces = 2
-innodb_purge_rseg_truncate_frequency = 1
 innodb_flush_method = fsync
 
 # Aria Tweaks
