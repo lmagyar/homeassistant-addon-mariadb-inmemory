@@ -6,7 +6,7 @@ necessary). **You can execute in the command line the**
 `/share/bin/update-mariadb-inmemory-while-ha-core-restarted` **script to do it
 automatically.**
 
-## vNext (forked)
+## 2.7.1.3 (forked)
 
 - Increase innodb_buffer_pool_size  (to aovid high CPU load and slow responses)
 - Update Add-on base image to v16.1.0
