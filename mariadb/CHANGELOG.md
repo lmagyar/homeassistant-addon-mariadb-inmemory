@@ -12,7 +12,7 @@ automatically.**
 
 ## 2.7.1.3 (forked)
 
-- Increase innodb_buffer_pool_size  (to aovid high CPU load and slow responses)
+- Increase innodb_buffer_pool_size (to aovid high CPU load and slow responses)
 - Update Add-on base image to v16.1.0
 
 ## 2.7.1.2 (forked)
