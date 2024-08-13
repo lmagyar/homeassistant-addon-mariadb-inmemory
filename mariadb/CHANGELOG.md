@@ -9,6 +9,7 @@ automatically.**
 ## vNext (forked)
 
 - Update Add-on base image to v16.2.1
+- Update HEALTHCHECK script from upstream
 
 ## 2.7.1.3 (forked)
 
