@@ -8,8 +8,9 @@ automatically.**
 
 ## vNext (forked)
 
-- Update Add-on base image to v16.3.1
+- Update mariadb to v10.11.10-r0
 - Update HEALTHCHECK script from upstream
+- Update Add-on base image to v16.3.4
 
 ## 2.7.1.3 (forked)
 
