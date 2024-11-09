@@ -10,7 +10,7 @@ automatically.**
 
 - Update mariadb to v10.11.10-r0
 - Update HEALTHCHECK script from upstream
-- Update Add-on base image to v16.3.4
+- Update Add-on base image to v16.3.5
 
 ## 2.7.1.3 (forked)
 
