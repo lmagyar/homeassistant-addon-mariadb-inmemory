@@ -7,13 +7,7 @@ else
   echo "Stopping HA core..."
   ha core stop --no-progress
   echo -e "\nUpdating ${addon_name} add-on..."
-  ha addons update ${addon_slug} --backup --no-progress || true # usually times out, that's "normal"
-  echo -e -n "\nWaiting for the new version to be fully installed..."
-  while ! ha ad info ${addon_slug} --raw-json | jq -rce '.data.version == .data.version_latest' > /dev/null; do sleep 5; echo -n '.'; done
-  echo
-  echo -e -n "\nWaiting for the new version to be fully started..."
-  while ! ha ad log ${addon_slug} | grep -q "s6-rc: info: service legacy-services successfully started"; do sleep 5; echo -n '.'; done
-  echo
+  ha addons update ${addon_slug} --backup --no-progress
   echo -e "\nStarting HA core..."
   ha core start --no-progress
 fi
