@@ -215,9 +215,11 @@ mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'service'@'172.30.33.%' WITH GRANT OPTI
 # Generate healthcheck user and it's .my.cnf
 mysql -e "CREATE USER 'healthcheck'@'127.0.0.1' IDENTIFIED BY '${SECRET}';" 2> /dev/null || true
 mysql -e "CREATE USER 'healthcheck'@'::1' IDENTIFIED BY '${SECRET}';" 2> /dev/null || true
+mysql -e "CREATE USER 'healthcheck'@'localhost' IDENTIFIED BY '${SECRET}';" 2> /dev/null || true
 mysql -e "GRANT USAGE ON *.* TO 'healthcheck'@'127.0.0.1' WITH GRANT OPTION;" 2> /dev/null || true
 mysql -e "GRANT USAGE ON *.* TO 'healthcheck'@'::1' WITH GRANT OPTION;" 2> /dev/null || true
-mkdir /home/healthcheck
+mysql -e "GRANT USAGE ON *.* TO 'healthcheck'@'localhost' WITH GRANT OPTION;" 2> /dev/null || true
+mkdir -p /home/healthcheck
 echo -e "[mariadb-client]\\nport=3306\\nuser=healthcheck\\npassword=${SECRET}\\nprotocol=tcp\\n" > /home/healthcheck/.my.cnf
 
 # Flush privileges
