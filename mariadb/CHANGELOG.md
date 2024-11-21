@@ -11,6 +11,7 @@ automatically.**
 - Update mariadb to v10.11.10-r0
 - Update HEALTHCHECK script from upstream
 - Fix HEALTHCHECK support for localhost
+- Log HEALTHCHECK status and errors
 - Update the update script in /share/bin to not test add-on update and startup, ha cli does this from now on
 - Update Add-on base image to v16.3.6
 
