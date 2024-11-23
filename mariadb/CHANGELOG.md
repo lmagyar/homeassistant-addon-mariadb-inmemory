@@ -6,7 +6,7 @@ necessary). **You can execute in the command line the**
 `/share/bin/update-mariadb-inmemory-while-ha-core-restarted` **script to do it
 automatically.**
 
-## vNext (forked)
+## 2.7.1.4 (forked)
 
 - Update mariadb to v10.11.10-r0
 - Update HEALTHCHECK script from upstream
