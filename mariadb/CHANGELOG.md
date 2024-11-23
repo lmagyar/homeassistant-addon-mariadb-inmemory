@@ -6,9 +6,18 @@ necessary). **You can execute in the command line the**
 `/share/bin/update-mariadb-inmemory-while-ha-core-restarted` **script to do it
 automatically.**
 
+## 2.7.1.4 (forked)
+
+- Update mariadb to v10.11.10-r0
+- Update HEALTHCHECK script from upstream
+- Fix HEALTHCHECK support for localhost
+- Log HEALTHCHECK status and errors
+- Update the update script in /share/bin to not test add-on update and startup, ha cli does this from now on
+- Update Add-on base image to v16.3.6
+
 ## 2.7.1.3 (forked)
 
-- Increase innodb_buffer_pool_size  (to aovid high CPU load and slow responses)
+- Increase innodb_buffer_pool_size (to aovid high CPU load and slow responses)
 - Update Add-on base image to v16.1.0
 
 ## 2.7.1.2 (forked)
