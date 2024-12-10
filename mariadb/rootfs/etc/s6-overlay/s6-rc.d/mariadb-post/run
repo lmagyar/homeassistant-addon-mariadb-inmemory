@@ -49,6 +49,22 @@ mariadb <<-EOSQL
     FLUSH PRIVILEGES;
 EOSQL
 
+# Generate or load secret value for healthcheck and service users
+if ! bashio::fs.file_exists "/data/secret"; then
+    pwgen 64 1 > /data/secret
+fi
+SECRET=$(</data/secret)
+
+# Generate healthcheck user and it's .my.cnf
+mariadb -e "CREATE USER 'healthcheck'@'127.0.0.1' IDENTIFIED BY '${SECRET}';" 2> /dev/null || true
+mariadb -e "CREATE USER 'healthcheck'@'::1' IDENTIFIED BY '${SECRET}';" 2> /dev/null || true
+mariadb -e "CREATE USER 'healthcheck'@'localhost' IDENTIFIED BY '${SECRET}';" 2> /dev/null || true
+mariadb -e "GRANT USAGE ON *.* TO 'healthcheck'@'127.0.0.1' WITH GRANT OPTION;" 2> /dev/null || true
+mariadb -e "GRANT USAGE ON *.* TO 'healthcheck'@'::1' WITH GRANT OPTION;" 2> /dev/null || true
+mariadb -e "GRANT USAGE ON *.* TO 'healthcheck'@'localhost' WITH GRANT OPTION;" 2> /dev/null || true
+mkdir -p /home/healthcheck
+echo -e "[mariadb-client]\\nport=3306\\nuser=healthcheck\\npassword=${SECRET}\\nprotocol=tcp\\n" > /home/healthcheck/.my.cnf
+
 # Cleanup failed export - file structure before v2.5.2.5
 if bashio::fs.file_exists "${OLD_MARIADB_DUMP_FINISHED}"; then
     if bashio::fs.file_exists "${OLD_MARIADB_DUMP/TYPE/schema}.tmp"; then
@@ -203,24 +219,10 @@ for right in $(bashio::config "rights|keys"); do
 done
 
 # Generate service user
-if ! bashio::fs.file_exists "/data/secret"; then
-    pwgen 64 1 > /data/secret
-fi
-SECRET=$(</data/secret)
 mariadb -e "CREATE USER 'service'@'172.30.32.%' IDENTIFIED BY '${SECRET}';" 2> /dev/null || true
 mariadb -e "CREATE USER 'service'@'172.30.33.%' IDENTIFIED BY '${SECRET}';" 2> /dev/null || true
 mariadb -e "GRANT ALL PRIVILEGES ON *.* TO 'service'@'172.30.32.%' WITH GRANT OPTION;" 2> /dev/null || true
 mariadb -e "GRANT ALL PRIVILEGES ON *.* TO 'service'@'172.30.33.%' WITH GRANT OPTION;" 2> /dev/null || true
-
-# Generate healthcheck user and it's .my.cnf
-mariadb -e "CREATE USER 'healthcheck'@'127.0.0.1' IDENTIFIED BY '${SECRET}';" 2> /dev/null || true
-mariadb -e "CREATE USER 'healthcheck'@'::1' IDENTIFIED BY '${SECRET}';" 2> /dev/null || true
-mariadb -e "CREATE USER 'healthcheck'@'localhost' IDENTIFIED BY '${SECRET}';" 2> /dev/null || true
-mariadb -e "GRANT USAGE ON *.* TO 'healthcheck'@'127.0.0.1' WITH GRANT OPTION;" 2> /dev/null || true
-mariadb -e "GRANT USAGE ON *.* TO 'healthcheck'@'::1' WITH GRANT OPTION;" 2> /dev/null || true
-mariadb -e "GRANT USAGE ON *.* TO 'healthcheck'@'localhost' WITH GRANT OPTION;" 2> /dev/null || true
-mkdir -p /home/healthcheck
-echo -e "[mariadb-client]\\nport=3306\\nuser=healthcheck\\npassword=${SECRET}\\nprotocol=tcp\\n" > /home/healthcheck/.my.cnf
 
 # Flush privileges
 mariadb -e "FLUSH PRIVILEGES;" 2> /dev/null || true
