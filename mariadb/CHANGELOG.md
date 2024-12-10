@@ -8,11 +8,12 @@ automatically.**
 
 ## vNext (forked)
 
+- Update MariaDB to 11.4.4-r1
 - Update Add-on base image to v17.0.0 (Update Alpine base image to v3.21.0)
 
 ## 2.7.1.4 (forked)
 
-- Update mariadb to v10.11.10-r0
+- Update MariaDB to v10.11.10-r0
 - Update HEALTHCHECK script from upstream
 - Fix HEALTHCHECK support for localhost
 - Log HEALTHCHECK status and errors
@@ -28,7 +29,7 @@ automatically.**
 
 - Fix HEALTHCHECK support for IPv6 ::1
 - Update Add-on base image to v16.0.1 (Update Alpine base image to v3.20.0)
-- Update mariadb to v10.11.8-r0
+- Update MariaDB to v10.11.8-r0
 
 ## 2.7.1.1 (forked)
 
