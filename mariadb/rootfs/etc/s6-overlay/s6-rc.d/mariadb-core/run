@@ -6,5 +6,5 @@
 
 # Start mariadb
 bashio::log.info "Starting MariaDB"
-mkdir -p /run/mysqld
-exec mysqld --datadir="${MARIADB_DATA}" --user=root < /dev/null
+mkdir -p /run/mariadbd
+exec mariadbd --datadir="${MARIADB_DATA}" --user=root < /dev/null
