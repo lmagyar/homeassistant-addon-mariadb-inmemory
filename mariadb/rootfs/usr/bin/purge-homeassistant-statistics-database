@@ -29,9 +29,9 @@ else
 
         readonly file_timestamp=$(sed 's/-//g;s/://g;s/ /-/g;' <<< "${purge_time_limit}")
         { \
-            mysqldump homeassistant statistics_meta \
+            mariadb-dump homeassistant statistics_meta \
                 --skip-lock-tables --skip-add-drop-table --skip-add-locks --complete-insert --insert-ignore ; \
-            mysqldump homeassistant statistics \
+            mariadb-dump homeassistant statistics \
                 --where="created_ts < '${purge_time_limit_ts}'" \
                 --skip-lock-tables --skip-add-drop-table --skip-add-locks --complete-insert --insert-ignore ; \
         } \

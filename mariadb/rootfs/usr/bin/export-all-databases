@@ -12,7 +12,7 @@ if [[ "${EXPORT_IMPORT_ALL_DATABASES_CONTENT}" == "true" ]]; then
 
     bashio::log.info "Exporting all databases schema and data" || true
 
-    mysqldump --all-databases --ignore-database=mysql \
+    mariadb-dump --all-databases --ignore-database=mysql \
             --skip-lock-tables --skip-add-locks --skip-add-drop-table --complete-insert --insert-ignore \
         | gzip -9 > ${MARIADB_DUMP}.tmp
 
