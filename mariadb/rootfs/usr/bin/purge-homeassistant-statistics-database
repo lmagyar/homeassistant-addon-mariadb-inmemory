@@ -4,18 +4,18 @@
 # Purge homeassistant statistics database
 # ==============================================================================
 
-if (( 1 != $(mysql -Nse "SELECT COUNT(1) FROM information_schema.tables WHERE table_schema = 'homeassistant' AND table_name = 'statistics';") )); then
+if (( 1 != $(mariadb -Nse "SELECT COUNT(1) FROM information_schema.tables WHERE table_schema = 'homeassistant' AND table_name = 'statistics';") )); then
     bashio::log.warning "Purging homeassistant statistics database is scheduled, but there is no homeassistant database"
     bashio::exit.ok
 fi
 
-readonly database_timestamp=$(mysql homeassistant -Nse "SELECT UTC_TIMESTAMP();" 2> /dev/null)
-readonly purge_time_limit=$(mysql homeassistant -Nse "SELECT DATE_SUB('${database_timestamp}', INTERVAL $(bashio::config "purge_statistics.keep_periods") \
+readonly database_timestamp=$(mariadb homeassistant -Nse "SELECT UTC_TIMESTAMP();" 2> /dev/null)
+readonly purge_time_limit=$(mariadb homeassistant -Nse "SELECT DATE_SUB('${database_timestamp}', INTERVAL $(bashio::config "purge_statistics.keep_periods") \
     $(sed 's/daily/DAY/g;s/weekly/WEEK/g;s/monthly/MONTH/g' <<< "$(bashio::config "purge_statistics.period")"));" 2> /dev/null)
 readonly purge_time_limit_ts=$(date -d "${purge_time_limit}" "+%s")
 bashio::log.info "Purging homeassistant statistics database, purging data older than ${purge_time_limit}"
 
-if (( $(mysql homeassistant -Nse "SELECT COUNT(1) FROM \`statistics\` WHERE \`created_ts\` < '${purge_time_limit_ts}';" 2> /dev/null) == 0 )); then
+if (( $(mariadb homeassistant -Nse "SELECT COUNT(1) FROM \`statistics\` WHERE \`created_ts\` < '${purge_time_limit_ts}';" 2> /dev/null) == 0 )); then
     bashio::log.info "  Nothing to purge"
 else
     if bashio::config.true "purge_statistics.archive"; then
@@ -29,9 +29,9 @@ else
 
         readonly file_timestamp=$(sed 's/-//g;s/://g;s/ /-/g;' <<< "${purge_time_limit}")
         { \
-            mysqldump homeassistant statistics_meta \
+            mariadb-dump homeassistant statistics_meta \
                 --skip-lock-tables --skip-add-drop-table --skip-add-locks --complete-insert --insert-ignore ; \
-            mysqldump homeassistant statistics \
+            mariadb-dump homeassistant statistics \
                 --where="created_ts < '${purge_time_limit_ts}'" \
                 --skip-lock-tables --skip-add-drop-table --skip-add-locks --complete-insert --insert-ignore ; \
         } \
@@ -41,7 +41,7 @@ else
     fi
 
     bashio::log.info "  Deleting homeassistant statistics database old data"
-    result=$(mysql homeassistant -Nse "DELETE FROM \`statistics\` WHERE \`created_ts\` < '${purge_time_limit_ts}'; OPTIMIZE TABLE \`statistics\`;" 2> /dev/null)
+    result=$(mariadb homeassistant -Nse "DELETE FROM \`statistics\` WHERE \`created_ts\` < '${purge_time_limit_ts}'; OPTIMIZE TABLE \`statistics\`;" 2> /dev/null)
     if ! [[ "${result}" =~ homeassistant\.statistics[[:blank:]]*optimize[[:blank:]]*status[[:blank:]]*OK$ ]]; then
         bashio::log.warning "${result}"
     fi
