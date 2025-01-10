@@ -318,10 +318,14 @@ limited to read-only access on the database.
 
 ### Option: `mariadb_server_args` (optional)
 
-Some users have experienced [errors][migration-issues] during Home Assistant schema updates on large databases.
-Defining the recommended parameters can help if there is RAM available.
+Some users have experienced [errors][migration-issues] during Home Assistant
+schema updates on large databases. Defining the recommended parameters can help
+if there is RAM available.
 
 Example: `--innodb_buffer_pool_size=512M`
+
+**Note:** This is an in-memory database, it will never get too large. The option
+is here to be compatible with the official add-on.
 
 ## Home Assistant Configuration
 
