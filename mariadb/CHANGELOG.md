@@ -6,6 +6,14 @@ necessary). **You can execute in the command line the**
 `/share/bin/update-mariadb-inmemory-while-ha-core-restarted` **script to do it
 automatically.**
 
+## 2.7.2.0 (forked)
+
+- Merge upstream changes from official add-on
+
+## 2.7.2
+
+- Add option to configure MariaDB server parameters (see also [home-assistant/addons#3754](https://github.com/home-assistant/addons/issues/3754))
+
 ## 2.7.1.5 (forked)
 
 - Update MariaDB to 11.4.4-r1

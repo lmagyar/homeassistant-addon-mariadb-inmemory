@@ -4,7 +4,16 @@
 # Start MariaDB service
 # ==============================================================================
 
+if bashio::config.has_value "mariadb_server_args"; then
+  readarray -t extra_args <<< "$(bashio::config 'mariadb_server_args')"
+fi
+
 # Start mariadb
-bashio::log.info "Starting MariaDB"
 mkdir -p /run/mysqld
-exec mariadbd --datadir="${MARIADB_DATA}" --user=root < /dev/null
+if [ -z "${extra_args+x}" ] || [ ${#extra_args[@]} -eq 0 ]; then
+  bashio::log.info "Starting MariaDB"
+  exec mariadbd --datadir="${MARIADB_DATA}" --user=root < /dev/null
+else
+  bashio::log.info "Starting MariaDB with command line parameters: ${extra_args[*]}"
+  exec mariadbd --datadir="${MARIADB_DATA}" --user=root "${extra_args[@]}" < /dev/null
+fi
