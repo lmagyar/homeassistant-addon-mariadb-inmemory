@@ -2,13 +2,10 @@
 
 profile mariadb flags=(attach_disconnected,mediate_deleted) {
   #include <abstractions/base>
-  
+
   # Capabilities
   file,
   signal (send) set=(kill,term,int,hup,cont),
-  network,
-  capability chown,
-  capability net_bind_service,
 
   # S6-Overlay
   /init ix,
@@ -30,10 +27,12 @@ profile mariadb flags=(attach_disconnected,mediate_deleted) {
   # Access to options.json and other files within your addon
   /data/** rw,
 
-  # Remount tmpfs
-  capability,
+  # General - based on complain
+  capability dac_override,
   capability setgid,
   capability setuid,
-  mount,
-  remount,
+
+  # Remount tmpfs
+  capability sys_admin,
+  mount options=(rw, remount, silent) -> /tmp/,
 }

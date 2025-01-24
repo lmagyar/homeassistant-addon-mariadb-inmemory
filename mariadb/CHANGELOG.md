@@ -9,6 +9,7 @@ automatically.**
 ## vNext (forked)
 
 - Update Add-on base image to v17.1.0
+- Update apparmor profile
 
 ## 2.7.2.0 (forked)
 
