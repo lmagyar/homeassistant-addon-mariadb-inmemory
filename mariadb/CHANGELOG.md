@@ -6,6 +6,10 @@ necessary). **You can execute in the command line the**
 `/share/bin/update-mariadb-inmemory-while-ha-core-restarted` **script to do it
 automatically.**
 
+## vNext (forked)
+
+- Update Add-on base image to v17.1.0
+
 ## 2.7.2.0 (forked)
 
 - Merge upstream changes from official add-on
