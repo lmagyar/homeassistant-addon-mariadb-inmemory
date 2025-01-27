@@ -4,7 +4,10 @@ FROM ${BUILD_FROM}
 
 # Environment variables
 ENV \
-    LD_PRELOAD="/usr/local/lib/libjemalloc.so.2"
+    LD_PRELOAD="/usr/local/lib/libjemalloc.so.2" \
+    # Add-on log format
+    LOG_FORMAT="{TIMESTAMP} {LEVEL}: {MESSAGE}" \
+    LOG_TIMESTAMP="%Y-%m-%d %H:%M:%S"
 
 # Setup base
 RUN apk add --no-cache \

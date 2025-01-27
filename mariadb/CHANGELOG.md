@@ -8,6 +8,7 @@ automatically.**
 
 ## vNext (forked)
 
+- Configure log format for the add-on to be compatible with MariaDB's format
 - Update Add-on base image to v17.1.0
 - Update apparmor profile
 
