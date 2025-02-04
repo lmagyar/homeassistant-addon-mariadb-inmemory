@@ -133,23 +133,22 @@ have a **k**, **m**, or **g** suffix.
 > **Note:** If you delete data from the database manually, use `OPTIMIZE TABLE
 > states, events;` to decrease database file sizes also.
 >
-> Use the query below to calculate database size requirements - Click to expand!
->
 > <details>
+> <summary>Use this query to calculate database size requirements: (Click to expand!)</summary>
 >
 > ```sql
-SELECT round(sum(data_length + index_length) / 1024 / 1024, 2)
-INTO @database_size_in_MB
-FROM information_schema.tables WHERE table_schema = database();
+>SELECT round(sum(data_length + index_length) / 1024 / 1024, 2)
+>INTO @database_size_in_MB
+>FROM information_schema.tables WHERE table_schema = database();
 >
 >SELECT from_unixtime(min(time_fired_ts)), from_unixtime(max(time_fired_ts)),
-  round(timestampdiff(minute, from_unixtime(min(time_fired_ts)), from_unixtime(max(time_fired_ts))) / 1440, 2)
-INTO @first_entry_in_UTC, @last_entry_in_UTC, @timespan_in_days
-FROM `events`;
+>  round(timestampdiff(minute, from_unixtime(min(time_fired_ts)), from_unixtime(max(time_fired_ts))) / 1440, 2)
+>INTO @first_entry_in_UTC, @last_entry_in_UTC, @timespan_in_days
+>FROM `events`;
 >
 >SELECT @first_entry_in_UTC AS first_entry_in_UTC, @last_entry_in_UTC AS last_entry_in_UTC, @timespan_in_days AS timespan_in_days,
-  @database_size_in_MB AS database_size_in_MB, round(@database_size_in_MB / @timespan_in_days, 2) AS growth_per_day_in_MB,
-  round((@database_size_in_MB / @timespan_in_days) * 8 * 2.0 + 50, 0) AS suggested_tmpfs_size_for_1_week_data_in_MB;
+>  @database_size_in_MB AS database_size_in_MB, round(@database_size_in_MB / @timespan_in_days, 2) AS growth_per_day_in_MB,
+>  round((@database_size_in_MB / @timespan_in_days) * 8 * 2.0 + 50, 0) AS suggested_tmpfs_size_for_1_week_data_in_MB;
 > ```
 >
 > </details>
@@ -248,6 +247,7 @@ Default is 6 months.
 > disturbe your Energy dashboard (eg. 13 months).
 >
 > <details>
+> <summary>More details: (Click to expand!)</summary>
 >
 > | <img width="75%" title="&quot;Energy dashboard - Energy usage&quot; graph after purge" src="https://user-images.githubusercontent.com/2125455/268935889-598b0e64-437b-446f-8da5-58554a690d1b.png"> |
 > | :---: |
@@ -261,8 +261,7 @@ Default is 6 months.
 > | Apr | 1000  | 200 | 1000 | 200 |
 > | May | 1200  | 200 | 1200 | 200 |
 >
-> For more details see [Issue
-> #58](https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/issues/58)
+> For more details see [Issue #58](https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/issues/58)
 >
 > </details>
 
