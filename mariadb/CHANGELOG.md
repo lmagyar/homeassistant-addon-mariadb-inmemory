@@ -10,7 +10,7 @@ automatically.**
 
 - Update MariaDB to 11.4.5-r0
 - Configure log format for the add-on to be compatible with MariaDB's format
-- Update Add-on base image to v17.2.4
+- Update Add-on base image to v17.2.5
 - Update apparmor profile
 
 ## 2.7.2.0 (forked)
