@@ -6,6 +6,13 @@ necessary). **You can execute in the command line the**
 `/share/bin/update-mariadb-inmemory-while-ha-core-restarted` **script to do it
 automatically.**
 
+## 2.7.2.1 (forked)
+
+- Update MariaDB to 11.4.5-r0
+- Configure log format for the add-on to be compatible with MariaDB's format
+- Update Add-on base image to v17.2.5
+- Update apparmor profile
+
 ## 2.7.2.0 (forked)
 
 - Merge upstream changes from official add-on
