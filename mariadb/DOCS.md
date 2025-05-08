@@ -357,14 +357,14 @@ logger:
 
 automation:
   - alias: Auto purge with repack
-    trigger:
-      platform: time
-      at: "04:12:00"
-    action:
-      service: recorder.purge
-      data:
-        keep_days: 7
-        repack: true
+    triggers:
+      - trigger: time
+        at: "04:12:00"
+    actions:
+      - action: recorder.purge
+        data:
+          keep_days: 7
+          repack: true
 ```
 
 **Note:** Change the `<PASSWORD>` string in the `db_url` field to the password
