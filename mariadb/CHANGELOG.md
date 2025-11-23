@@ -6,6 +6,7 @@ necessary). **You can execute in the command line the**
 `/share/bin/update-mariadb-inmemory-while-ha-core-restarted` **script to do it
 automatically.**
 
+- Drop support for armv7 architecture
 - Update Add-on base image to v19 (drop armv7 support)
 
 ## vNext (forked)

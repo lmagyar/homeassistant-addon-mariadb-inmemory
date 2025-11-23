@@ -8,7 +8,6 @@ url: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory
 arch:
   - aarch64
   - amd64
-  - armv7
 tmpfs: true
 privileged:
   - SYS_ADMIN
