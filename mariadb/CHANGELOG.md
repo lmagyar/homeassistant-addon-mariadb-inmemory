@@ -6,6 +6,9 @@ necessary). **You can execute in the command line the**
 `/share/bin/update-mariadb-inmemory-while-ha-core-restarted` **script to do it
 automatically.**
 
+- Drop support for armv7 architecture
+- Update Add-on base image to v20 (drop armv7 support)
+
 ## 2.7.2.3 (forked)
 
 - Update MariaDB to 11.4.8-r0
