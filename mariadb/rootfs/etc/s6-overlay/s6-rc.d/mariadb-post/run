@@ -241,3 +241,7 @@ bashio::services.publish "mysql" "${PAYLOAD}"
 # Report sensors at startup
 # No errors, there is a chance, that HA is not running
 report-sensors &> /dev/null || true
+
+# Enable healthcheck calls
+MARIADB_STARTED_TIMESTAMP=$(date +"%s")
+printf "${MARIADB_STARTED_TIMESTAMP}" > /var/run/s6/container_environment/MARIADB_STARTED_TIMESTAMP

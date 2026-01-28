@@ -8,15 +8,27 @@ if [[ "${LOG_FD:-}" =~ ^[0-9]+$ ]]; then
 fi
 
 readonly EXPORT_STARTED_TIMEOUT=300 # 5 minutes
+readonly HEALTHCHECK_RESTART_TIMEOUT=3600  # 1 hour
 
+# STARTED_TIMESTAMP is in contenv at /var/run/s6/container_environment
+# MARIADB_STARTED_TIMESTAMP is in contenv at /var/run/s6/container_environment and updated by the mariadb-pre and maridb-post services
 # EXPORT_STARTED_TIMESTAMP is in contenv at /var/run/s6/container_environment and updated by the export-all-databases script
 # LAST_REPORTED_HEALTH_STATE is in contenv at /var/run/s6/container_environment
+
+if ! bashio::var.has_value "${STARTED_TIMESTAMP-}"
+then
+  STARTED_TIMESTAMP=$(date +"%s")
+  printf "${STARTED_TIMESTAMP}" > /var/run/s6/container_environment/STARTED_TIMESTAMP
+fi
 
 # mutually exclusive lock with export-all-databases
 # if healthcheck runs during export, "flush tables with read lock" makes it fail, and the server will be restarted immediately, ie. during export
 # s6-setlock exits 1 if lock fails, healthcheck-worker exits 2 if healthcheck fails
-if ! s6-setlock -n /tmp/export-lock /usr/bin/healthcheck-worker 2>/dev/null && \
-  ( (($? == 2)) || (( $(date +"%s") - ${EXPORT_STARTED_TIMESTAMP:-0} > ${EXPORT_STARTED_TIMEOUT} )) )
+if (! bashio::var.has_value "${MARIADB_STARTED_TIMESTAMP-}" && \
+    (( $(date +"%s") - ${STARTED_TIMESTAMP} > ${HEALTHCHECK_RESTART_TIMEOUT} )) ) || \
+  (bashio::var.has_value "${MARIADB_STARTED_TIMESTAMP-}" && \
+    ! s6-setlock -n /tmp/export-lock /usr/bin/healthcheck-worker 2>/dev/null && \
+    ( (($? == 2)) || (( $(date +"%s") - ${EXPORT_STARTED_TIMESTAMP:-0} > ${EXPORT_STARTED_TIMEOUT} )) ) )
 then
   # Unhealthy
   if ! bashio::var.equals "${LAST_REPORTED_HEALTH_STATE-}" "UNHEALTHY"; then

@@ -4,6 +4,9 @@
 # Pre-start initialization of MariaDB service
 # ==============================================================================
 
+# Disable healthcheck calls
+rm -f /var/run/s6/container_environment/MARIADB_STARTED_TIMESTAMP
+
 # Change tmpfs size to configured value
 TMPFS_SIZE=$(bashio::config "tmpfs.size")
 bashio::log.info "Change tmpfs size to ${TMPFS_SIZE}"

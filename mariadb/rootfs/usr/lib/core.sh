@@ -4,9 +4,9 @@
 function log.error_or_warning() {
     local warning_only="$1"; shift
     if ! bashio::var.has_value "${warning_only}"; then
-        bashio::log.error $*
+        bashio::log.error "$@"
     else
-        bashio::log.warning $*
+        bashio::log.warning "$@"
     fi
 }
 
@@ -24,19 +24,20 @@ function log.error_or_warning() {
 #   -w "Warning only" Log only warnings instead of errors
 # ------------------------------------------------------------------------------
 function core.api() {
-    local method=${1}; shift
+    local method="${1}"; shift
     local resource="/core/api/${1}"; shift
     local data='{}'
     if [[ "${method}" = "POST" ]]; then
-        data=${1}; shift
+        data="${1}"; shift
     fi
     local filter=
-    if [[ ! -z ${1:-} && "${1::1}" != "-" ]]; then
-        filter=${1}; shift
+    if [[ -n "${1:-}" && "${1::1}" != "-" ]]; then
+        filter="${1}"; shift
     fi
 
-    local OPTIND o a
-    local silent= local warning_only=
+    local o
+    local silent=
+    local warning_only=
     while getopts "sw" o; do
         case "${o}" in
             s)
@@ -44,6 +45,8 @@ function core.api() {
                 ;;
             w)
                 warning_only=1
+                ;;
+            *)
                 ;;
         esac
     done

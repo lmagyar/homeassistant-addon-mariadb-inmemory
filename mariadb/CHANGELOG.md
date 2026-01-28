@@ -7,13 +7,14 @@ necessary). **You can execute in the command line the**
 automatically.**
 
 - Drop support for armv7 architecture
-- Update Add-on base image to v19 (drop armv7 support)
+- Update Add-on base image to v20 (drop armv7 support)
 
-## vNext (forked)
+## 2.7.2.3 (forked)
 
 - Update MariaDB to 11.4.8-r0
 - Update Add-on base image to v18.2.1
 - Fix for add-on base image and bashio log changes, causing healthcheck messages to be not logged
+- Fix healthcheck, do not run until the database is started and imports are finished
 - Remove deprecated codenotary fields
 
 ## 2.7.2.2 (forked)
