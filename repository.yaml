@@ -1,4 +1,4 @@
 
-name: In-memory MariaDB add-on
+name: In-memory MariaDB app
 url: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory
 maintainer: "@lmagyar"

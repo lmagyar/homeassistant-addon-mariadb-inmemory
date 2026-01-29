@@ -1,37 +1,37 @@
 # Changelog
 
-**Note:** If you update the add-on, please stop HA core to avoid error messages
+**Note:** If you update the app, please stop HA core to avoid error messages
 that the database is not available (during plain backup, stopping HA core is not
 necessary). **You can execute in the command line the**
 `/share/bin/update-mariadb-inmemory-while-ha-core-restarted` **script to do it
 automatically.**
 
 - Drop support for armv7 architecture
-- Update Add-on base image to v20 (drop armv7 support)
+- Update App base image to v20 (drop armv7 support)
 
 ## 2.7.2.3 (forked)
 
 - Update MariaDB to 11.4.8-r0
-- Update Add-on base image to v18.2.1
-- Fix for add-on base image and bashio log changes, causing healthcheck messages to be not logged
+- Update App base image to v18.2.1
+- Fix for app base image and bashio log changes, causing healthcheck messages to be not logged
 - Fix healthcheck, do not run until the database is started and imports are finished
 - Remove deprecated codenotary fields
 
 ## 2.7.2.2 (forked)
 
 - Fix conflict on table locking between healthcheck and database export
-- Update Add-on base image to v18.1.0 (Update Alpine base image to v3.22.0)
+- Update App base image to v18.1.0 (Update Alpine base image to v3.22.0)
 
 ## 2.7.2.1 (forked)
 
 - Update MariaDB to 11.4.5-r0
-- Configure log format for the add-on to be compatible with MariaDB's format
-- Update Add-on base image to v17.2.5
+- Configure log format for the app to be compatible with MariaDB's format
+- Update App base image to v17.2.5
 - Update apparmor profile
 
 ## 2.7.2.0 (forked)
 
-- Merge upstream changes from official add-on
+- Merge upstream changes from official app
 
 ## 2.7.2
 
@@ -40,7 +40,7 @@ automatically.**
 ## 2.7.1.5 (forked)
 
 - Update MariaDB to 11.4.4-r1
-- Update Add-on base image to v17.0.2 (Update Alpine base image to v3.21.0)
+- Update App base image to v17.0.2 (Update Alpine base image to v3.21.0)
 
 ## 2.7.1.4 (forked)
 
@@ -48,18 +48,18 @@ automatically.**
 - Update HEALTHCHECK script from upstream
 - Fix HEALTHCHECK support for localhost
 - Log HEALTHCHECK status and errors
-- Update the update script in /share/bin to not test add-on update and startup, ha cli does this from now on
-- Update Add-on base image to v16.3.6
+- Update the update script in /share/bin to not test app update and startup, ha cli does this from now on
+- Update App base image to v16.3.6
 
 ## 2.7.1.3 (forked)
 
 - Increase innodb_buffer_pool_size (to aovid high CPU load and slow responses)
-- Update Add-on base image to v16.1.0
+- Update App base image to v16.1.0
 
 ## 2.7.1.2 (forked)
 
 - Fix HEALTHCHECK support for IPv6 ::1
-- Update Add-on base image to v16.0.1 (Update Alpine base image to v3.20.0)
+- Update App base image to v16.0.1 (Update Alpine base image to v3.20.0)
 - Update MariaDB to v10.11.8-r0
 
 ## 2.7.1.1 (forked)
@@ -68,7 +68,7 @@ automatically.**
 
 ## 2.7.1
 
-- ~~Increase MariaDB add-on shutdown timeout to 300s~~ (forked version already uses this timeout value)
+- ~~Increase MariaDB app shutdown timeout to 300s~~ (forked version already uses this timeout value)
 
 ## 2.7.0
 
@@ -82,12 +82,12 @@ automatically.**
 Nonbreaking changes:
 - Add HEALTHCHECK support
 - Update MariaDB to v10.11.6-r0
-- Update Add-on base image to v15.0.8 (Update Alpine base image to v3.19.1)
+- Update App base image to v15.0.8 (Update Alpine base image to v3.19.1)
 
 ## 2.6.1.2 (forked)
 
 - Update MariaDB to v10.11.5-r0
-- Update Add-on base image to v14.1.0 (Update Alpine base image to v3.18.3)
+- Update App base image to v14.1.0 (Update Alpine base image to v3.18.3)
 
 ## 2.6.1.1 (forked)
 
@@ -97,13 +97,13 @@ Nonbreaking changes:
 - Fix issue [#46](https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/issues/46) (Table 'homeassistant.schema_changes' doesn't exist)
 - Fix issue [#44](https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/issues/44) (Debian 12 (Supervised installation): Failed to connect to supervisor port 80)
 - Update MariaDB to v10.11.4-r0
-- Update Add-on base image to v14.0.5 (Update Alpine base image to v3.18.2)
-- Sign add-on with Sigstore Cosign
+- Update App base image to v14.0.5 (Update Alpine base image to v3.18.2)
+- Sign app with Sigstore Cosign
 
 ## 2.6.1.0 (forked)
 
-- Use S6 service names from the official add-on
-- Use S6 service management from the official add-on for backup notifications instead of S6 fifodir
+- Use S6 service names from the official app
+- Use S6 service management from the official app for backup notifications instead of S6 fifodir
 
 ## 2.6.1
 
@@ -111,7 +111,7 @@ Nonbreaking changes:
 
 ## 2.6.0
 
-- ~~Migrate add-on layout to S6 Overlay~~ (forked version already migrated it's layout)
+- ~~Migrate app layout to S6 Overlay~~ (forked version already migrated it's layout)
 - ~~Update to MariaDB version 10.6.12~~ (forked version already uses this MariaDB version)
 
 ## 2.5.2.5 (forked)
@@ -120,7 +120,7 @@ Nonbreaking changes:
 - Avoid crond logging to system console
 - Require Home Assistant 2023.4.0 or newer
 - Remove any pre 2023.4.0 backward compatibility with exported database content (Aria storage engine is not used anymore)
-- Update Add-on base image to v13.2.2
+- Update App base image to v13.2.2
 
 ## 2.5.2.4 (forked)
 
@@ -128,12 +128,12 @@ Nonbreaking changes:
 
 ## 2.5.2.3 (forked)
 
-**Important:** Update this add-on first and after that update Home Assistant to the latest 2023.04.x or newer.
+**Important:** Update this app first and after that update Home Assistant to the latest 2023.04.x or newer.
 
-- Use InnoDB as storage engine ([#24](https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/issues/24))
+- Use InnoDB as storage engine ([#24](https://github.com/lmagyar/homeassistant-app-mariadb-inmemory/issues/24))
   - Convert old Aria schema content exports into InnoDB schema
   - Don't create default schema on startup
-- Update Add-on base image to v13.2.0
+- Update App base image to v13.2.0
 
 ## 2.5.2.2 (forked)
 
@@ -195,9 +195,9 @@ For more details see the documentation.
 
 ## 2.5.1.1 (forked)
 
-- **New function**: Automatically export homeassistant database on add-on backup and stop, automatically import homeassistant database on add-on start (see documentation for details)
-- Automatically apply schema modifications to the schema created by the recorder, no more add-on updates because of schema changes
-- Sign add-on with Codenotary Community Attestation Service (CAS)
+- **New function**: Automatically export homeassistant database on app backup and stop, automatically import homeassistant database on app start (see documentation for details)
+- Automatically apply schema modifications to the schema created by the recorder, no more app updates because of schema changes
+- Sign app with Codenotary Community Attestation Service (CAS)
 - Merge upstream changes
 
 ## 2.5.1
@@ -210,7 +210,7 @@ For more details see the documentation.
 
 ## 2.4.0.24 (forked)
 
-- Fix issue [Backup of the add-on is impossible #11](https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/issues/11)
+- Fix issue [Backup of the app is impossible #11](https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/issues/11)
 - Fix finish script for S6-overlay v3
 - Update apparmor.txt for S6-overlay v3
 
@@ -235,7 +235,7 @@ For more details see the documentation.
 
 ## 2.4.0.19 (forked)
 
-- Merge unreleased changes from official add-on [#3](https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/issues/3)
+- Merge unreleased changes from official app [#3](https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/issues/3)
 - Use new recorder schema for statistics from core 2021.10.0
 
 ## 2.4.0.18 (forked)
@@ -248,7 +248,7 @@ For more details see the documentation.
 
 ## 2.4.0.16 (forked)
 
-- Merge changes from official add-on
+- Merge changes from official app
 
 ## 2.4.0
 
@@ -262,7 +262,7 @@ For more details see the documentation.
 
 - Use new recorder schema from core 2021.5.0
 - Use new recorder schema from core 2021.4.0
-- Merge changes from official add-on
+- Merge changes from official app
 
 ## 2.3.0
 
@@ -276,7 +276,7 @@ For more details see the documentation.
 
 - Upgrade Alpine Linux to 3.13, MariaDB to 10.5.8
 - Use default recorder schema
-- Merge changes from official add-on
+- Merge changes from official app
 
 ## 2.2.2
 
@@ -288,7 +288,7 @@ For more details see the documentation.
 
 ## 2.2.1.10 (forked)
 
-- Use new tmpfs add-on config format in Supervisor 2021.2.0
+- Use new tmpfs app config format in Supervisor 2021.2.0
 
 ## 2.2.1.9 (forked)
 
@@ -316,8 +316,8 @@ For more details see the documentation.
 
 ## 2.0.0
 
-- Pin add-on to Alpine Linux 3.11
-- Redirect MariaDB error log to add-on logs
+- Pin app to Alpine Linux 3.11
+- Redirect MariaDB error log to app logs
 - Remove grant & host options
 - Add support for the mysql service
 - Use a more secure default on install

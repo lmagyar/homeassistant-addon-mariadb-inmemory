@@ -5,7 +5,7 @@ FROM ${BUILD_FROM}
 # Environment variables
 ENV \
     LD_PRELOAD="/usr/local/lib/libjemalloc.so.2" \
-    # Add-on log format
+    # App log format
     LOG_FORMAT="{TIMESTAMP} {LEVEL}: {MESSAGE}" \
     LOG_TIMESTAMP="%Y-%m-%d %H:%M:%S"
 
