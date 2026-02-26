@@ -1,7 +1,7 @@
 app_slug=45207088_mariadb
 app_name="In-memory MariaDB"
 set -e
-if ha ad info ${app_slug} --raw-json | jq -rce '.data.version == .data.version_latest' > /dev/null; then
+if ha apps info ${app_slug} --raw-json | jq -rce '.data.version == .data.version_latest' > /dev/null; then
   echo "You already have the latest ${app_name} app installed!"
 else
   echo "Stopping HA core..."
