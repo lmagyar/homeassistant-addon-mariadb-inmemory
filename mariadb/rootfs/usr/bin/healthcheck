@@ -24,11 +24,14 @@ fi
 # mutually exclusive lock with export-all-databases
 # if healthcheck runs during export, "flush tables with read lock" makes it fail, and the server will be restarted immediately, ie. during export
 # s6-setlock exits 1 if lock fails, healthcheck-worker exits 2 if healthcheck fails
+# to avoid race condition, we have to refresh EXPORT_STARTED_TIMESTAMP before evaluating it
 if (! bashio::var.has_value "${MARIADB_STARTED_TIMESTAMP-}" && \
     (( $(date +"%s") - ${STARTED_TIMESTAMP} > ${HEALTHCHECK_RESTART_TIMEOUT} )) ) || \
   (bashio::var.has_value "${MARIADB_STARTED_TIMESTAMP-}" && \
     ! s6-setlock -n /tmp/export-lock /usr/bin/healthcheck-worker 2>/dev/null && \
-    ( (($? == 2)) || (( $(date +"%s") - ${EXPORT_STARTED_TIMESTAMP:-0} > ${EXPORT_STARTED_TIMEOUT} )) ) )
+    ( (($? == 2)) || \
+      ! { EXPORT_STARTED_TIMESTAMP=$(</var/run/s6/container_environment/EXPORT_STARTED_TIMESTAMP) || true; } 2>/dev/null || \
+      (( $(date +"%s") - ${EXPORT_STARTED_TIMESTAMP:-0} > ${EXPORT_STARTED_TIMEOUT} )) ) )
 then
   # Unhealthy
   if ! bashio::var.equals "${LAST_REPORTED_HEALTH_STATE-}" "UNHEALTHY"; then
