@@ -434,7 +434,7 @@ You have several options to get them answered:
 In case you've found a bug, please [open an issue on our GitHub][issue].
 
 [createuser]: https://mariadb.com/kb/en/create-user/
-[discord]: https://discord.gg/c5DvZ4e
+[discord]: https://www.home-assistant.io/join-chat
 [forum]: https://community.home-assistant.io/t/in-memory-mariadb-mysql-add-on-for-recorder-history-integration/281791
 [grant]: https://mariadb.com/kb/en/grant/
 [issue]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/issues
