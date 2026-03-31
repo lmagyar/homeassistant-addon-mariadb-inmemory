@@ -33,8 +33,7 @@ backend for Home Assistant. For more information, please see [MariaDB][mariadb]
 
 Follow these steps to get the app (formerly known as add-on) installed on your system:
 
-1. Navigate in your Home Assistant frontend to **Settings** -> **Apps** ->
-   **App Store**.
+1. In Home Assistant, go to **Settings** > **Apps** > **Install app**.
 1. In the **...** menu at the top right corner click **Repositories**, add
    `https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory` as
    repository.
