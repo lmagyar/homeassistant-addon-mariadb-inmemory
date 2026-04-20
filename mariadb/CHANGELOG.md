@@ -8,9 +8,9 @@ automatically.**
 
 ## vNext (forked)
 
-- Update MariaDB to 11.4.9-r0
+- Update MariaDB to v11.4.10-r0
 - Drop support for armv7 architecture
-- Update App base image to v20
+- Update App base image to v20 (Update Alpine base image to v3.23)
 
 ## 2.7.2.3 (forked)
 
