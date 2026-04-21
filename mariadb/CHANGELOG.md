@@ -11,6 +11,10 @@ automatically.**
 - Update MariaDB to v11.4.10-r0
 - Update App base image to v20 (Update Alpine base image to v3.23)
 
+## 3.0.1
+
+- Fix GRANT statement generation for multiple `privileges`
+
 ## 3.0.0
 
 ~**Note:** This update upgrades MariaDB from 10.11 to 11.4. The database
