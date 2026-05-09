@@ -1,7 +1,7 @@
 #!/command/with-contenv bashio
 # shellcheck shell=bash
 # ==============================================================================
-# Prepare the MariaDB add-on for running
+# Prepare the MariaDB app for running
 # ==============================================================================
 TMPFS_MNT=/tmp
 MARIADB_DATA=${TMPFS_MNT}/databases

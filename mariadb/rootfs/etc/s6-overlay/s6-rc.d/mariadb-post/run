@@ -4,15 +4,6 @@
 # Post-start initialization of MariaDB service
 # ==============================================================================
 
-function execute_without_error_messages() {
-    local current_log_level="${__BASHIO_LOG_LEVELS[${__BASHIO_LOG_LEVEL}]}"
-    bashio::log.level off
-    local exit_code=0
-    $@ || exit_code=$?
-    bashio::log.level ${current_log_level}
-    return ${exit_code}
-}
-
 # Wait until DB is running
 while ! mariadb -e "" 2> /dev/null; do
     sleep 1
@@ -20,7 +11,8 @@ done
 bashio::log.info "MariaDB started"
 
 # Delete service information, just in case the previous instance somehow did not cleanup
-execute_without_error_messages bashio::services.delete "mysql" || true
+# Note: you can't redirect LOG_FD without eval
+eval "bashio::services.delete mysql &> /dev/null ${LOG_FD}> /dev/null" || true
 
 bashio::log.info "Check data integrity and fix corruptions"
 mariadb-check --no-defaults --databases mysql --fix-db-names --fix-table-names || true
@@ -208,7 +200,7 @@ for right in $(bashio::config "rights|keys"); do
     DATABASE=$(bashio::config "rights[${right}].database")
 
     if bashio::config.exists "rights[${right}].privileges"; then
-        PRIVILEGES=$(bashio::config "rights[${right}].privileges")
+        PRIVILEGES=$(bashio::config "rights[${right}].privileges | (if type == \"array\" then join(\", \") else . end)")
         bashio::log.info "  Granting ${PRIVILEGES} to ${USERNAME} on ${DATABASE}"
         mariadb -e "REVOKE ALL PRIVILEGES ON ${DATABASE}.* FROM '${USERNAME}'@'%';" || true
         mariadb -e "GRANT ${PRIVILEGES} ON ${DATABASE}.* TO '${USERNAME}'@'%';" || true
@@ -240,7 +232,7 @@ bashio::services.publish "mysql" "${PAYLOAD}"
 
 # Report sensors at startup
 # No errors, there is a chance, that HA is not running
-report-sensors &> /dev/null || true
+eval "report-sensors &> /dev/null ${LOG_FD}> /dev/null" || true
 
 # Enable healthcheck calls
 MARIADB_STARTED_TIMESTAMP=$(date +"%s")

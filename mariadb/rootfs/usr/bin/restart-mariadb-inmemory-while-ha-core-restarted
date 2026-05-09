@@ -1,9 +1,9 @@
-addon_slug=45207088_mariadb
-addon_name="In-memory MariaDB"
+app_slug=45207088_mariadb
+app_name="In-memory MariaDB"
 set -e
 echo "Stopping HA core..."
 ha core stop
-echo -e "\nRestarting ${addon_name} add-on..."
-ha addons restart ${addon_slug}
+echo -e "\nRestarting ${app_name} app..."
+ha apps restart ${app_slug}
 echo -e "\nStarting HA core..."
 ha core start
