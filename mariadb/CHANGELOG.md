@@ -9,7 +9,7 @@ automatically.**
 ## vNext (forked)
 
 - Update MariaDB to v11.4.10-r0
-- Update App base image to v20 (Update Alpine base image to v3.23)
+- Update Add-on base image to v20.1.1
 
 ## 3.0.1
 
