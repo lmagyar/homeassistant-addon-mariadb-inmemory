@@ -10,6 +10,7 @@ automatically.**
 
 - Update Mariadb to v11.8.8-r0
 - Update App base image to v21.0.1 (Update Alpine base image to v3.24.0)
+- Properly handle failure during service startup
 
 ## 3.0.1.1 (forked)
 
