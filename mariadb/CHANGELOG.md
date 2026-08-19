@@ -9,7 +9,7 @@ automatically.**
 ## vNext (forked)
 
 - Update Mariadb to v11.8.8-r0
-- Update App base image to v21.0.1 (Update Alpine base image to v3.24.0)
+- Update App base image to v21.0.2 (Update Alpine base image to v3.24.0)
 - Graceful shutdown on SIGTERM caused by manual app stop
 - Properly handle failure during service startup
 
