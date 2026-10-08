@@ -6,7 +6,7 @@ necessary). **You can execute in the command line the**
 `/share/bin/update-mariadb-inmemory-while-ha-core-restarted` **script to do it
 automatically.**
 
-## vNext (forked)
+## 3.0.1.2 (forked)
 
 - Update Mariadb to v11.8.8-r0
 - Update App base image to v21.0.8 (Update Alpine base image to v3.24.0)
