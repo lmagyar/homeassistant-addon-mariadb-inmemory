@@ -1,11 +1,8 @@
 #!/command/with-contenv bashio
 # shellcheck shell=bash
 # ==============================================================================
-# Start maridb-export for backup
+# Mark that all other S6 services has already started
+# Required by finish script failure handling (halt or exit)
 # ==============================================================================
 
-# Redirect outputs to the log (&1 and &2 are not initialized by Docker)
-exec &> /proc/1/fd/1
-bashio::log.reinitialize_output
-
-exec s6-rc -v 2 -u change mariadb-export
+touch /run/s6_has_started

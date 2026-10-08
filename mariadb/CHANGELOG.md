@@ -6,6 +6,13 @@ necessary). **You can execute in the command line the**
 `/share/bin/update-mariadb-inmemory-while-ha-core-restarted` **script to do it
 automatically.**
 
+## 3.0.1.2 (forked)
+
+- Update Mariadb to v11.8.8-r0
+- Update App base image to v21.0.8 (Update Alpine base image to v3.24.0)
+- Graceful shutdown on SIGTERM caused by manual app stop
+- Properly handle failure during service startup
+
 ## 3.0.1.1 (forked)
 
 - Update MariaDB to v11.4.10-r0

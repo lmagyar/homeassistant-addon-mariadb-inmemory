@@ -1,4 +1,4 @@
-ARG BUILD_FROM=ghcr.io/hassio-addons/base/amd64:20.1.1
+ARG BUILD_FROM=ghcr.io/hassio-addons/base/amd64:21.0.8
 # hadolint ignore=DL3006
 FROM ${BUILD_FROM}
 
@@ -11,9 +11,9 @@ ENV \
 
 # Setup base
 RUN apk add --no-cache \
-    mariadb=11.4.10-r0 \
-    mariadb-client=11.4.10-r0 \
-    mariadb-server-utils=11.4.10-r0 \
+    mariadb=11.8.8-r0 \
+    mariadb-client=11.8.8-r0 \
+    mariadb-server-utils=11.8.8-r0 \
     pwgen=2.08-r3
 
 # Copy root filesystem
