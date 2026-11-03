@@ -11,6 +11,7 @@ automatically.**
 - Update Mariadb to v11.8.9-r0
 - Update App base image to v21.0.10
 - Remove hardcoded service names, use argument value from s6
+- Use a 5s startup healthcheck interval
 
 ## 3.0.1.2 (forked)
 
