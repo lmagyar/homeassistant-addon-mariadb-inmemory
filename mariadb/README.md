@@ -70,4 +70,4 @@ recorder integration!!!**
 [updated]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/commits/master
 [mariadb]: https://mariadb.com
 [warning_stripe]: https://github.com/lmagyar/homeassistant-addon-mariadb-inmemory/raw/master/images/warning_stripe_wide.png
-[official_app]: https://github.com/home-assistant/addons/tree/master/mariadb
+[official_app]: https://github.com/home-assistant/app-mariadb
