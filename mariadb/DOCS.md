@@ -280,6 +280,7 @@ belonging to the app anymore).
 ### Option: `databases`
 
 Database name, e.g., `homeassistant`. Multiple are allowed.
+A name may only contain letters, digits, `_`, `$` and `-`.
 
 ### Option: `logins`
 
@@ -289,6 +290,7 @@ User][createuser] documentation.
 ### Option: `logins.username`
 
 Database user login, e.g., `homeassistant`. [User Name][username] documentation.
+A user name may only contain letters, digits, spaces, `_`, `-`, `.` and `@`.
 
 ### Option: `logins.password`
 

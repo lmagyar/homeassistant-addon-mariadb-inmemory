@@ -51,17 +51,17 @@ schema:
     keep_periods: int(1,)
     archive: bool
   databases:
-    - str
+    - 'match(^[\w$-]{1,64}$)'
   logins:
-    - username: str
+    - username: 'match(^[\w.@ -]{1,128}$)'
       password: password
   rights:
-    - database: str
+    - database: 'match(^[\w$-]{1,64}$)'
       privileges:
         - "list(ALTER|CREATE|CREATE ROUTINE|CREATE TEMPORARY TABLES|\
-           CREATE VIEW|DELETE|DELETE HISTORY|DROP|EVENT|GRANT OPTION|INDEX|\
-           INSERT|LOCK TABLES|SELECT|SHOW VIEW|TRIGGER|UPDATE)?"
-      username: str
+          CREATE VIEW|DELETE|DELETE HISTORY|DROP|EVENT|GRANT OPTION|INDEX|\
+          INSERT|LOCK TABLES|SELECT|SHOW VIEW|TRIGGER|UPDATE)?"
+      username: 'match(^[\w.@ -]{1,128}$)'
   mariadb_server_args:
     - str?
 services:

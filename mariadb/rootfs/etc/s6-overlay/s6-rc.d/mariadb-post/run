@@ -172,25 +172,36 @@ if bashio::config.exists "retention.enabled"; then
     fi
 fi
 
+# Escape a value for use inside a single quoted SQL string literal. Only
+# passwords need this, the options schema restricts database and user names.
+function sql_string() {
+    local value="${1//\\/\\\\}"
+    printf '%s' "${value//\'/\'\'}"
+}
+
 # Init databases
 bashio::log.info "Ensure databases exist"
 for database in $(bashio::config "databases"); do
     bashio::log.info "  Create database ${database}"
-    mariadb -e "CREATE DATABASE ${database};" 2> /dev/null || true
+    mariadb -e "CREATE DATABASE IF NOT EXISTS \`${database}\`;" \
+        || bashio::log.error "  Failed to create database ${database}"
 done
 
 # Init logins
 bashio::log.info "Ensure users exist and are updated"
 for login in $(bashio::config "logins|keys"); do
     USERNAME=$(bashio::config "logins[${login}].username")
-    PASSWORD=$(bashio::config "logins[${login}].password")
+    PASSWORD=$(sql_string "$(bashio::config "logins[${login}].password")")
 
-    if mariadb -e "SET PASSWORD FOR '${USERNAME}'@'%' = PASSWORD('${PASSWORD}');" 2> /dev/null; then
-        bashio::log.info "  Update user ${USERNAME}"
-    else
-        bashio::log.info "  Create user ${USERNAME}"
-        mariadb -e "CREATE USER '${USERNAME}'@'%' IDENTIFIED BY '${PASSWORD}';" 2> /dev/null || true
-    fi
+    bashio::log.info "  Create or update user ${USERNAME}"
+    # The statements hold the password. Pass them on stdin to keep it out of
+    # the process list, and drop the client output, as it prints a failed
+    # statement. The escaping relies on backslash escapes being enabled.
+    mariadb &> /dev/null <<< "
+        SET SESSION sql_mode = '';
+        CREATE USER IF NOT EXISTS '${USERNAME}'@'%' IDENTIFIED BY '${PASSWORD}';
+        SET PASSWORD FOR '${USERNAME}'@'%' = PASSWORD('${PASSWORD}');
+    " || bashio::log.error "  Failed to create or update user ${USERNAME}"
 done
 
 # Init rights
@@ -202,19 +213,25 @@ for right in $(bashio::config "rights|keys"); do
     if bashio::config.exists "rights[${right}].privileges"; then
         PRIVILEGES=$(bashio::config "rights[${right}].privileges | (if type == \"array\" then join(\", \") else . end)")
         bashio::log.info "  Granting ${PRIVILEGES} to ${USERNAME} on ${DATABASE}"
-        mariadb -e "REVOKE ALL PRIVILEGES ON ${DATABASE}.* FROM '${USERNAME}'@'%';" || true
-        mariadb -e "GRANT ${PRIVILEGES} ON ${DATABASE}.* TO '${USERNAME}'@'%';" || true
+        # Fails if the user has no privileges on the database yet, which is fine
+        mariadb -e "REVOKE ALL PRIVILEGES ON \`${DATABASE}\`.* FROM '${USERNAME}'@'%';" &> /dev/null || true
     else
+        PRIVILEGES="ALL PRIVILEGES"
         bashio::log.info "  Granting all privileges to ${USERNAME} on ${DATABASE}"
-        mariadb -e "GRANT ALL PRIVILEGES ON ${DATABASE}.* TO '${USERNAME}'@'%';" 2> /dev/null || true
     fi
+
+    mariadb -e "GRANT ${PRIVILEGES} ON \`${DATABASE}\`.* TO '${USERNAME}'@'%';" \
+        || bashio::log.error "  Failed to grant ${PRIVILEGES} to ${USERNAME} on ${DATABASE}"
 done
 
 # Generate service user
-mariadb -e "CREATE USER 'service'@'172.30.32.%' IDENTIFIED BY '${SECRET}';" 2> /dev/null || true
-mariadb -e "CREATE USER 'service'@'172.30.33.%' IDENTIFIED BY '${SECRET}';" 2> /dev/null || true
-mariadb -e "GRANT ALL PRIVILEGES ON *.* TO 'service'@'172.30.32.%' WITH GRANT OPTION;" 2> /dev/null || true
-mariadb -e "GRANT ALL PRIVILEGES ON *.* TO 'service'@'172.30.33.%' WITH GRANT OPTION;" 2> /dev/null || true
+# Holds the secret, so same handling as for the logins above
+mariadb &> /dev/null <<< "
+    CREATE USER IF NOT EXISTS 'service'@'172.30.32.%' IDENTIFIED BY '${SECRET}';
+    CREATE USER IF NOT EXISTS 'service'@'172.30.33.%' IDENTIFIED BY '${SECRET}';
+    GRANT ALL PRIVILEGES ON *.* TO 'service'@'172.30.32.%' WITH GRANT OPTION;
+    GRANT ALL PRIVILEGES ON *.* TO 'service'@'172.30.33.%' WITH GRANT OPTION;
+" || bashio::log.error "  Failed to set up the service user"
 
 # Flush privileges
 mariadb -e "FLUSH PRIVILEGES;" 2> /dev/null || true
