@@ -12,7 +12,7 @@ ENV \
 # Setup base
 RUN apk add --no-cache \
     mariadb=11.8.10-r0 \
-    mariadb-client=11.8.9-r0 \
+    mariadb-client=11.8.10-r0 \
     mariadb-server-utils=11.8.9-r0 \
     pwgen=2.08-r3
 
