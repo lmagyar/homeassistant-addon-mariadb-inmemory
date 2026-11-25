@@ -4,8 +4,21 @@
 # DO NOT CALL THIS SCRIPT DIRECTLY
 # ==============================================================================
 
-exec 4> >(mariadb)
-echo "FLUSH TABLES WITH READ LOCK;" >&4
+declare result
+
+coproc mariadb --unbuffered --skip-column-names
+exec 4>&"${COPROC[1]}"- 5<&"${COPROC[0]}"-
+
+trap "kill $COPROC_PID 2>/dev/null || true" EXIT
+
+echo "FLUSH TABLES WITH READ LOCK; SELECT 'locked';" >&4
+if ! read -r result <> /dev/fd/5 || \
+    ! [[ "${result}" = "locked" ]]
+then
+    printf '%s\n' "${result}"
+    bashio::log.error "MariaDB tables not locked" || true
+    bashio::exit.nok
+fi
 bashio::log.info "MariaDB tables locked" || true
 
 bashio::log.info "Exporting all databases schema and data" || true
@@ -14,8 +27,15 @@ mariadb-dump --all-databases --ignore-database=mysql \
         --skip-lock-tables --skip-add-locks --skip-add-drop-table --complete-insert --insert-ignore \
     | gzip -9 > ${MARIADB_DUMP}.tmp
 
-echo "UNLOCK TABLES;" >&4
-bashio::log.info "MariaDB tables unlocked" || true
+echo "UNLOCK TABLES; SELECT 'unlocked';" >&4
+if ! read -r result <> /dev/fd/5 || \
+    ! [[ "${result}" = "unlocked" ]]
+then
+    printf '%s\n' "${result}"
+    bashio::log.error "MariaDB tables not unlocked" || true
+else
+    bashio::log.info "MariaDB tables unlocked" || true
+fi
 exec 4>&-
 
 # indicate we are finished

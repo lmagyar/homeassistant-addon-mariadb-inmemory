@@ -8,4 +8,8 @@
 exec &> /proc/1/fd/1
 bashio::log.reinitialize_output
 
-exec s6-rc -v 2 -u change mariadb-export
+# Supervisor does not run the post backup command if this one fails
+if ! s6-rc -v 2 -u change mariadb-export; then
+    s6-rc -v 2 -d change mariadb-export || true
+    exit 1
+fi
