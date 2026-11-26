@@ -10,6 +10,7 @@ automatically.**
 
 - Update Mariadb to v11.8.10-r0
 - Update App base image to v21.0.12
+- Show timestamps in app logs by default
 - Remove hardcoded service names, use argument value from s6
 - Use a 5s startup healthcheck interval
 - Merge changes from upstream

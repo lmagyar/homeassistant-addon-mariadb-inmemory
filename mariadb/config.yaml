@@ -20,6 +20,7 @@ backup_exclude:
   - databases-dump.sql.gz.bak
 image: ghcr.io/lmagyar/{arch}-addon-mariadb-inmemory
 init: false
+log_format: timestamp
 options:
   tmpfs:
     size: 200m
